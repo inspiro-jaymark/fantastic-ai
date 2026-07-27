@@ -1,0 +1,137 @@
+        <section id="sup" class="view hidden">
+          <div class="grid g3">
+            <div class="card" style="text-align: center">
+              <h3 style="justify-content: center">
+                <span class="ic">🎧</span> Supervisor Live Status
+              </h3>
+              <div style="font-size: 44px; margin: 10px 0" id="supStatusIcon">
+                🟢
+              </div>
+              <div style="font-size: 16px; font-weight: 800" id="supStatusText">
+                Standing by
+              </div>
+              <div class="note" id="supStatusSub">
+                Auto-alerts fire when triggers breach.
+              </div>
+              <div
+                class="row"
+                style="justify-content: center; margin-top: 14px"
+              >
+                <button class="btn mag" onclick="supAction('monitor')">
+                  👂 Monitor</button
+                ><button class="btn ghost" onclick="supAction('whisper')">
+                  🤫 Whisper</button
+                ><button class="btn ghost" onclick="supAction('barge')">
+                  📞 Barge
+                </button>
+              </div>
+            </div>
+            <div class="card">
+              <h3><span class="ic">📊</span> Session Alerts</h3>
+              <div class="sum-line">
+                <b>Total</b><span id="supTotal">0</span>
+              </div>
+              <div class="sum-line">
+                <b>Barge-ins</b><span id="supBarges">0</span>
+              </div>
+              <div class="sum-line">
+                <b>Whispers</b><span id="supWhispers">0</span>
+              </div>
+              <div class="sum-line">
+                <b>Highest</b><span id="supMax">—</span>
+              </div>
+            </div>
+            <div class="card">
+              <h3><span class="ic">🤫</span> Send Whisper</h3>
+              <input
+                class="search"
+                id="whisperInput"
+                placeholder="Guidance to agent…"
+                style="margin-bottom: 10px"
+              /><button class="btn mag" onclick="sendWhisper()">Send</button>
+            </div>
+          </div>
+          <div class="grid g2" style="margin-top: 20px">
+            <div class="card">
+              <h3><span class="ic">⚙️</span> Auto-Alert Triggers</h3>
+              <div class="trig">
+                <div class="info"><b>Fraud risk ≥</b></div>
+                <div class="thresh">
+                  <input
+                    type="number"
+                    id="thrFraud"
+                    value="50"
+                    min="10"
+                    max="100"
+                  /><label class="switch"
+                    ><input type="checkbox" id="onFraud" checked /><span
+                      class="slider"
+                    ></span
+                  ></label>
+                </div>
+              </div>
+              <div class="trig">
+                <div class="info"><b>Negative streak</b></div>
+                <div class="thresh">
+                  <input
+                    type="number"
+                    id="thrNeg"
+                    value="2"
+                    min="1"
+                    max="6"
+                  /><label class="switch"
+                    ><input type="checkbox" id="onNeg" checked /><span
+                      class="slider"
+                    ></span
+                  ></label>
+                </div>
+              </div>
+              <div class="trig">
+                <div class="info"><b>Escalation request</b></div>
+                <div class="thresh">
+                  <label class="switch"
+                    ><input type="checkbox" id="onEsc" checked /><span
+                      class="slider"
+                    ></span
+                  ></label>
+                </div>
+              </div>
+              <div class="trig">
+                <div class="info"><b>Long call (min)</b></div>
+                <div class="thresh">
+                  <input
+                    type="number"
+                    id="thrDur"
+                    value="6"
+                    min="1"
+                    max="30"
+                  /><label class="switch"
+                    ><input type="checkbox" id="onDur" checked /><span
+                      class="slider"
+                    ></span
+                  ></label>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <h3><span class="ic">🚨</span> Alert Log</h3>
+              <div style="max-height: 320px; overflow-y: auto">
+                <table id="supLog">
+                  <tr>
+                    <th>Time</th>
+                    <th>Trigger</th>
+                    <th>Detail</th>
+                    <th>Action</th>
+                  </tr>
+                </table>
+                <div
+                  class="note"
+                  id="supEmpty"
+                  style="text-align: center; margin-top: 30px"
+                >
+                  No alerts yet.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>

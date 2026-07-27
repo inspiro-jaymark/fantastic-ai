@@ -1,0 +1,66 @@
+/* Page Layout, Grids, And Cards */
+
+main {
+  max-width:1240px;
+  margin:0 auto;
+  padding:24px
+}
+
+.view {
+  animation:fade .35s
+}
+
+@keyframes fade {
+  from {
+    opacity:0;
+    transform:translateY(8px)
+  }
+
+  to {
+    opacity:1;
+    transform:none
+  }
+}
+
+.grid {
+  display:grid;
+  gap:20px
+}
+
+.g2 {
+  grid-template-columns:1.3fr .9fr
+}
+
+.g3 {
+  grid-template-columns:repeat(3,1fr)
+}
+
+.g4 {
+  grid-template-columns:repeat(4,1fr)
+}
+
+@media(max-width:960px) {
+  .g2,.g3,.g4 {
+    grid-template-columns:1fr
+  }
+}
+
+.card {
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 2px 10px rgba(15,27,45,.04)
+}
+
+.card h3 {
+  font-size:15px;
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:8px
+}
+
+.card h3 .ic {
+  font-size:17px
+}

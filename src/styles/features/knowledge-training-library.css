@@ -1,0 +1,266 @@
+/* Knowledge Base, Training, Library, And QA Cards */
+
+.kb-cat {
+  font-size:12px;
+  font-weight:800;
+  color:var(--teal);
+  text-transform:uppercase;
+  margin:16px 0 8px;
+  padding-bottom:5px;
+  border-bottom:2px solid var(--line)
+}
+
+.kb-cat:first-child {
+  margin-top:0
+}
+
+.kb-item .kb-meta {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-top:8px;
+  flex-wrap:wrap
+}
+
+.kb-link {
+  font-size:12px;
+  color:var(--blue);
+  font-weight:600;
+  text-decoration:none
+}
+
+.kb-key {
+  font-size:10.5px;
+  background:#f1f5f9;
+  color:var(--muted);
+  padding:1px 8px;
+  border-radius:20px
+}
+
+.kb-custom {
+  font-size:9.5px;
+  background:var(--yellow);
+  color:var(--ink);
+  padding:1px 8px;
+  border-radius:20px;
+  font-weight:700
+}
+
+.kb-del {
+  font-size:11px;
+  color:var(--red);
+  cursor:pointer;
+  font-weight:600;
+  margin-left:auto
+}
+
+.trainer-box {
+  background:#f0fdfa;
+  border:1px dashed var(--teal-light);
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:18px
+}
+
+.trainer-box h4 {
+  font-size:14px;
+  color:var(--teal-dark);
+  margin-bottom:12px
+}
+
+textarea {
+  width:100%;
+  min-height:70px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  font-size:13px;
+  font-family:inherit;
+  resize:vertical
+}
+
+.tgrid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:10px
+}
+
+@media(max-width:640px) {
+  .tgrid {
+    grid-template-columns:1fr
+  }
+}
+
+.lib-card {
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:12px
+}
+
+.lib-card:hover {
+  box-shadow:var(--shadow);
+  border-color:var(--teal-light)
+}
+
+.lib-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap
+}
+
+.lib-head b {
+  font-size:14px
+}
+
+.lib-meta {
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:6px
+}
+
+.lib-actions {
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap
+}
+
+.lib-actions button {
+  font-size:12px;
+  padding:5px 10px;
+  border-radius:8px;
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--slate);
+  font-weight:600
+}
+
+.lib-actions button.del:hover {
+  background:#fef2f2;
+  color:var(--red)
+}
+
+.folder-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:14px
+}
+
+.folder-stat {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap
+}
+
+.fchip {
+  background:#f1f5f9;
+  border-radius:10px;
+  padding:8px 14px;
+  font-size:12.5px;
+  font-weight:600;
+  color:var(--slate)
+}
+
+.fchip b {
+  color:var(--teal);
+  font-size:15px
+}
+
+.replay {
+  max-height:320px;
+  overflow-y:auto;
+  background:#f8fafc;
+  border-radius:10px;
+  padding:12px;
+  margin-top:10px;
+  display:none
+}
+
+.replay .msg {
+  max-width:88%
+}
+
+.script-card {
+  background:linear-gradient(135deg,#f0fdfa,#e6fffb);
+  border:1px solid var(--teal-light);
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:10px;
+  font-size:13px
+}
+
+.script-card .lbl {
+  font-size:10.5px;
+  font-weight:800;
+  color:var(--teal-dark);
+  text-transform:uppercase
+}
+
+.script-card h3,.script-card h4 {
+  margin:6px 0
+}
+
+.check-item {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:9px 0;
+  border-bottom:1px solid var(--line);
+  font-size:13px
+}
+
+.check-item:last-child {
+  border-bottom:none
+}
+
+.check-item .cx {
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:13px;
+  background:#eef2f6;
+  color:var(--muted)
+}
+
+.check-item.pass .cx {
+  background:var(--green);
+  color:#fff
+}
+
+.check-item.fail .cx {
+  background:#fee2e2;
+  color:var(--red)
+}
+
+.share-preview {
+  width:100%;
+  background:#0f1b2d;
+  border-radius:12px;
+  aspect-ratio:16/9;
+  display:grid;
+  place-items:center;
+  color:#94a3b8;
+  font-size:13px;
+  overflow:hidden
+}
+
+.share-preview video {
+  width:100%;
+  height:100%;
+  object-fit:contain
+}
+
+textarea.ta {
+  min-height:150px
+}

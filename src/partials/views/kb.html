@@ -1,0 +1,91 @@
+        <section id="kb" class="view hidden">
+          <div class="card">
+            <h3>
+              <span class="ic">📚</span> Knowledge Base
+              <span class="badge" id="kbCount">0</span>
+            </h3>
+            <div class="trainer-box">
+              <h4>📎 Add Documents & Web Sources</h4>
+              <div class="tgrid">
+                <div>
+                  <label class="fld"
+                    >Upload files (any type:
+                    PDF/Word/Excel/images/txt/csv)</label
+                  ><input
+                    class="inp"
+                    type="file"
+                    id="ftKBFiles"
+                    multiple
+                    onchange="kbUpload(event)"
+                  />
+                </div>
+                <div>
+                  <label class="fld"
+                    >Connect a public website (fetch text)</label
+                  >
+                  <div class="row">
+                    <input
+                      class="inp"
+                      id="ftKBUrl"
+                      placeholder="https://example.com/help"
+                      style="flex: 1"
+                    /><button class="btn" onclick="kbFetch()">🌐 Fetch</button>
+                  </div>
+                </div>
+              </div>
+              <div class="conn" id="ftKBMsg"></div>
+              <div id="ftKBAssets" style="margin-top: 10px"></div>
+            </div>
+            <div class="trainer-box">
+              <h4>🧑‍🏫 Trainer: Add / Update Module</h4>
+              <div class="tgrid">
+                <div>
+                  <label class="fld">Title</label
+                  ><input
+                    class="inp"
+                    id="tTitle"
+                    placeholder="How do I set up eSIM?"
+                  />
+                </div>
+                <div>
+                  <label class="fld">Category</label
+                  ><select class="inp" id="tCat">
+                    <option>Billing & Payments</option>
+                    <option>Technical Support</option>
+                    <option>Account & Security</option>
+                    <option>Plans & Upgrades</option>
+                    <option>Refunds & Disputes</option>
+                    <option>General / Policy</option>
+                  </select>
+                </div>
+              </div>
+              <label class="fld">Answer</label
+              ><textarea
+                id="tBody"
+                placeholder="The answer the AI should give…"
+              ></textarea>
+              <div class="tgrid" style="margin-top: 10px">
+                <div>
+                  <label class="fld">Keywords</label
+                  ><input
+                    class="inp"
+                    id="tKeys"
+                    placeholder="esim, sim, activate"
+                  />
+                </div>
+                <div>
+                  <label class="fld">Reference link</label
+                  ><input class="inp" id="tLink" placeholder="https://…" />
+                </div>
+              </div>
+              <div class="row" style="margin-top: 12px">
+                <button class="btn" onclick="addModule()">➕ Add</button
+                ><button class="btn ghost" onclick="exportKB()">
+                  ⬇️ Export</button
+                ><span class="note" id="tMsg" style="margin: 0"></span>
+              </div>
+            </div>
+            <input class="search" id="kbSearch" placeholder="🔍 Search…" />
+            <div id="kbList"></div>
+          </div>
+        </section>

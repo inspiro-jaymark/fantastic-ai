@@ -1,0 +1,94 @@
+    <div id="ftNotifPanel" class="panel hidden"></div>
+    <div id="ftDMPanel" class="panel hidden"></div>
+    <button
+      id="kbbotFab"
+      title="Ask FeeBe (Knowledge Base)"
+      onclick="toggleKBBot()"
+      style="
+        position: fixed;
+        bottom: 22px;
+        right: 22px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+        color: #fff;
+        font-size: 27px;
+        box-shadow: 0 10px 30px rgba(14, 124, 123, 0.45);
+        z-index: 140;
+      "
+    >
+      🤖
+    </button>
+    <div
+      id="kbbotPanel"
+      class="hidden"
+      style="
+        position: fixed;
+        bottom: 92px;
+        right: 22px;
+        width: 350px;
+        max-height: 72vh;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        z-index: 141;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      "
+    >
+      <div
+        style="
+          padding: 12px;
+          background: linear-gradient(120deg, var(--teal-dark), var(--teal));
+          color: #fff;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <b>🤖 Ask FeeBe · Knowledge Base</b
+        ><button
+          onclick="toggleKBBot()"
+          style="
+            background: rgba(255, 255, 255, 0.25);
+            color: #fff;
+            border-radius: 20px;
+            padding: 3px 9px;
+            font-size: 12px;
+          "
+        >
+          ✕
+        </button>
+      </div>
+      <div
+        id="kbbotBody"
+        style="
+          flex: 1;
+          overflow: auto;
+          padding: 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          background: #f8fafc;
+        "
+      ></div>
+      <div
+        style="
+          padding: 10px;
+          border-top: 1px solid var(--line);
+          display: flex;
+          gap: 8px;
+        "
+      >
+        <input
+          class="inp"
+          id="kbbotInput"
+          placeholder="Ask a KB question…"
+          style="flex: 1"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();botSend();}"
+        /><button class="btn" id="kbbotSend" onclick="botSend()">Send</button>
+      </div>
+    </div>

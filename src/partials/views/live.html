@@ -1,0 +1,256 @@
+        <section id="live" class="view hidden">
+          <div class="sup-mode-banner" id="supModeBanner"></div>
+          <div class="endflag" id="endFlag"></div>
+          <div class="sup-alert" id="supAlert">
+            <div class="txt">
+              <b>🎧 SUPERVISOR ALERT</b><span id="supAlertMsg"></span>
+            </div>
+            <div class="sup-actions">
+              <button onclick="supAction('monitor')">👂 Monitor</button
+              ><button onclick="supAction('whisper')">🤫 Whisper</button
+              ><button onclick="supAction('barge')">📞 Barge In</button
+              ><button onclick="dismissSupAlert()">✕</button>
+            </div>
+          </div>
+          <div class="fraud-alert" id="fraudAlert">
+            <b>🛡️ FRAUD RISK DETECTED</b><span id="fraudAlertMsg"></span>
+          </div>
+          <div class="role-bar">
+            <span class="lbl">🎭 AI plays as:</span>
+            <div class="role-toggle">
+              <button id="roleAgent" class="on" onclick="setRole('agent')">
+                🤖 Agent (AI helps you)</button
+              ><button id="roleCustomer" onclick="setRole('customer')">
+                🧑 Customer (train)
+              </button>
+            </div>
+            <select class="sel" id="scenarioPick" style="display: none">
+              <option value="billing">💳 Billing</option>
+              <option value="outage">📡 Outage</option>
+              <option value="cancel">😠 Cancel</option>
+              <option value="upgrade">⬆️ Upgrade</option>
+              <option value="refund">💵 Refund</option>
+              <option value="random">🎲 Random</option>
+            </select>
+            <span class="lbl" style="margin-left: auto">🌐 Reply:</span
+            ><select class="sel" id="liveLangMode">
+              <option value="auto" selected>Auto (match caller)</option>
+              <option value="en">English</option>
+              <option value="tl">Tagalog</option>
+              <option value="ceb">Cebuano</option>
+              <option value="hil">Hiligaynon</option>
+              <option value="ilo">Ilokano</option>
+              <option value="war">Waray</option>
+              <option value="taglish">Taglish</option>
+            </select>
+            <span class="row" style="flex-basis: 100%; margin-top: 6px"
+              ><span class="lbl" style="font-size: 11.5px">🎤 Mic:</span
+              ><select
+                class="sel ftMicSel"
+                onchange="ftOnMicChange(this.value)"
+                style="max-width: 200px"
+              >
+                <option value="">System default mic</option></select
+              ><button
+                class="btn ghost"
+                style="padding: 6px 10px; font-size: 12px"
+                onclick="ftGrantMic()"
+              >
+                🔄 Detect</button
+              ><label class="switch" title="Remember as default"
+                ><input type="checkbox" id="ftMicDefault" /><span
+                  class="slider"
+                ></span></label
+              ><span
+                style="font-size: 11px; color: var(--muted); font-weight: 600"
+                >Default</span
+              ><span class="lvlmeter"><span id="ftLvlBar"></span></span
+            ></span>
+            <div class="role-hint">
+              AI matches the caller's language (EN · Tagalog · Cebuano ·
+              Hiligaynon · Ilokano · Waray · Taglish),
+              <b>apologizes & empathizes</b>, detects end-of-call. Camera →
+              <b>face-api mood meter</b>. Script by <b>Claude</b>. Supports
+              virtual mics.
+            </div>
+          </div>
+          <div class="grid g2">
+            <div class="card">
+              <h3>
+                <span class="ic">💬</span> Live Transcript
+                <span class="langpill" id="liveLangPill">EN</span>
+              </h3>
+              <div class="transcript" id="transcript">
+                <div class="empty-t" id="emptyT">
+                  Press <b>Start Call</b> — mic turns on automatically 🎙️
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="console">
+                <div class="orb" id="orb">🤖</div>
+                <div class="agent-name" id="agName">FANTASTIC Agent</div>
+                <div class="agent-sub">Azure & browser speech AI</div>
+                <div class="mic-ind hidden" id="micInd">
+                  <span class="rec"></span> Mic on · listening
+                </div>
+                <div class="timer" id="timer">00:00</div>
+                <div class="call-btns">
+                  <div>
+                    <button class="cbtn start" id="btnStart">📞</button>
+                    <div class="cbtn-lab">Start</div>
+                  </div>
+                  <div>
+                    <button class="cbtn mute" id="btnMute" disabled>🎙️</button>
+                    <div class="cbtn-lab">Mute</div>
+                  </div>
+                  <div>
+                    <button class="cbtn cam" id="btnCam">📷</button>
+                    <div class="cbtn-lab">Camera</div>
+                  </div>
+                  <div>
+                    <button class="cbtn end" id="btnEnd" disabled>🔴</button>
+                    <div class="cbtn-lab">End</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card" style="margin-top: 16px">
+                <h3>
+                  <span class="ic">📷</span> Agent Camera & Mood
+                  <span
+                    class="ai-badge"
+                    id="moodBadge"
+                    style="background: #ede9fe; color: #6d28d9"
+                    >FACE-API</span
+                  >
+                </h3>
+                <div class="camwrap" id="camWrap">
+                  <span class="camoff" id="camOff"
+                    >Camera off. Click 📷 for face-api facial-expression mood
+                    tracking (on-device).</span
+                  ><video
+                    id="camVideo"
+                    autoplay
+                    playsinline
+                    muted
+                    class="hidden"
+                  ></video
+                  ><span class="cambadge hidden" id="camBadge"
+                    >🔴 Live · on-device</span
+                  >
+                </div>
+                <div class="row" style="justify-content: space-between">
+                  <div style="display: flex; align-items: center; gap: 10px">
+                    <span class="moodface" id="moodFace">😐</span>
+                    <div>
+                      <div style="font-weight: 800" id="moodLabel">Neutral</div>
+                      <div class="note" style="margin: 0" id="moodDetail">
+                        Expression: —
+                      </div>
+                    </div>
+                  </div>
+                  <span class="note" id="moodConf" style="margin: 0"></span>
+                </div>
+                <div class="mood-meter"><span id="moodBar"></span></div>
+                <div class="mood-scale">
+                  <span>😣 Stressed</span><span>😐 Neutral</span
+                  ><span>😀 Positive</span>
+                </div>
+              </div>
+              <div class="card" style="margin-top: 16px">
+                <h3>
+                  <span class="ic">🤖</span> AI Script (Claude)
+                  <span class="ai-badge claude" id="liveAiBadge">CLAUDE</span>
+                </h3>
+                <div class="ai-guide-box" id="liveAiGuide">
+                  <span class="note"
+                    >Claude writes the next line (apology/empathy aware) during
+                    a call.</span
+                  >
+                </div>
+              </div>
+              <div class="card" style="margin-top: 16px">
+                <h3><span class="ic">😊</span> Customer Sentiment</h3>
+                <div class="senti-bar">
+                  <div class="pos" id="sPos" style="width: 34%">34%</div>
+                  <div class="neu" id="sNeu" style="width: 50%">50%</div>
+                  <div class="neg" id="sNeg" style="width: 16%">16%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin-top: 20px">
+            <div class="folder-head">
+              <h3 style="margin: 0">
+                <span class="ic">📋</span> QA Evaluation & Call Rating
+              </h3>
+              <div class="row">
+                <span
+                  class="note"
+                  id="liveQAScore"
+                  style="margin: 0; font-weight: 700"
+                ></span
+                ><button
+                  class="btn ghost"
+                  style="padding: 6px 12px; font-size: 12px"
+                  onclick="exportLiveQA()"
+                >
+                  ⬇️ Export QA (CSV)
+                </button>
+              </div>
+            </div>
+            <div id="liveQAempty" class="note">
+              Complete a call (press <b>End 🔴</b>) to auto-generate the QA
+              evaluation.
+            </div>
+            <div id="liveQAbody" class="hidden">
+              <div class="qa3">
+                <div class="qa-col good">
+                  <h4>✅ What went well</h4>
+                  <ul id="qaWell"></ul>
+                </div>
+                <div class="qa-col bad">
+                  <h4>⚠️ What went wrong</h4>
+                  <ul id="qaWrong"></ul>
+                </div>
+                <div class="qa-col imp">
+                  <h4>🎯 Areas for improvement</h4>
+                  <ul id="qaImprove"></ul>
+                </div>
+              </div>
+              <div
+                class="row"
+                style="
+                  justify-content: space-between;
+                  margin-top: 16px;
+                  align-items: center;
+                "
+              >
+                <div>
+                  <label class="fld">Your rating</label>
+                  <div class="stars" id="liveStars">
+                    <span class="st" data-v="1">★</span
+                    ><span class="st" data-v="2">★</span
+                    ><span class="st" data-v="3">★</span
+                    ><span class="st" data-v="4">★</span
+                    ><span class="st" data-v="5">★</span>
+                  </div>
+                </div>
+                <div style="flex: 1; min-width: 200px">
+                  <label class="fld">Evaluator note</label
+                  ><input
+                    class="inp"
+                    id="liveRateNote"
+                    placeholder="Coaching note…"
+                  />
+                </div>
+                <div style="display: flex; align-items: flex-end">
+                  <button class="btn yellow" onclick="submitLiveRating()">
+                    ✅ Submit rating
+                  </button>
+                </div>
+              </div>
+              <div class="conn" id="liveRateMsg"></div>
+            </div>
+          </div>
+        </section>

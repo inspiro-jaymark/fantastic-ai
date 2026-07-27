@@ -1,0 +1,136 @@
+        <section id="access" class="view hidden">
+          <div class="folder-head">
+            <div>
+              <h3 style="font-size: 17px">
+                <span class="ic">🔐</span> Access Management
+              </h3>
+              <div class="note">Users, roles & permissions. Admin-only.</div>
+            </div>
+            <div class="row">
+              <button class="btn ghost" onclick="exportUsers()">
+                ⬇️ Export</button
+              ><label class="btn ghost" sty Open previewle="cursor: pointer"
+                >⬆️ Import<input
+                  type="file"
+                  id="userImport"
+                  accept=".csv"
+                  style="display: none"
+                  onchange="importUsers(event)"
+              /></label>
+            </div>
+          </div>
+          <div class="card">
+            <h3><span class="ic">➕</span> Add / Update User</h3>
+            <div class="db-form">
+              <div>
+                <label class="fld">Username</label
+                ><input class="inp" id="uUser" placeholder="jdelacruz" />
+              </div>
+              <div>
+                <label class="fld">Full Name</label
+                ><input class="inp" id="uName" placeholder="Juan Dela Cruz" />
+              </div>
+              <div>
+                <label class="fld">Password</label>
+                <div class="password-wrap">
+                  <input
+                    class="inp"
+                    id="uPass"
+                    type="password"
+                    placeholder="password"
+                  />
+                  <button
+                    class="password-toggle"
+                    type="button"
+                    data-password-toggle="uPass"
+                    aria-label="Show password"
+                    title="Show password"
+                  >
+                    <span class="password-icon password-icon-eye" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    </span>
+                    <span class="password-icon password-icon-eye-off" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="m3 3 18 18" />
+                        <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8" />
+                        <path d="M9.9 5.2A10.4 10.4 0 0 1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-2.3 3.5" />
+                        <path d="M6.6 6.6C3.7 8.5 2 12 2 12s3.5 7 10 7c1.4 0 2.7-.3 3.8-.8" />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label class="fld">Role</label
+                ><select class="inp" id="uRole">
+                  <option value="agent">🎧 Agent</option>
+                  <option value="evaluator">✅ Evaluator</option>
+                  <option value="supervisor">🧑‍✈️ Supervisor</option>
+                  <option value="trainer">🧑‍🏫 Trainer</option>
+                  <option value="fraud">🛡️ Fraud Analyst</option>
+                  <option value="admin">👑 Admin</option>
+                </select>
+              </div>
+              <div>
+                <label class="fld">Linked Employee #</label
+                ><input class="inp" id="uEmp" placeholder="EMP-1001" />
+              </div>
+              <div>
+                <label class="fld">Status</label
+                ><select class="inp" id="uStatus">
+                  <option value="active">Active</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+              <div style="display: flex; align-items: flex-end">
+                <button class="btn" style="width: 100%" onclick="saveUser()">
+                  💾 Save
+                </button>
+              </div>
+              <div style="display: flex; align-items: flex-end">
+                <button
+                  class="btn ghost"
+                  style="width: 100%"
+                  onclick="clearUserForm()"
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+            <span class="note" id="uMsg"></span>
+          </div>
+          <div class="card" style="margin-top: 20px">
+            <div class="folder-head">
+              <h3>
+                <span class="ic">👥</span> Users
+                <span class="badge" id="uCount">0</span>
+              </h3>
+              <input
+                class="search"
+                id="uSearch"
+                placeholder="🔍 Search…"
+                style="max-width: 240px; margin-bottom: 0"
+                oninput="renderUsers()"
+              />
+            </div>
+            <div style="overflow-x: auto">
+              <table id="uTable">
+                <tr>
+                  <th>Username</th>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Emp #</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="card" style="margin-top: 20px">
+            <h3><span class="ic">🧩</span> Roles & Permissions</h3>
+            <div id="roleMatrix"></div>
+          </div>
+        </section>

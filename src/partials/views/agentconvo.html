@@ -1,0 +1,241 @@
+        <section id="agentconvo" class="view hidden">
+          <div class="role-bar">
+            <span class="lbl">👤 Session:</span
+            ><input
+              class="search"
+              id="acAgentName"
+              placeholder="Agent name"
+              style="margin-bottom: 0; max-width: 140px"
+            /><input
+              class="search"
+              id="acAgentId"
+              placeholder="Agent ID"
+              style="margin-bottom: 0; max-width: 100px"
+            />
+            <select class="sel" id="acLang">
+              <option value="en-US">English (US)</option>
+              <option value="en-PH" selected>English (PH)/Taglish</option>
+              <option value="fil-PH">Filipino</option>
+              <option value="es-ES">Spanish</option>
+              <option value="ja-JP">🇯🇵 Japanese</option>
+              <option value="zh-HK">🇭🇰 Cantonese</option>
+            </select>
+            <button class="btn" id="acStart" onclick="acToggle()">
+              🎙️ Start</button
+            ><button
+              class="btn ghost"
+              id="acShareBtn"
+              onclick="acShareScreen()"
+            >
+              🖥️ Share + 🔊 audio
+            </button>
+            <div class="dia-ctl">
+              <span class="lbl" style="font-size: 11.5px">🗣️</span
+              ><label class="switch"
+                ><input type="checkbox" id="acDiaOn" checked /><span
+                  class="slider"
+                ></span></label
+              ><span class="dia-mode"
+                ><button
+                  class="dia-btn agent"
+                  id="diaAgent"
+                  onclick="setNextSpeaker('agent')"
+                >
+                  🎧</button
+                ><button
+                  class="dia-btn cust"
+                  id="diaCust"
+                  onclick="setNextSpeaker('customer')"
+                >
+                  🧑</button
+                ><button
+                  class="dia-btn auto on"
+                  id="diaAuto"
+                  onclick="setNextSpeaker('auto')"
+                >
+                  ✨
+                </button></span
+              >
+            </div>
+            <span class="row" style="flex-basis: 100%; margin-top: 6px"
+              ><span class="lbl" style="font-size: 11.5px">🎤 Mic:</span
+              ><select
+                class="sel ftMicSel"
+                onchange="ftOnMicChange(this.value)"
+                style="max-width: 200px"
+              >
+                <option value="">System default mic</option></select
+              ><button
+                class="btn ghost"
+                style="padding: 6px 10px; font-size: 12px"
+                onclick="ftGrantMic()"
+              >
+                🔄 Detect</button
+              ><span class="lvlmeter"><span id="ftLvlBar2"></span></span
+            ></span>
+            <div class="role-hint">
+              Diarization, talk-time, mixed recording, AI guidance with 1-click
+              insert. Azure STT honors the selected/virtual mic + shared system
+              audio.
+            </div>
+          </div>
+          <div class="grid g2">
+            <div class="card">
+              <h3>
+                <span class="ic">📝</span> Live Transcript
+                <span class="mic-ind hidden" id="acMicInd" style="margin: 0"
+                  ><span class="rec"></span> mic</span
+                ><span class="sys-ind hidden" id="acSysInd" style="margin: 0"
+                  ><span class="rec"></span> system audio</span
+                >
+              </h3>
+              <div class="transcript" id="acTranscript" style="height: 300px">
+                <div class="empty-t" id="acEmptyT">
+                  Press <b>Start</b> for the mic, or <b>Share + audio</b>. 🎧
+                </div>
+              </div>
+              <textarea
+                id="acManual"
+                placeholder="…type/paste an agent line and press Enter to inject"
+                style="min-height: 44px; margin-top: 10px"
+                onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();acInjectManual();}"
+              ></textarea>
+            </div>
+            <div>
+              <div class="ai-panel">
+                <div class="row" style="justify-content: space-between">
+                  <h3 style="margin: 0; font-size: 14px">
+                    <span class="ic">🤖</span> AI Script Guidance
+                  </h3>
+                  <span class="ai-badge claude" id="acAiBadge">CLAUDE</span>
+                </div>
+                <div class="ai-provsel" style="margin-top: 10px">
+                  <button
+                    class="ai-prov kb"
+                    id="provKB"
+                    onclick="setAIProvider('kb')"
+                  >
+                    <span class="ai-dot kb"></span>KB</button
+                  ><button
+                    class="ai-prov claude on"
+                    id="provClaude"
+                    onclick="setAIProvider('claude')"
+                  >
+                    <span class="ai-dot claude"></span>Claude</button
+                  ><button
+                    class="ai-prov copilot"
+                    id="provCopilot"
+                    onclick="setAIProvider('copilot')"
+                  >
+                    <span class="ai-dot copilot"></span>Copilot</button
+                  ><label class="switch" title="Auto-insert"
+                    ><input type="checkbox" id="autoInsert" /><span
+                      class="slider"
+                    ></span></label
+                  ><span
+                    style="
+                      font-size: 11px;
+                      color: var(--muted);
+                      font-weight: 600;
+                    "
+                    >Auto-insert</span
+                  ><button
+                    class="btn ghost"
+                    style="padding: 5px 10px; font-size: 12px"
+                    onclick="aiGuideManual()"
+                  >
+                    ↻ Guide
+                  </button>
+                </div>
+                <div
+                  class="ai-guide-box"
+                  id="acAiGuide"
+                  style="margin-top: 10px"
+                >
+                  <span class="note">Claude guidance appears here.</span>
+                </div>
+              </div>
+              <div class="card" style="margin-top: 16px">
+                <h3><span class="ic">⏱️</span> Per-Speaker Talk-Time</h3>
+                <div id="acTalkTime">
+                  <div class="note">Analytics appear live.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin-top: 20px">
+            <h3><span class="ic">📊</span> Interruption & Overtalk Timeline</h3>
+            <div id="acTimeline">
+              <div class="note">A color-coded timeline builds live.</div>
+            </div>
+          </div>
+          <div class="grid g2" style="margin-top: 20px">
+            <div class="card">
+              <h3><span class="ic">✅</span> Live Quality Checklist</h3>
+              <div id="acChecklist"></div>
+              <div
+                class="row"
+                style="justify-content: space-between; margin-top: 12px"
+              >
+                <span style="font-weight: 700">Live quality score</span
+                ><span
+                  style="font-weight: 800; font-size: 20px; color: var(--teal)"
+                  id="acLiveScore"
+                  >—</span
+                >
+              </div>
+            </div>
+            <div class="card">
+              <h3><span class="ic">🖥️</span> Screen-Share & Recording</h3>
+              <div class="share-preview" id="acSharePrev">
+                <span id="acShareMsg">No screen shared.</span>
+              </div>
+              <div class="note" id="acShareNote"></div>
+              <div class="note" id="acRecInd" style="display: none">
+                🔴 <b>Recording</b> — mixing mic + system audio…
+              </div>
+              <button
+                class="btn"
+                id="acDlRec"
+                style="margin-top: 10px; display: none"
+              >
+                ⬇️ Download recording
+              </button>
+            </div>
+          </div>
+          <div class="grid g2" style="margin-top: 20px">
+            <div class="card">
+              <h3><span class="ic">📄</span> AI-Drafted Post-Call Summary</h3>
+              <div id="acSummary">
+                <div class="note">
+                  On End & post the AI auto-drafts a summary.
+                </div>
+              </div>
+              <button
+                class="btn ghost"
+                style="margin-top: 10px"
+                onclick="aiDraftSummary('ac')"
+              >
+                ✨ AI draft now
+              </button>
+            </div>
+            <div class="card">
+              <h3><span class="ic">📄</span> Transcript Evaluation</h3>
+              <textarea
+                class="ta"
+                id="acTaInput"
+                placeholder="Paste a transcript, or use the live one…"
+              ></textarea>
+              <div class="row" style="margin-top: 10px">
+                <button class="btn" onclick="acEvalTranscript()">
+                  🔍 Evaluate</button
+                ><button class="btn ghost" onclick="acUseLive()">
+                  ↧ Use live</button
+                ><button class="btn yellow" onclick="acEndSession()">
+                  🏁 End & post
+                </button>
+              </div>
+              <div id="acEvalResult" style="margin-top: 14px"></div>
+            </div>
+          </div>
+        </section>

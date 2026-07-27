@@ -1,0 +1,271 @@
+/* Supervisor, Fraud, And Role Controls */
+
+.fraud-alert {
+  background:linear-gradient(135deg,#dc2626,#991b1b);
+  color:#fff;
+  border-radius:12px;
+  padding:14px 16px;
+  margin-bottom:12px;
+  display:none
+}
+
+.fraud-alert.show {
+  display:block;
+  animation:shake .5s
+}
+
+.fraud-alert b {
+  display:block;
+  font-size:14px
+}
+
+@keyframes shake {
+  0%,100% {
+    transform:translateX(0)
+  }
+
+  25% {
+    transform:translateX(-5px)
+  }
+
+  75% {
+    transform:translateX(5px)
+  }
+}
+
+.rule {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:11px 0;
+  border-bottom:1px solid var(--line)
+}
+
+.rule:last-child {
+  border-bottom:none
+}
+
+.rule .info {
+  flex:1
+}
+
+.rule .info b {
+  font-size:13.5px
+}
+
+.rule .info p {
+  font-size:11.5px;
+  color:var(--muted)
+}
+
+.sev {
+  font-size:9.5px;
+  font-weight:700;
+  padding:2px 8px;
+  border-radius:20px;
+  margin-left:8px;
+  text-transform:uppercase
+}
+
+.sev.critical {
+  background:#fef2f2;
+  color:var(--red)
+}
+
+.sev.high {
+  background:#fff7ed;
+  color:#ea580c
+}
+
+.sev.med {
+  background:#fffbeb;
+  color:var(--yellow-dark)
+}
+
+.switch {
+  position:relative;
+  width:42px;
+  height:23px;
+  flex-shrink:0
+}
+
+.switch input {
+  opacity:0;
+  width:0;
+  height:0
+}
+
+.slider {
+  position:absolute;
+  inset:0;
+  background:#cbd5e1;
+  border-radius:23px;
+  transition:.2s;
+  cursor:pointer
+}
+
+.slider::before {
+  content:"";
+  position:absolute;
+  width:17px;
+  height:17px;
+  left:3px;
+  bottom:3px;
+  background:#fff;
+  border-radius:50%;
+  transition:.2s
+}
+
+.switch input:checked+.slider {
+  background:var(--teal)
+}
+
+.switch input:checked+.slider::before {
+  transform:translateX(19px)
+}
+
+.mono {
+  font-family:monospace;
+  background:#f1f5f9;
+  padding:1px 6px;
+  border-radius:5px;
+  font-size:12px
+}
+
+.pill-count {
+  background:var(--red);
+  color:#fff;
+  font-size:10px;
+  font-weight:700;
+  padding:1px 7px;
+  border-radius:20px;
+  margin-left:6px
+}
+
+.sup-alert {
+  background:linear-gradient(135deg,var(--magenta),#7a1a6b);
+  color:#fff;
+  border-radius:14px;
+  padding:16px 18px;
+  margin-bottom:12px;
+  display:none
+}
+
+.sup-alert.show {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  animation:shake .5s
+}
+
+.sup-alert .txt b {
+  display:block;
+  font-size:15px
+}
+
+.sup-actions {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap
+}
+
+.sup-actions button {
+  background:rgba(255,255,255,.2);
+  color:#fff;
+  padding:8px 14px;
+  border-radius:10px;
+  font-size:12.5px;
+  font-weight:700
+}
+
+.sup-mode-banner {
+  background:var(--magenta);
+  color:#fff;
+  text-align:center;
+  padding:8px;
+  border-radius:10px;
+  font-size:12.5px;
+  font-weight:700;
+  margin-bottom:12px;
+  display:none
+}
+
+.sup-mode-banner.show {
+  display:block
+}
+
+.trig {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 0;
+  border-bottom:1px solid var(--line)
+}
+
+.trig:last-child {
+  border-bottom:none
+}
+
+.trig .info b {
+  font-size:13.5px
+}
+
+.thresh {
+  display:flex;
+  align-items:center;
+  gap:10px
+}
+
+.thresh input[type=number] {
+  width:60px;
+  padding:6px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  font-size:13px
+}
+
+.role-bar {
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px 16px;
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap
+}
+
+.role-bar .lbl {
+  font-size:12.5px;
+  font-weight:700;
+  color:var(--slate)
+}
+
+.role-toggle {
+  display:flex;
+  border:1px solid var(--line);
+  border-radius:10px;
+  overflow:hidden
+}
+
+.role-toggle button {
+  padding:9px 16px;
+  font-size:13px;
+  font-weight:600;
+  background:#fff;
+  color:var(--muted)
+}
+
+.role-toggle button.on {
+  background:var(--magenta);
+  color:#fff
+}
+
+.role-hint {
+  font-size:11.5px;
+  color:var(--muted);
+  flex-basis:100%
+}

@@ -1,0 +1,32 @@
+        <section id="leader" class="view hidden">
+          <div class="folder-head">
+            <div>
+              <h3 style="font-size: 17px">
+                <span class="ic">🏆</span> Leaderboard
+              </h3>
+              <div class="note">Points from quality & training.</div>
+            </div>
+            <div class="row">
+              <select class="sel" id="lbSite" onchange="renderLeaderboard()">
+                <option value="all">All sites</option></select
+              ><select class="sel" id="lbFilter" onchange="renderLeaderboard()">
+                <option value="all">All-time</option>
+                <option value="quality">Quality</option>
+                <option value="training">Training</option></select
+              ><button class="btn ghost" onclick="exportLeaderboard()">
+                ⬇️ Export
+              </button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="podium" id="podium"></div>
+            <div id="lbList"></div>
+            <div
+              class="note"
+              id="lbEmpty"
+              style="text-align: center; margin: 20px"
+            >
+              No scores yet. 🎮
+            </div>
+          </div>
+        </section>

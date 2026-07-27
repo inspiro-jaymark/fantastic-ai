@@ -1,0 +1,290 @@
+/* Login, Access Control, QA, Ratings, And End Flags */
+
+.login-overlay {
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,var(--teal-dark),var(--ink));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+  padding:20px
+}
+
+.login-card {
+  background:#fff;
+  border-radius:20px;
+  padding:34px;
+  max-width:440px;
+  width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+  text-align:center
+}
+
+.login-card .logos {
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  margin-bottom:18px
+}
+
+.login-card .logos img {
+  height:34px;
+  background:#fff;
+  padding:4px 8px;
+  border-radius:8px;
+  box-shadow:0 2px 8px rgba(0,0,0,.1)
+}
+
+.login-card h2 {
+  font-size:22px;
+  font-weight:800
+}
+
+.login-card .sub {
+  font-size:12.5px;
+  color:var(--muted);
+  margin-bottom:20px
+}
+
+.login-card label {
+  text-align:left
+}
+
+.login-card .inp {
+  margin-bottom:12px
+}
+
+.login-card .password-wrap {
+  margin-bottom:12px
+}
+
+.login-card .password-wrap .inp {
+  margin-bottom:0
+}
+
+.login-err {
+  color:var(--red);
+  font-size:12.5px;
+  font-weight:600;
+  margin-top:8px;
+  min-height:16px
+}
+
+.role-hero {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-bottom:16px
+}
+
+.role-tile {
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px;
+  cursor:pointer;
+  text-align:center;
+  transition:.15s
+}
+
+.role-tile:hover {
+  border-color:var(--teal);
+  background:#f0fdfa
+}
+
+.role-tile .em {
+  font-size:20px
+}
+
+.role-tile .t {
+  font-size:11px;
+  font-weight:700;
+  margin-top:4px
+}
+
+.role-tile .d {
+  font-size:9px;
+  color:var(--muted)
+}
+
+.demo-hint {
+  background:#f1f5f9;
+  border-radius:10px;
+  padding:10px;
+  font-size:11px;
+  color:var(--slate);
+  margin-top:14px;
+  text-align:left
+}
+
+.acc-role {
+  display:inline-block;
+  font-size:10px;
+  font-weight:800;
+  padding:2px 9px;
+  border-radius:20px;
+  text-transform:uppercase
+}
+
+.acc-role.admin {
+  background:#fef2f2;
+  color:var(--red)
+}
+
+.acc-role.evaluator {
+  background:#e6f2ff;
+  color:var(--copilot)
+}
+
+.acc-role.fraud {
+  background:#fff7ed;
+  color:#ea580c
+}
+
+.acc-role.agent {
+  background:#e6fffb;
+  color:var(--teal-dark)
+}
+
+.acc-role.supervisor {
+  background:#f3e8ff;
+  color:#7c3aed
+}
+
+.acc-role.trainer {
+  background:#ecfccb;
+  color:#4d7c0f
+}
+
+.perm-grid {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:6px
+}
+
+.perm-chip {
+  font-size:10px;
+  background:#f1f5f9;
+  color:var(--slate);
+  padding:2px 8px;
+  border-radius:20px
+}
+
+.rolecard {
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:10px
+}
+
+.rolecard h4 {
+  font-size:14px;
+  margin-bottom:4px;
+  display:flex;
+  align-items:center;
+  gap:8px
+}
+
+.qa3 {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px
+}
+
+@media(max-width:760px) {
+  .qa3 {
+    grid-template-columns:1fr
+  }
+}
+
+.qa-col {
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px
+}
+
+.qa-col h4 {
+  font-size:12.5px;
+  margin-bottom:8px
+}
+
+.qa-col.good {
+  background:#f0fdf4;
+  border-color:#bbf7d0
+}
+
+.qa-col.bad {
+  background:#fef2f2;
+  border-color:#fecaca
+}
+
+.qa-col.imp {
+  background:#fffbeb;
+  border-color:#fde68a
+}
+
+.qa-col ul {
+  list-style:none;
+  font-size:12.5px
+}
+
+.qa-col li {
+  padding:4px 0;
+  display:flex;
+  gap:6px;
+  align-items:flex-start
+}
+
+.qa-col li::before {
+  content:"•";
+  color:var(--muted)
+}
+
+.langpill {
+  display:inline-block;
+  font-size:9.5px;
+  font-weight:800;
+  padding:2px 8px;
+  border-radius:20px;
+  background:#ede9fe;
+  color:#6d28d9;
+  margin-left:6px;
+  text-transform:uppercase
+}
+
+.stars {
+  display:inline-flex;
+  gap:4px;
+  font-size:26px;
+  cursor:pointer
+}
+
+.stars .st {
+  color:#cbd5e1;
+  transition:.15s
+}
+
+.stars .st.on {
+  color:var(--yellow)
+}
+
+.stars .st:hover {
+  transform:scale(1.15)
+}
+
+.endflag {
+  background:linear-gradient(135deg,#7c3aed,#5b21b6);
+  color:#fff;
+  border-radius:10px;
+  padding:8px 12px;
+  font-size:12.5px;
+  font-weight:700;
+  margin-bottom:10px;
+  display:none
+}
+
+.endflag.show {
+  display:block;
+  animation:fade .3s
+}

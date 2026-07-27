@@ -1,0 +1,63 @@
+        <section id="audit" class="view hidden">
+          <div class="folder-head">
+            <div>
+              <h3 style="font-size: 17px">
+                <span class="ic">🧾</span> Audit Log
+                <span
+                  class="pill-count hidden"
+                  id="auditTabCount"
+                  style="background: var(--teal)"
+                  >0</span
+                >
+              </h3>
+              <div class="note">Trail of admin-relevant actions.</div>
+            </div>
+            <div class="row">
+              <select class="sel" id="auditCat" onchange="renderAudit()">
+                <option value="all">All categories</option>
+                <option value="auth">Authentication</option>
+                <option value="user">User mgmt</option>
+                <option value="agent">Agent DB</option>
+                <option value="config">Config/AI</option>
+                <option value="data">Data</option>
+                <option value="export">Exports</option></select
+              ><input
+                class="search"
+                id="auditSearch"
+                placeholder="🔍 Search…"
+                style="max-width: 220px; margin-bottom: 0"
+                oninput="renderAudit()"
+              /><button class="btn ghost" onclick="exportAudit()">
+                ⬇️ Export</button
+              ><button
+                class="btn"
+                style="background: var(--red)"
+                onclick="clearAudit()"
+              >
+                🗑️ Clear
+              </button>
+            </div>
+          </div>
+          <div class="grid g4" id="auditKpis"></div>
+          <div class="card" style="margin-top: 20px">
+            <div style="overflow-x: auto">
+              <table id="auditTable">
+                <tr>
+                  <th>Time</th>
+                  <th>User</th>
+                  <th>Role</th>
+                  <th>Category</th>
+                  <th>Action</th>
+                  <th>Detail</th>
+                </tr>
+              </table>
+            </div>
+            <div
+              class="note"
+              id="auditEmpty"
+              style="text-align: center; margin: 20px"
+            >
+              No audit entries yet.
+            </div>
+          </div>
+        </section>

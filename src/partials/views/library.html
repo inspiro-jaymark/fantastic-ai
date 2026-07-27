@@ -1,0 +1,38 @@
+        <section id="library" class="view hidden">
+          <div class="card">
+            <div class="folder-head">
+              <div>
+                <h3 style="font-size: 17px">
+                  <span class="ic">📁</span> Interactions Folder
+                </h3>
+                <div class="note">Every call/session saved here.</div>
+              </div>
+              <div class="row">
+                <button class="btn ghost" onclick="downloadAllInteractions()">
+                  ⬇️ Download all</button
+                ><button
+                  class="btn"
+                  style="background: var(--red)"
+                  onclick="clearAllInteractions()"
+                >
+                  🗑️ Clear
+                </button>
+              </div>
+            </div>
+            <div class="folder-stat" id="libStats"></div>
+            <input
+              class="search"
+              id="libSearch"
+              placeholder="🔍 Search…"
+              style="margin-top: 14px"
+            />
+            <div id="libList"></div>
+            <div
+              class="note"
+              id="libEmpty"
+              style="text-align: center; margin: 30px 0"
+            >
+              No saved interactions yet. 📞
+            </div>
+          </div>
+        </section>

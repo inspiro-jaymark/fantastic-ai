@@ -1,0 +1,72 @@
+        <section id="insights" class="view hidden">
+          <div class="folder-head">
+            <div>
+              <h3 style="font-size: 18px">
+                <span class="ic">📈</span> Deep Insights & Analytics
+              </h3>
+              <div class="note">
+                Aggregated across all saved interactions — refreshes each visit.
+              </div>
+            </div>
+            <div class="row">
+              <select class="sel" id="inSite" onchange="renderInsights()">
+                <option value="all">All sites</option></select
+              ><button class="btn ghost" onclick="renderInsights()">
+                ↻ Refresh</button
+              ><button class="btn ghost" onclick="exportInsights()">
+                ⬇️ Export
+              </button>
+            </div>
+          </div>
+          <div class="grid g4" id="inKpis"></div>
+          <div class="grid g2" style="margin-top: 20px">
+            <div class="card">
+              <h3>
+                <span class="ic">☁️</span> Customer Word Cloud
+                <span class="note" id="inWCnote" style="margin: 0"></span>
+              </h3>
+              <div class="wc" id="inWordCloud"></div>
+            </div>
+            <div class="card">
+              <h3><span class="ic">🧩</span> Aggregate Gap Analysis</h3>
+              <div id="inGap"></div>
+            </div>
+          </div>
+          <div class="grid g2" style="margin-top: 20px">
+            <div class="card">
+              <h3><span class="ic">🏆</span> Top Performers</h3>
+              <div id="inTop"></div>
+            </div>
+            <div class="card">
+              <h3><span class="ic">⚠️</span> Needs Coaching (lowest)</h3>
+              <div id="inLow"></div>
+            </div>
+          </div>
+          <div class="grid g2" style="margin-top: 20px">
+            <div class="card">
+              <h3><span class="ic">😊</span> Sentiment & Mood</h3>
+              <div id="inSent"></div>
+            </div>
+            <div class="card">
+              <h3><span class="ic">🌐</span> Language Mix</h3>
+              <div id="inLang"></div>
+            </div>
+          </div>
+          <div class="card" style="margin-top: 20px">
+            <div class="folder-head">
+              <h3 style="margin: 0">
+                <span class="ic">🎯</span> Recommendations to Improve Process &
+                Performance
+              </h3>
+              <button
+                class="btn"
+                style="background: var(--claude)"
+                onclick="aiInsights()"
+              >
+                🧠 Deep insights (Claude)
+              </button>
+            </div>
+            <div id="inRecs"></div>
+            <div id="inAI" style="margin-top: 12px"></div>
+          </div>
+        </section>

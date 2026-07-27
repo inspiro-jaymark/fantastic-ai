@@ -1,0 +1,93 @@
+        <section id="fraud" class="view hidden">
+          <div class="grid g3">
+            <div class="card">
+              <h3><span class="ic">🛡️</span> Live Fraud Risk</h3>
+              <div class="gauge">
+                <svg viewBox="0 0 100 55">
+                  <path
+                    d="M10 50 A40 40 0 0 1 90 50"
+                    fill="none"
+                    stroke="#eef2f6"
+                    stroke-width="10"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    id="gaugeArc"
+                    d="M10 50 A40 40 0 0 1 90 50"
+                    fill="none"
+                    stroke="#16a34a"
+                    stroke-width="10"
+                    stroke-linecap="round"
+                    stroke-dasharray="126"
+                    stroke-dashoffset="126"
+                  />
+                </svg>
+                <div class="val">
+                  <div class="num" id="riskNum" style="color: #16a34a">0</div>
+                  <div class="lab" id="riskLab">Low risk</div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <h3><span class="ic">📊</span> Session Stats</h3>
+              <div class="sum-line">
+                <b>Total flags</b><span id="fTotal">0</span>
+              </div>
+              <div class="sum-line">
+                <b>Critical</b><span id="fCrit">0</span>
+              </div>
+              <div class="sum-line">
+                <b>PCI-masked</b><span id="fMask">0</span>
+              </div>
+              <div class="sum-line"><b>Highest</b><span id="fMax">—</span></div>
+              <div style="margin-top: 12px">
+                <button class="btn ghost" onclick="exportFraud()">
+                  ⬇️ Export
+                </button>
+              </div>
+            </div>
+            <div class="card">
+              <h3><span class="ic">🔒</span> PCI / Privacy Masking</h3>
+              <div class="rule">
+                <div class="info">
+                  <b>Auto-mask sensitive data</b>
+                  <p>Card, CVV & OTP masked</p>
+                </div>
+                <label class="switch"
+                  ><input type="checkbox" id="maskToggle" checked /><span
+                    class="slider"
+                  ></span
+                ></label>
+              </div>
+              <div class="assist" style="margin-top: 12px">
+                <b>RA 10173 aligned</b>
+              </div>
+            </div>
+          </div>
+          <div class="grid g2" style="margin-top: 20px">
+            <div class="card">
+              <h3><span class="ic">⚙️</span> Detection Rules</h3>
+              <div id="ruleList"></div>
+            </div>
+            <div class="card">
+              <h3><span class="ic">🚨</span> Detection Log</h3>
+              <div style="max-height: 340px; overflow-y: auto">
+                <table id="fraudLog">
+                  <tr>
+                    <th>Time</th>
+                    <th>Rule</th>
+                    <th>Sev</th>
+                    <th>Evidence</th>
+                  </tr>
+                </table>
+                <div
+                  class="note"
+                  id="fraudEmpty"
+                  style="text-align: center; margin-top: 30px"
+                >
+                  No signals yet.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>

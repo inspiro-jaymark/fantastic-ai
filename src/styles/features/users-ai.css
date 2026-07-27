@@ -1,0 +1,283 @@
+/* Users, Password Fields, Team, And AI Provider UI */
+
+.db-form {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:12px
+}
+
+@media(max-width:800px) {
+  .db-form {
+    grid-template-columns:1fr 1fr
+  }
+}
+
+@media(max-width:520px) {
+  .db-form {
+    grid-template-columns:1fr
+  }
+}
+
+.inp {
+  width:100%;
+  padding:9px 11px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  font-size:13px;
+  font-family:inherit
+}
+
+.password-wrap {
+  position:relative
+}
+
+.password-wrap .inp {
+  padding-right:42px
+}
+
+.password-toggle {
+  position:absolute;
+  right:8px;
+  top:50%;
+  transform:translateY(-50%);
+  width:28px;
+  height:28px;
+  border-radius:8px;
+  background:transparent;
+  color:var(--muted);
+  display:grid;
+  place-items:center;
+  line-height:1
+}
+
+.password-toggle svg {
+  width:18px;
+  height:18px;
+  display:block;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round
+}
+
+.password-icon-eye-off {
+  display:none
+}
+
+.password-toggle.is-visible .password-icon-eye {
+  display:none
+}
+
+.password-toggle.is-visible .password-icon-eye-off {
+  display:block
+}
+
+.password-toggle:hover {
+  background:#f1f5f9;
+  color:var(--slate)
+}
+
+.password-toggle.is-visible {
+  color:var(--teal)
+}
+
+.team-card {
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:12px
+}
+
+.team-card .th {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px
+}
+
+.team-card .th b {
+  font-size:15px
+}
+
+.team-score {
+  font-size:22px;
+  font-weight:800
+}
+
+.team-meta {
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:6px
+}
+
+.heat {
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:8px;
+  font-weight:700;
+  font-size:12px;
+  color:#fff
+}
+
+.ai-panel {
+  background:linear-gradient(135deg,#fff,#f8fafc);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:10px
+}
+
+.ai-provsel {
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  align-items:center
+}
+
+.ai-prov {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:700;
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--muted);
+  cursor:pointer
+}
+
+.ai-prov.on {
+  color:#fff
+}
+
+.ai-prov.claude.on {
+  background:var(--claude);
+  border-color:var(--claude)
+}
+
+.ai-prov.copilot.on {
+  background:var(--copilot);
+  border-color:var(--copilot)
+}
+
+.ai-prov.kb.on {
+  background:var(--teal);
+  border-color:var(--teal)
+}
+
+.ai-badge {
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  font-size:10px;
+  font-weight:800;
+  padding:2px 9px;
+  border-radius:20px;
+  text-transform:uppercase
+}
+
+.ai-badge.claude {
+  background:#fdeee7;
+  color:var(--claude)
+}
+
+.ai-badge.copilot {
+  background:#e6f2ff;
+  color:var(--copilot)
+}
+
+.ai-badge.kb {
+  background:#e6fffb;
+  color:var(--teal-dark)
+}
+
+.ai-guide-box {
+  background:linear-gradient(135deg,#fefce8,#fff7ed);
+  border:1px solid #fde68a;
+  border-radius:12px;
+  padding:14px;
+  font-size:13.5px;
+  line-height:1.6;
+  min-height:70px
+}
+
+.ai-guide-box .thinking {
+  color:var(--muted);
+  font-style:italic
+}
+
+.ai-sugg {
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:10px 12px;
+  margin-top:8px;
+  font-size:13px;
+  display:flex;
+  align-items:flex-start;
+  gap:8px
+}
+
+.ai-sugg .txt2 {
+  flex:1
+}
+
+.ai-ins {
+  background:var(--teal);
+  color:#fff;
+  font-size:10.5px;
+  font-weight:700;
+  padding:4px 9px;
+  border-radius:8px;
+  white-space:nowrap;
+  flex-shrink:0
+}
+
+.ai-ins:hover {
+  background:var(--teal-dark)
+}
+
+.ai-dot {
+  display:inline-block;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  margin-right:5px
+}
+
+.ai-dot.claude {
+  background:var(--claude)
+}
+
+.ai-dot.copilot {
+  background:var(--copilot)
+}
+
+.ai-dot.kb {
+  background:var(--teal)
+}
+
+.spin {
+  display:inline-block;
+  width:14px;
+  height:14px;
+  border:2px solid var(--line);
+  border-top-color:var(--teal);
+  border-radius:50%;
+  animation:sp .7s linear infinite;
+  vertical-align:middle
+}
+
+@keyframes sp {
+  to {
+    transform:rotate(360deg)
+  }
+}

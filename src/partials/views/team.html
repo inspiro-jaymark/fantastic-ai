@@ -1,0 +1,68 @@
+        <section id="team" class="view hidden">
+          <div class="folder-head">
+            <div>
+              <h3 style="font-size: 17px">
+                <span class="ic">🏢</span> Team Dashboard
+              </h3>
+              <div class="note">Rolls up scores & team leaders by group.</div>
+            </div>
+            <div class="row">
+              <label class="fld" style="margin: 0">Group by:</label
+              ><select class="sel" id="teamGroup" onchange="renderTeam()">
+                <option value="site">Site</option>
+                <option value="bu">BU</option>
+                <option value="section">Section</option>
+                <option value="sub">Sub-section</option></select
+              ><button class="btn ghost" onclick="exportTeam()">
+                ⬇️ Export
+              </button>
+            </div>
+          </div>
+          <div class="grid g4">
+            <div class="stat">
+              <div class="n" id="tmGroups">0</div>
+              <div class="l" id="tmGroupsLab">Sites</div>
+            </div>
+            <div class="stat">
+              <div class="n" id="tmInteractions">0</div>
+              <div class="l">Interactions</div>
+            </div>
+            <div class="stat">
+              <div class="n" id="tmAvg">—</div>
+              <div class="l">Avg Quality</div>
+            </div>
+            <div class="stat">
+              <div class="n" id="tmTop">—</div>
+              <div class="l">Top Team</div>
+            </div>
+          </div>
+          <div class="card" style="margin-top: 20px">
+            <h3><span class="ic">🏅</span> Team Leaders</h3>
+            <div id="teamLeaders">
+              <div class="note">
+                Populate by running/uploading interactions.
+              </div>
+            </div>
+          </div>
+          <div class="grid g2" style="margin-top: 20px">
+            <div class="card">
+              <h3><span class="ic">📊</span> Avg by Group</h3>
+              <div id="teamBars"><div class="note">No data yet.</div></div>
+            </div>
+            <div class="card">
+              <h3><span class="ic">🔢</span> Volume by Group</h3>
+              <div id="teamVol"><div class="note">No data yet.</div></div>
+            </div>
+          </div>
+          <div class="card" style="margin-top: 20px">
+            <h3><span class="ic">🗂️</span> Group Rollup</h3>
+            <div id="teamDetail"></div>
+            <div
+              class="note"
+              id="teamEmpty"
+              style="text-align: center; margin: 20px"
+            >
+              No matched interactions yet.
+            </div>
+          </div>
+        </section>

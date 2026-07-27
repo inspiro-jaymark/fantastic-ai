@@ -1,0 +1,23 @@
+/* Design Tokens */
+
+:root {
+  --teal:#0e7c7b;
+  --teal-dark:#0a5c5b;
+  --teal-light:#14b8a6;
+  --yellow:#f4c542;
+  --yellow-dark:#e0ac1c;
+  --magenta:#a4248f;
+  --ink:#0f1b2d;
+  --slate:#334155;
+  --muted:#64748b;
+  --bg:#f4f7f8;
+  --card:#fff;
+  --line:#e2e8f0;
+  --green:#16a34a;
+  --red:#dc2626;
+  --amber:#f59e0b;
+  --blue:#2563eb;
+  --claude:#d97757;
+  --copilot:#0078d4;
+  --shadow:0 10px 30px rgba(14,124,123,.10)
+}

@@ -1,0 +1,376 @@
+        <section id="settings" class="view hidden">
+          <div class="card" style="margin-bottom: 20px">
+            <h3>
+              <span class="ic">🤖</span> AI Script Guidance — Claude & Copilot
+            </h3>
+            <div class="ai-provsel" style="margin-bottom: 12px">
+              <button
+                class="ai-prov kb"
+                id="setProvKB"
+                onclick="setAIProvider('kb')"
+              >
+                <span class="ai-dot kb"></span>Built-in KB</button
+              ><button
+                class="ai-prov claude on"
+                id="setProvClaude"
+                onclick="setAIProvider('claude')"
+              >
+                <span class="ai-dot claude"></span>Claude AI (script)</button
+              ><button
+                class="ai-prov copilot"
+                id="setProvCopilot"
+                onclick="setAIProvider('copilot')"
+              >
+                <span class="ai-dot copilot"></span>Copilot</button
+              ><button
+                class="btn ghost"
+                id="setTestBoth"
+                style="padding: 6px 12px; font-size: 12px"
+                onclick="testBothAI()"
+              >
+                🔈 Test both
+              </button>
+            </div>
+            <div class="grid g2">
+              <div>
+                <div
+                  class="assist"
+                  style="background: #fdeee7; border-color: #f5c6b0"
+                >
+                  <b style="color: var(--claude)">🟠 Claude AI</b> — provides
+                  the live script, FeeBe bot & deep insights; speaks
+                  EN/TL/Cebuano/Hiligaynon/Ilokano/Waray
+                </div>
+                <label class="fld">Anthropic API Key</label
+                ><input
+                  class="inp"
+                  id="claudeKey"
+                  type="password"
+                  placeholder="sk-ant-…"
+                  style="margin-bottom: 10px"
+                />
+                <label class="fld">Model</label
+                ><select
+                  class="inp"
+                  id="claudeModel"
+                  style="margin-bottom: 10px"
+                >
+                  <option value="claude-opus-4-1-20250805" selected>
+                    Claude Opus 4.1
+                  </option>
+                  <option value="claude-sonnet-4-20250514">
+                    Claude Sonnet 4
+                  </option>
+                  <option value="claude-3-7-sonnet-20250219">
+                    Claude 3.7 Sonnet
+                  </option>
+                  <option value="claude-3-5-haiku-20241022">
+                    Claude 3.5 Haiku
+                  </option>
+                  <option value="claude-opus-5">
+                    claude-opus-5 (if enabled on your account)
+                  </option>
+                </select>
+                <div class="note" style="margin: 0 0 10px">
+                  If you get "model not found", pick a different model (defaults
+                  to a known-good id). Keys stay in your browser.
+                </div>
+                <button
+                  class="btn"
+                  style="background: var(--claude)"
+                  onclick="testAI('claude')"
+                >
+                  🔈 Test Claude
+                </button>
+                <div class="conn" id="claudeConn"></div>
+              </div>
+              <div>
+                <div
+                  class="assist"
+                  style="background: #e6f2ff; border-color: #b3d7f5"
+                >
+                  <b style="color: var(--copilot)">🔵 Copilot (Azure OpenAI)</b>
+                  — gpt-4o · East US
+                </div>
+                <label class="fld">Endpoint (base URL)</label
+                ><input
+                  class="inp"
+                  id="copilotEndpoint"
+                  placeholder="https://YOUR-RESOURCE.openai.azure.com"
+                  style="margin-bottom: 10px"
+                />
+                <label class="fld">API Key</label
+                ><input
+                  class="inp"
+                  id="copilotKey"
+                  type="password"
+                  placeholder="Azure OpenAI key"
+                  style="margin-bottom: 10px"
+                />
+                <div class="tgrid">
+                  <div>
+                    <label class="fld">Deployment name</label
+                    ><input class="inp" id="copilotDeploy" value="gpt-4o" />
+                  </div>
+                  <div>
+                    <label class="fld">API version</label
+                    ><input
+                      class="inp"
+                      id="copilotVer"
+                      value="2024-08-01-preview"
+                    />
+                  </div>
+                </div>
+                <button
+                  class="btn"
+                  style="background: var(--copilot); margin-top: 4px"
+                  onclick="testAI('copilot')"
+                >
+                  🔈 Test Copilot
+                </button>
+                <div class="conn" id="copilotConn"></div>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 14px">
+              <label class="switch"
+                ><input type="checkbox" id="aiAutoGuide" checked /><span
+                  class="slider"
+                ></span></label
+              ><span class="fld" style="margin: 0">Auto-guide during calls</span
+              ><label class="switch" style="margin-left: 14px"
+                ><input type="checkbox" id="aiAutoSummary" checked /><span
+                  class="slider"
+                ></span></label
+              ><span class="fld" style="margin: 0">Auto-draft summaries</span>
+            </div>
+          </div>
+          <div class="grid g2">
+            <div class="card">
+              <h3>
+                <span class="ic">🔊</span> Azure Neural Voice + STT
+                <span class="azure-badge">☁️ Azure AI Speech</span>
+              </h3>
+              <div class="tts-mode">
+                <button
+                  id="modeBrowser"
+                  class="on"
+                  onclick="setTTSMode('browser')"
+                >
+                  🖥️ Browser Voice</button
+                ><button id="modeAzure" onclick="setTTSMode('azure')">
+                  ☁️ Azure Neural
+                </button>
+              </div>
+              <div id="azurePanel" class="hidden">
+                <div class="pick-row">
+                  <div class="pick">
+                    <label class="fld">Speech Key</label
+                    ><input
+                      class="inp"
+                      id="azKey"
+                      type="password"
+                      placeholder="Resource key"
+                    />
+                  </div>
+                  <div class="pick">
+                    <label class="fld">Region</label
+                    ><select class="inp" id="azRegion">
+                      <option value="southeastasia" selected>
+                        southeastasia
+                      </option>
+                      <option value="eastasia">eastasia</option>
+                      <option value="eastus">eastus</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="pick-row">
+                  <div class="pick">
+                    <label class="fld">Voice</label
+                    ><select class="inp" id="azVoice">
+                      <option value="fil-PH-BlessicaNeural" selected>
+                        Blessica ♀ (Fil)
+                      </option>
+                      <option value="fil-PH-AngeloNeural">
+                        Angelo ♂ (Fil)
+                      </option>
+                      <option value="en-US-AvaMultilingualNeural">
+                        Ava ♀ (EN)
+                      </option>
+                      <option value="ja-JP-NanamiNeural">🇯🇵 Nanami</option>
+                      <option value="zh-HK-HiuMaanNeural">🇭🇰 HiuMaan</option>
+                    </select>
+                  </div>
+                  <div class="pick">
+                    <label class="fld">Style</label
+                    ><select class="inp" id="azStyle">
+                      <option value="">General</option>
+                      <option value="empathetic">Empathetic</option>
+                      <option value="customerservice">Customer Service</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <button class="btn" onclick="testAzure()">🔈 Test</button>
+                </div>
+                <div class="conn" id="azConn"></div>
+              </div>
+              <div style="margin-top: 16px">
+                <label class="fld">Speech-to-Text</label>
+                <div class="tts-mode">
+                  <button
+                    id="sttBrowser"
+                    class="on"
+                    onclick="setSTTMode('browser')"
+                  >
+                    🖥️ Browser STT</button
+                  ><button id="sttAzure" onclick="setSTTMode('azure')">
+                    ☁️ Azure STT
+                  </button>
+                </div>
+                <div class="conn" id="sttConn"></div>
+                <div class="note">
+                  ☁️ Azure STT recommended for regional languages, virtual mics
+                  & shared system audio.
+                </div>
+              </div>
+              <div id="ftMicSetup" style="margin-top: 14px">
+                <label class="fld"
+                  >🎤 Microphone device (system / virtual)</label
+                >
+                <div class="row">
+                  <select
+                    class="sel ftMicSel"
+                    onchange="ftOnMicChange(this.value)"
+                    style="max-width: 230px"
+                  >
+                    <option value="">System default mic</option></select
+                  ><button
+                    class="btn ghost"
+                    style="padding: 6px 10px; font-size: 12px"
+                    onclick="ftGrantMic()"
+                  >
+                    🔄 Detect</button
+                  ><label class="switch" title="Remember default"
+                    ><input type="checkbox" id="ftMicDefault2" /><span
+                      class="slider"
+                    ></span></label
+                  ><span
+                    style="
+                      font-size: 11px;
+                      color: var(--muted);
+                      font-weight: 600;
+                    "
+                    >Default</span
+                  >
+                </div>
+                <div class="note">
+                  Supports headsets, USB &
+                  <b>virtual audio devices</b> (VB-Cable, VoiceMeeter).
+                  Remembered across sessions.
+                </div>
+              </div>
+              <div style="margin-top: 14px">
+                <label class="fld">Recognition Language</label
+                ><select class="inp" id="recLang">
+                  <option value="en-US">English (US)</option>
+                  <option value="en-PH" selected>English (PH)/Taglish</option>
+                  <option value="fil-PH">Filipino/Tagalog</option>
+                  <option value="fil-PH-ceb">Cebuano (via Filipino STT)</option>
+                  <option value="fil-PH-hil">
+                    Hiligaynon (via Filipino STT)
+                  </option>
+                  <option value="fil-PH-ilo">Ilokano (via Filipino STT)</option>
+                  <option value="fil-PH-war">Waray (via Filipino STT)</option>
+                  <option value="es-ES">Spanish</option>
+                  <option value="ja-JP">🇯🇵 Japanese</option>
+                  <option value="zh-HK">🇭🇰 Cantonese</option>
+                </select>
+              </div>
+              <div style="margin-top: 14px" id="browserVoiceWrap">
+                <label class="fld">Browser Voice</label
+                ><select class="inp" id="ttsVoice"></select>
+              </div>
+              <div style="margin-top: 14px">
+                <label class="fld">Speed</label
+                ><input
+                  type="range"
+                  id="rate"
+                  min="0.7"
+                  max="1.3"
+                  step="0.05"
+                  value="1"
+                  style="width: 100%"
+                />
+              </div>
+            </div>
+            <div class="card">
+              <h3><span class="ic">🎨</span> Branding & Persona</h3>
+              <div class="pick-row">
+                <div class="pick">
+                  <label class="fld">Platform Name</label
+                  ><input class="inp" id="brandName" value="FANTASTIC TOOL" />
+                </div>
+                <div class="pick">
+                  <label class="fld">Logo Initials</label
+                  ><input class="inp" id="brandInit" value="FT" maxlength="3" />
+                </div>
+              </div>
+              <div style="margin-bottom: 14px">
+                <label class="fld">Tagline</label
+                ><input
+                  class="inp"
+                  id="brandTagIn"
+                  value="AI Customer Experience · Voice Platform"
+                />
+              </div>
+              <div class="pick-row">
+                <div class="pick">
+                  <label class="fld">Primary</label
+                  ><input type="color" id="colPrimary" value="#0e7c7b" />
+                </div>
+                <div class="pick">
+                  <label class="fld">Accent</label
+                  ><input type="color" id="colAccent" value="#f4c542" />
+                </div>
+              </div>
+              <label class="fld">Quick themes</label>
+              <div class="swatches" id="themeSwatches"></div>
+              <div style="margin: 16px 0 14px">
+                <label class="fld">AI Agent Name</label
+                ><input class="inp" id="agInput" value="FANTASTIC Agent" />
+              </div>
+              <div style="margin-bottom: 14px">
+                <label class="fld">Brand / Campaign</label
+                ><input
+                  class="inp"
+                  id="brandInput"
+                  value="Inspiro — Infocom CX"
+                />
+              </div>
+              <div style="margin-bottom: 14px">
+                <label class="fld">Persona</label
+                ><select class="inp" id="persona">
+                  <option value="professional">Professional</option>
+                  <option value="warm" selected>Warm & empathetic</option>
+                  <option value="upbeat">Upbeat</option>
+                  <option value="formal">Formal</option>
+                </select>
+              </div>
+              <button class="btn yellow" onclick="applyBranding()">
+                ✨ Apply
+              </button>
+            </div>
+          </div>
+          <div class="card" style="margin-top: 20px">
+            <div class="assist">
+              <b>💡 SharePoint-ready</b> single self-contained file.
+            </div>
+            <div class="note">
+              🔒 RA 10173 aligned. Camera & mood run on-device.
+            </div>
+          </div>
+        </section>
+        <div class="foot">
+          FANTASTIC TOOL v3.2 — AI CX Voice Platform · Inspiro × Infocom Center
+          of Excellence · Runs 100% in your browser
+        </div>

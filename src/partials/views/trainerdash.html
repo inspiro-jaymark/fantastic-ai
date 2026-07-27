@@ -1,0 +1,71 @@
+        <section id="trainerdash" class="view hidden">
+          <div class="folder-head">
+            <div>
+              <h3 style="font-size: 17px">
+                <span class="ic">🧑‍🏫</span> Trainer Dashboard
+              </h3>
+              <div class="note">
+                Enrollment recommendations from QA + training topics (Markdown).
+              </div>
+            </div>
+          </div>
+          <div class="grid g4" id="trKpis"></div>
+          <div class="grid g2" style="margin-top: 20px">
+            <div class="card">
+              <div class="folder-head">
+                <h3 style="margin: 0">
+                  <span class="ic">🎓</span> Enrollment Queue
+                </h3>
+                <select
+                  class="sel"
+                  id="trEnrollFilter"
+                  onchange="renderTrainer()"
+                >
+                  <option value="all">All</option>
+                  <option value="pending">Pending</option>
+                  <option value="enrolled">Enrolled</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+              <div id="trEnrollList"></div>
+            </div>
+            <div class="card">
+              <h3><span class="ic">📚</span> Training Topics</h3>
+              <div class="tgrid">
+                <div>
+                  <label class="fld">Topic name</label
+                  ><input
+                    class="inp"
+                    id="trTopicName"
+                    placeholder="e.g. De-escalation"
+                  />
+                </div>
+                <div style="display: flex; align-items: flex-end">
+                  <button
+                    class="btn"
+                    style="width: 100%"
+                    onclick="trSaveTopic()"
+                  >
+                    💾 Save
+                  </button>
+                </div>
+              </div>
+              <label class="fld">Markdown content</label
+              ><textarea
+                id="trTopicMd"
+                placeholder="# Title&#10;- point&#10;**bold**"
+              ></textarea>
+              <div class="row" style="margin-top: 8px">
+                <button class="btn ghost" onclick="trPreview()">
+                  👁 Preview
+                </button>
+              </div>
+              <div id="trTopicList" style="margin-top: 12px"></div>
+              <div
+                id="trPreview"
+                class="script-card hidden"
+                style="margin-top: 10px"
+              ></div>
+            </div>
+          </div>
+        </section>

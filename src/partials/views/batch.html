@@ -1,0 +1,137 @@
+        <section id="batch" class="view hidden">
+          <div class="folder-head">
+            <div>
+              <h3 style="font-size: 17px">
+                <span class="ic">📤</span> Batch Upload
+              </h3>
+              <div class="note">Paste or CSV-upload transcripts.</div>
+            </div>
+          </div>
+          <div class="grid g2">
+            <div class="card">
+              <h3><span class="ic">✍️</span> Paste Single</h3>
+              <div class="tgrid">
+                <div>
+                  <label class="fld">File Name</label
+                  ><input class="inp" id="bFile" placeholder="call_001.wav" />
+                </div>
+                <div>
+                  <label class="fld">Agent Name</label
+                  ><input
+                    class="inp"
+                    id="bAgent"
+                    placeholder="Juan Dela Cruz"
+                  />
+                </div>
+              </div>
+              <div class="tgrid">
+                <div>
+                  <label class="fld">Agent ID</label
+                  ><input
+                    class="inp"
+                    id="bAgentId"
+                    placeholder="EMP-1001"
+                    oninput="batchLookup()"
+                  />
+                </div>
+                <div>
+                  <label class="fld">Start</label
+                  ><input class="inp" id="bStart" type="datetime-local" />
+                </div>
+              </div>
+              <div class="tgrid">
+                <div>
+                  <label class="fld">End</label
+                  ><input class="inp" id="bEnd" type="datetime-local" />
+                </div>
+                <div>
+                  <label class="fld">Language</label
+                  ><select class="sel inp" id="bLang">
+                    <option>English</option>
+                    <option>Tagalog</option>
+                    <option>Cebuano</option>
+                    <option>Hiligaynon</option>
+                    <option>Ilokano</option>
+                    <option>Waray</option>
+                    <option>Taglish</option>
+                  </select>
+                </div>
+              </div>
+              <div class="conn" id="bMatch"></div>
+              <label class="fld">Conversation (Agent:/Customer:)</label
+              ><textarea
+                class="ta"
+                id="bConvo"
+                placeholder="Agent: Thank you for calling...&#10;Customer: My bill is wrong..."
+              ></textarea>
+              <div class="row" style="margin-top: 10px">
+                <button class="btn" onclick="batchAddSingle()">
+                  ➕ Evaluate & save</button
+                ><button class="btn ghost" onclick="batchClearForm()">
+                  Clear</button
+                ><span class="note" id="bMsg" style="margin: 0"></span>
+              </div>
+            </div>
+            <div class="card">
+              <h3><span class="ic">📁</span> Bulk CSV</h3>
+              <div class="assist">
+                <b>Columns:</b>
+                <span class="mono"
+                  >File Name, Agent Name, Agent ID, Conversation, Interaction
+                  Start Time, Interaction End Time</span
+                >
+              </div>
+              <label
+                class="btn ghost"
+                style="cursor: pointer; display: inline-block"
+                >⬆️ Choose CSV<input
+                  type="file"
+                  id="bCsv"
+                  accept=".csv"
+                  style="display: none"
+                  onchange="batchUploadCSV(event)" /></label
+              ><button class="btn ghost" onclick="downloadCSVTemplate()">
+                ⬇️ Template
+              </button>
+              <div class="conn" id="bCsvMsg"></div>
+            </div>
+          </div>
+          <div class="card" style="margin-top: 20px">
+            <div class="folder-head">
+              <h3>
+                <span class="ic">📋</span> Processed
+                <span class="badge" id="batchCount">0</span>
+              </h3>
+              <div class="row">
+                <button class="btn ghost" onclick="exportBatch()">
+                  ⬇️ Export</button
+                ><button
+                  class="btn ghost"
+                  onclick="exportQAResults(loadBatch(),'FANTASTIC_QA_batch_results.csv')"
+                >
+                  ⬇️ Export QA Results (CSV)
+                </button>
+              </div>
+            </div>
+            <div style="overflow-x: auto">
+              <table id="batchTable">
+                <tr>
+                  <th>File</th>
+                  <th>Agent</th>
+                  <th>ID</th>
+                  <th>Site/BU</th>
+                  <th>Turns</th>
+                  <th>Score</th>
+                  <th>Outcome</th>
+                </tr>
+              </table>
+            </div>
+            <div
+              class="note"
+              id="batchEmpty"
+              style="text-align: center; margin: 20px"
+            >
+              No records yet.
+            </div>
+          </div>
+        </section>
