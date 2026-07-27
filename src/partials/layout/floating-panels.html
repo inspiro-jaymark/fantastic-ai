@@ -1,5 +1,28 @@
     <div id="ftNotifPanel" class="panel hidden"></div>
     <div id="ftDMPanel" class="panel hidden"></div>
+    <div
+      class="confirm-modal hidden"
+      id="roleSwitchModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="roleSwitchTitle"
+    >
+      <div class="confirm-card">
+        <h3 id="roleSwitchTitle">Switch AI role?</h3>
+        <p id="roleSwitchMessage">
+          There is an existing conversation. Switching roles now will reset the
+          current transcript and call state.
+        </p>
+        <div class="confirm-actions">
+          <button class="btn ghost" type="button" onclick="cancelRoleSwitch()">
+            Cancel
+          </button>
+          <button class="btn mag" type="button" onclick="confirmRoleSwitch()">
+            Continue
+          </button>
+        </div>
+      </div>
+    </div>
     <button
       id="kbbotFab"
       title="Ask FeeBe (Knowledge Base)"

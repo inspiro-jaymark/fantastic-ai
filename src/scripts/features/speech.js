@@ -238,8 +238,12 @@ function pickBrowserVoice(l) {
     voices.find((v) => v.lang && v.lang.toLowerCase().startsWith(want)) || null
   );
 }
-function browserSpeak(text, l) {
-  if (!synth) return;
+function browserSpeak(text, l, sessionId, speechTurnId) {
+  if (!synth) {
+    // If TTS is unavailable, release the turn so STT can still listen.
+    finishSpeakingTurn(sessionId, speechTurnId);
+    return;
+  }
   synth.cancel();
   const u = new SpeechSynthesisUtterance(text);
   const pv = pickBrowserVoice(l);
@@ -250,42 +254,65 @@ function browserSpeak(text, l) {
   }
   u.rate = parseFloat(document.getElementById("rate").value);
   u.onstart = () => {
+    if (!isSpeakingTurnCurrent(sessionId, speechTurnId)) return;
+
     orb && orb.classList.add("speaking");
     setStatus("Speaking…", "live");
   };
   u.onend = () => {
-    orb && orb.classList.remove("speaking");
-    if (callActive) {
-      setStatus("Listening…", "live");
-      startRec();
-    }
+    finishSpeakingTurn(sessionId, speechTurnId);
+  };
+  u.onerror = () => {
+    finishSpeakingTurn(sessionId, speechTurnId);
   };
   synth.speak(u);
 }
 function speak(text, langHint) {
   const l = langHint || curLang;
+  const turn = beginSpeakingTurn();
+  const sessionId = turn.sessionId;
+  const speechTurnId = turn.speechTurnId;
   if (azureCfg.enabled && azureCfg.key) {
     setStatus("Synthesizing…", "live");
     azureSynth(text, voiceForLang(l))
       .then((url) => {
+        if (!isSpeakingTurnCurrent(sessionId, speechTurnId) || !callActive)
+          return;
+
         azureAudio.src = url;
         azureAudio.onplay = () => {
+          if (!isSpeakingTurnCurrent(sessionId, speechTurnId)) return;
+
           orb && orb.classList.add("speaking");
           setStatus("Speaking (Azure)…", "live");
         };
         azureAudio.onended = () => {
-          orb && orb.classList.remove("speaking");
-          if (callActive) {
-            setStatus("Listening…", "live");
-            startRec();
-          }
+          finishSpeakingTurn(sessionId, speechTurnId);
         };
-        azureAudio.play();
+        azureAudio.onerror = () => {
+          if (isSpeakingTurnCurrent(sessionId, speechTurnId) && callActive)
+            browserSpeak(text, l, sessionId, speechTurnId);
+        };
+        const playAttempt = azureAudio.play();
+        if (playAttempt && typeof playAttempt.catch === "function") {
+          playAttempt.catch(() => {
+            if (isSpeakingTurnCurrent(sessionId, speechTurnId) && callActive)
+              browserSpeak(text, l, sessionId, speechTurnId);
+          });
+        }
       })
-      .catch((e) => browserSpeak(text, l));
-  } else browserSpeak(text, l);
+      .catch((e) => {
+        if (isSpeakingTurnCurrent(sessionId, speechTurnId) && callActive)
+          browserSpeak(text, l, sessionId, speechTurnId);
+      });
+  } else browserSpeak(text, l, sessionId, speechTurnId);
 }
 function stopSpeaking() {
+  // Invalidate pending TTS callbacks before resetting the live call state.
+  currentSpeechTurnId++;
+  ttsSpeaking = false;
+  waitingForAgentReply = false;
+  clearRecognitionRestart();
   synth && synth.cancel();
   try {
     azureAudio.pause();
@@ -298,18 +325,70 @@ let rec = null,
   interimEl = null,
   sttMode = "browser",
   azRec = null,
-  azRunning = false;
+  azRunning = false,
+  recognitionRestartTimer = null,
+  ttsSpeaking = false,
+  waitingForAgentReply = false,
+  currentSpeechTurnId = 0;
 function recLangFor() {
   let v = (document.getElementById("recLang") || {}).value || "en-US";
   if (v.indexOf("fil-PH-") === 0) v = "fil-PH";
   return v;
 }
+function currentLiveSessionId() {
+  return typeof getLiveSessionId === "function" ? getLiveSessionId() : 0;
+}
+function isLiveSessionCurrent(sessionId) {
+  return (
+    typeof getLiveSessionId !== "function" || getLiveSessionId() === sessionId
+  );
+}
+function isSpeakingTurnCurrent(sessionId, speechTurnId) {
+  return (
+    isLiveSessionCurrent(sessionId) && speechTurnId === currentSpeechTurnId
+  );
+}
+function clearRecognitionRestart() {
+  if (!recognitionRestartTimer) return;
+
+  clearTimeout(recognitionRestartTimer);
+  recognitionRestartTimer = null;
+}
+function canStartRecognition() {
+  // Central gate for STT: listen only during the user's turn.
+  return callActive && !muted && !ttsSpeaking && !waitingForAgentReply;
+}
+function beginSpeakingTurn() {
+  const sessionId = currentLiveSessionId();
+  const speechTurnId = ++currentSpeechTurnId;
+
+  // Keep STT off while the AI reply is preparing or speaking.
+  ttsSpeaking = true;
+  waitingForAgentReply = true;
+  stopRec();
+
+  return { sessionId, speechTurnId };
+}
+function finishSpeakingTurn(sessionId, speechTurnId) {
+  if (!isSpeakingTurnCurrent(sessionId, speechTurnId)) return;
+
+  // TTS is done, so the next valid audio should come from the user.
+  ttsSpeaking = false;
+  waitingForAgentReply = false;
+  orb && orb.classList.remove("speaking");
+
+  if (canStartRecognition()) {
+    setStatus("Listening…", "live");
+    startRec();
+  }
+}
 function startRec() {
-  if (!callActive || muted) return;
+  if (!canStartRecognition()) return;
   if (sttMode === "azure" && azureCfg.key && window.SpeechSDK) startAzureRec();
   else startBrowserRec();
 }
 function stopRec() {
+  clearRecognitionRestart();
   try {
     rec && rec.abort();
   } catch (e) {}
@@ -317,6 +396,9 @@ function stopRec() {
   orb && orb.classList.remove("listening");
 }
 function startBrowserRec() {
+  const sessionId = currentLiveSessionId();
+  if (!canStartRecognition()) return;
+
   if (!SR) {
     const t = document.getElementById("transcript");
     if (t)
@@ -333,6 +415,8 @@ function startBrowserRec() {
     rec.interimResults = true;
     rec.lang = recLangFor();
     rec.onresult = (e) => {
+      if (!isLiveSessionCurrent(sessionId) || !callActive) return;
+
       let interim = "",
         final = "";
       for (let i = e.resultIndex; i < e.results.length; i++) {
@@ -349,20 +433,33 @@ function startBrowserRec() {
           interimEl.remove();
           interimEl = null;
         }
-        handleCustomer(final.trim());
+        const text = final.trim();
+        if (!text) return;
+
+        // Pause STT between turns so the pending AI response is not transcribed.
+        waitingForAgentReply = true;
+        clearRecognitionRestart();
+        stopRec();
+        handleCustomer(text);
       }
     };
     rec.onend = () => {
+      if (!isLiveSessionCurrent(sessionId)) return;
+
       orb && orb.classList.remove("listening");
-      if (
-        sttMode === "browser" &&
-        callActive &&
-        !muted &&
-        !(synth && synth.speaking)
-      )
-        setTimeout(startBrowserRec, 300);
+      if (sttMode === "browser" && canStartRecognition()) {
+        clearRecognitionRestart();
+        recognitionRestartTimer = setTimeout(() => {
+          recognitionRestartTimer = null;
+          if (isLiveSessionCurrent(sessionId) && canStartRecognition()) {
+            startBrowserRec();
+          }
+        }, 300);
+      }
     };
     rec.onerror = (ev) => {
+      if (!isLiveSessionCurrent(sessionId)) return;
+
       orb && orb.classList.remove("listening");
       if (
         ev &&
@@ -383,6 +480,8 @@ function startBrowserRec() {
     orb && orb.classList.add("listening");
   } catch (e) {
     setTimeout(() => {
+      if (!isLiveSessionCurrent(sessionId) || !canStartRecognition()) return;
+
       try {
         rec && rec.start();
       } catch (_) {}
@@ -395,7 +494,8 @@ function azAudioCfg() {
     : SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
 }
 function startAzureRec() {
-  if (azRunning) return;
+  if (azRunning || !canStartRecognition()) return;
+  const sessionId = currentLiveSessionId();
   try {
     const cfg = SpeechSDK.SpeechConfig.fromSubscription(
       azureCfg.key,
@@ -404,24 +504,39 @@ function startAzureRec() {
     cfg.speechRecognitionLanguage = recLangFor();
     azRec = new SpeechSDK.SpeechRecognizer(cfg, azAudioCfg());
     azRec.recognizing = (s, e) => {
+      if (!isLiveSessionCurrent(sessionId) || !canStartRecognition()) return;
+
       const t = e.result.text;
       if (!t) return;
       if (!interimEl) interimEl = addMsg("cust", "", true);
       interimEl.querySelector(".txt").textContent = t;
     };
     azRec.recognized = (s, e) => {
+      if (!isLiveSessionCurrent(sessionId) || !canStartRecognition()) return;
+
       if (e.result.reason === SpeechSDK.ResultReason.RecognizedSpeech) {
         if (interimEl) {
           interimEl.remove();
           interimEl = null;
         }
         const t = e.result.text.trim();
-        if (t) handleCustomer(t);
+        if (t) {
+          // Pause STT between turns so the pending AI response is not transcribed.
+          waitingForAgentReply = true;
+          clearRecognitionRestart();
+          stopRec();
+          handleCustomer(t);
+        }
       }
     };
-    azRec.canceled = () => azFallback();
+    azRec.canceled = () => azFallback(sessionId);
     azRec.startContinuousRecognitionAsync(
       () => {
+        if (!isLiveSessionCurrent(sessionId) || !canStartRecognition()) {
+          stopAzureRec();
+          return;
+        }
+
         azRunning = true;
         orb && orb.classList.add("listening");
         setStatus(
@@ -431,33 +546,56 @@ function startAzureRec() {
           "live",
         );
       },
-      () => azFallback(),
+      () => azFallback(sessionId),
     );
   } catch (e) {
-    azFallback();
+    azFallback(sessionId);
   }
 }
 function stopAzureRec() {
-  if (azRec && azRunning) {
-    try {
-      azRec.stopContinuousRecognitionAsync(() => {
+  const recognizer = azRec;
+
+  // Reset local Azure STT state immediately so the next Start can create a recognizer.
+  azRec = null;
+  azRunning = false;
+
+  if (!recognizer) return;
+
+  try {
+    recognizer.stopContinuousRecognitionAsync(
+      () => {
         try {
-          azRec.close();
+          recognizer.close();
         } catch (e) {}
-        azRec = null;
-        azRunning = false;
-      });
-    } catch (e) {
-      azRunning = false;
-    }
+      },
+      () => {
+        try {
+          recognizer.close();
+        } catch (e) {}
+      },
+    );
+  } catch (e) {
+    try {
+      recognizer.close();
+    } catch (_) {}
   }
 }
-function azFallback() {
+function azFallback(sessionId) {
+  if (sessionId !== undefined && !isLiveSessionCurrent(sessionId)) return;
+
   azRunning = false;
   sttMode = "browser";
   document.getElementById("sttAzure")?.classList.remove("on");
   document.getElementById("sttBrowser")?.classList.add("on");
-  if (callActive && !muted) setTimeout(startBrowserRec, 300);
+  if (canStartRecognition())
+    setTimeout(() => {
+      if (
+        (sessionId === undefined || isLiveSessionCurrent(sessionId)) &&
+        canStartRecognition()
+      ) {
+        startBrowserRec();
+      }
+    }, 300);
 }
 const rlSel = document.getElementById("recLang");
 if (rlSel)

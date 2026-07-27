@@ -42,7 +42,11 @@ let convo = [],
   startTime = 0,
   timerInt = null,
   roleMode = "agent",
-  callEnding = false;
+  callEnding = false,
+  liveSessionId = 0;
+function getLiveSessionId() {
+  return liveSessionId;
+}
 function scoreCustomer(text) {
   const s = scoreSentiment(text);
   if (s === "pos") {
@@ -119,11 +123,12 @@ function aiReply(text) {
   };
 }
 function handleCustomer(text) {
-  if (!text) return;
+  if (!text || !callActive) return;
   if (roleMode === "agent") handleTurnAgentMode(text);
   else handleTurnCustomerMode(text);
 }
 function handleTurnAgentMode(text) {
+  const sessionId = liveSessionId;
   const flags = fraudScan(text);
   const shown = maskSensitive(text);
   addMsg("cust", shown);
@@ -146,6 +151,8 @@ function handleTurnAgentMode(text) {
   checkSupervisorTriggers(text, s, flags);
   liveAiGuide();
   setTimeout(() => {
+    if (sessionId !== liveSessionId || !callActive) return;
+
     addMsg("ai", r.a);
     convo.push({
       who: "ai",
@@ -160,12 +167,13 @@ function handleTurnAgentMode(text) {
     if (custEnd || r.end) {
       callEnding = true;
       setTimeout(() => {
-        if (callActive) endCall();
+        if (sessionId === liveSessionId && callActive) endCall();
       }, 1900);
     }
   }, 450);
 }
 function handleTurnCustomerMode(agentText) {
+  const sessionId = liveSessionId;
   addMsg("cust", agentText, false, "Agent (You)");
   custTurns++;
   convo.push({ who: "cust", role: "agent", text: agentText, raw: agentText });
@@ -185,13 +193,15 @@ function handleTurnCustomerMode(agentText) {
   checkSupervisorTriggers(r.a, s, []);
   liveAiGuide();
   setTimeout(() => {
+    if (sessionId !== liveSessionId || !callActive) return;
+
     addMsg("ai", r.a, false, "Customer (AI)");
     speak(r.a, curLang);
     if (r.resolved) setStatus("Scenario resolved ✔", "live");
     if (agentEnd) {
       callEnding = true;
       setTimeout(() => {
-        if (callActive) endCall();
+        if (sessionId === liveSessionId && callActive) endCall();
       }, 1500);
     }
   }, 450);
@@ -327,7 +337,8 @@ function customerReply(a) {
 function pick(a) {
   return a[Math.floor(Math.random() * a.length)];
 }
-function setRole(mode) {
+let pendingRoleMode = null;
+function applyRole(mode) {
   roleMode = mode;
   document.getElementById("roleAgent").classList.toggle("on", mode === "agent");
   document
@@ -339,6 +350,132 @@ function setRole(mode) {
     mode === "customer"
       ? "Customer (AI)"
       : document.getElementById("agInput").value;
+}
+function roleModeLabel(mode) {
+  return mode === "customer" ? "Customer (train)" : "Agent (AI helps you)";
+}
+function hasLiveStateForRoleSwitch() {
+  return callActive || convo.length > 0;
+}
+function resetLiveSessionForRoleSwitch(mode) {
+  liveSessionId++;
+  callActive = false;
+  muted = false;
+  callEnding = false;
+  startTime = 0;
+  clearInterval(timerInt);
+  timerInt = null;
+
+  try {
+    stopRec();
+  } catch (e) {}
+  try {
+    stopSpeaking();
+  } catch (e) {}
+  try {
+    if (interimEl) interimEl.remove();
+    interimEl = null;
+  } catch (e) {}
+
+  convo = [];
+  custTurns = 0;
+  sPos = 0;
+  sNeu = 0;
+  sNeg = 0;
+  negStreak = 0;
+  updateSenti();
+  updateMood();
+  resetFraud();
+  resetSupervisor();
+
+  orb && orb.classList.remove("listening", "speaking");
+  document.getElementById("fraudAlert")?.classList.remove("show");
+  document.getElementById("endFlag")?.classList.remove("show");
+  document.getElementById("liveQAbody")?.classList.add("hidden");
+  document.getElementById("liveQAempty")?.classList.remove("hidden");
+  document.getElementById("micInd")?.classList.add("hidden");
+
+  const score = document.getElementById("liveQAScore");
+  if (score) score.textContent = "";
+
+  const timer = document.getElementById("timer");
+  if (timer) timer.textContent = "00:00";
+
+  if (btnStart) btnStart.disabled = false;
+  if (btnEnd) btnEnd.disabled = true;
+  if (btnMute) {
+    btnMute.disabled = true;
+    btnMute.classList.remove("on");
+    btnMute.textContent = "🎙️";
+  }
+
+  window._gapData = null;
+  setLivePill("en");
+  setStatus("Ready", "");
+
+  tEl.innerHTML = "";
+  const empty = document.createElement("div");
+  empty.className = "empty-t";
+  empty.id = "emptyT";
+  empty.textContent =
+    "Conversation cleared. Press Start to begin in " +
+    roleModeLabel(mode) +
+    " mode.";
+  tEl.appendChild(empty);
+}
+function applyConfirmedRoleSwitch(mode) {
+  if (hasLiveStateForRoleSwitch()) {
+    resetLiveSessionForRoleSwitch(mode);
+  }
+
+  applyRole(mode);
+}
+function openRoleSwitchModal(mode) {
+  pendingRoleMode = mode;
+
+  const message = document.getElementById("roleSwitchMessage");
+  if (message) {
+    message.textContent =
+      "There is an existing conversation. Continue switching to " +
+      roleModeLabel(mode) +
+      "? The current transcript and call state will be reset.";
+  }
+
+  const modal = document.getElementById("roleSwitchModal");
+  if (!modal) {
+    if (
+      confirm(
+        "There is an existing conversation. Switch roles?\n\n" +
+          "The current transcript and call state will be reset.",
+      )
+    ) {
+      applyConfirmedRoleSwitch(mode);
+    }
+    return;
+  }
+
+  modal.classList.remove("hidden");
+  modal.querySelector(".btn.mag")?.focus();
+}
+function cancelRoleSwitch() {
+  pendingRoleMode = null;
+  document.getElementById("roleSwitchModal")?.classList.add("hidden");
+}
+function confirmRoleSwitch() {
+  const mode = pendingRoleMode;
+  cancelRoleSwitch();
+
+  if (mode) applyConfirmedRoleSwitch(mode);
+}
+function setRole(mode) {
+  if (mode === roleMode) return;
+
+  if (hasLiveStateForRoleSwitch()) {
+    openRoleSwitchModal(mode);
+    return;
+  }
+
+  applyRole(mode);
 }
 function setStatus(txt, cls) {
   const h = document.getElementById("hdrStatus");
@@ -520,7 +657,13 @@ btnStart.onclick = async () => {
     alert("Speech recognition needs Chrome/Edge, or enable Azure STT.");
     return;
   }
-  await ensureMic();
+  const micReady = await ensureMic();
+  // Do not start the call state if the browser cannot open any microphone.
+  if (!micReady) {
+    setStatus("Mic permission needed", "");
+    return;
+  }
+  liveSessionId++;
   callActive = true;
   callEnding = false;
   convo = [];
@@ -570,7 +713,7 @@ btnStart.onclick = async () => {
     addMsg("ai", greet);
     speak(greet, "en");
   }
-  setTimeout(startRec, 200);
+  // STT restarts from speak() after TTS ends; starting here can overlap bot audio.
 };
 btnMute.onclick = () => {
   muted = !muted;

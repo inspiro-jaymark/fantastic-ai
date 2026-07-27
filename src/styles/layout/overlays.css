@@ -30,6 +30,44 @@
   padding:8px
 }
 
+.confirm-modal {
+  position:fixed;
+  inset:0;
+  z-index:180;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(15,27,45,.52)
+}
+
+.confirm-card {
+  width:min(420px,100%);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:0 24px 70px rgba(0,0,0,.32);
+  padding:20px
+}
+
+.confirm-card h3 {
+  font-size:16px;
+  margin-bottom:8px
+}
+
+.confirm-card p {
+  font-size:13px;
+  color:var(--slate);
+  line-height:1.55
+}
+
+.confirm-actions {
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:18px
+}
+
 .dmwrap {
   display:flex;
   flex-direction:column;
