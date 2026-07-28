@@ -20,6 +20,12 @@ const APP_SCRIPTS = [
   "./src/scripts/bootstrap.js",
   "./src/scripts/modules/v32-extensions.js",
 ];
+const APP_VERSION = "3.3";
+
+function withAppVersion(path) {
+  const separator = path.includes("?") ? "&" : "?";
+  return `${path}${separator}v=${encodeURIComponent(APP_VERSION)}`;
+}
 
 async function loadHtmlIncludes() {
   let includeNodes = [...document.querySelectorAll("[data-include]")];
@@ -28,7 +34,7 @@ async function loadHtmlIncludes() {
     await Promise.all(
       includeNodes.map(async (node) => {
         const path = node.dataset.include;
-        const response = await fetch(path);
+        const response = await fetch(withAppVersion(path), { cache: "no-cache" });
 
         if (!response.ok) {
           throw new Error(`Failed to load ${path}: ${response.status}`);
@@ -47,7 +53,7 @@ async function loadHtmlIncludes() {
 function loadScript(src) {
   return new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = src;
+    script.src = withAppVersion(src);
     script.onload = resolve;
     script.onerror = () => reject(new Error(`Failed to load ${src}`));
     document.body.appendChild(script);
