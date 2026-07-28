@@ -1,15 +1,15 @@
         <section id="leader" class="view hidden">
           <div class="folder-head">
             <div>
-              <h3 style="font-size: 17px">
+              <h3 class="u-fs-17">
                 <span class="ic">🏆</span> Leaderboard
               </h3>
               <div class="note">Points from quality & training.</div>
             </div>
             <div class="row">
-              <select class="sel" id="lbSite" onchange="renderLeaderboard()">
+              <select class="sel" id="lbSite" aria-label="Leaderboard site filter" onchange="renderLeaderboard()">
                 <option value="all">All sites</option></select
-              ><select class="sel" id="lbFilter" onchange="renderLeaderboard()">
+              ><select class="sel" id="lbFilter" aria-label="Leaderboard time filter" onchange="renderLeaderboard()">
                 <option value="all">All-time</option>
                 <option value="quality">Quality</option>
                 <option value="training">Training</option></select
@@ -22,9 +22,9 @@
             <div class="podium" id="podium"></div>
             <div id="lbList"></div>
             <div
-              class="note"
+              class="note u-empty-inline"
               id="lbEmpty"
-              style="text-align: center; margin: 20px"
+
             >
               No scores yet. 🎮
             </div>

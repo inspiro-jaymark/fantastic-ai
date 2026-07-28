@@ -1,7 +1,7 @@
         <section id="access" class="view hidden">
           <div class="folder-head">
             <div>
-              <h3 style="font-size: 17px">
+              <h3 class="u-fs-17">
                 <span class="ic">🔐</span> Access Management
               </h3>
               <div class="note">Users, roles & permissions. Admin-only.</div>
@@ -9,12 +9,12 @@
             <div class="row">
               <button class="btn ghost" onclick="exportUsers()">
                 ⬇️ Export</button
-              ><label class="btn ghost" sty Open previewle="cursor: pointer"
-                >⬆️ Import<input
+              ><label class="btn ghost u-cursor-pointer"
+                >⬆️ Import<input class="hidden"
                   type="file"
                   id="userImport"
                   accept=".csv"
-                  style="display: none"
+
                   onchange="importUsers(event)"
               /></label>
             </div>
@@ -23,15 +23,15 @@
             <h3><span class="ic">➕</span> Add / Update User</h3>
             <div class="db-form">
               <div>
-                <label class="fld">Username</label
+                <label class="fld" for="uUser">Username</label
                 ><input class="inp" id="uUser" placeholder="jdelacruz" />
               </div>
               <div>
-                <label class="fld">Full Name</label
+                <label class="fld" for="uName">Full Name</label
                 ><input class="inp" id="uName" placeholder="Juan Dela Cruz" />
               </div>
               <div>
-                <label class="fld">Password</label>
+                <label class="fld" for="uPass">Password</label>
                 <div class="password-wrap">
                   <input
                     class="inp"
@@ -64,7 +64,7 @@
                 </div>
               </div>
               <div>
-                <label class="fld">Role</label
+                <label class="fld" for="uRole">Role</label
                 ><select class="inp" id="uRole">
                   <option value="agent">🎧 Agent</option>
                   <option value="evaluator">✅ Evaluator</option>
@@ -75,25 +75,25 @@
                 </select>
               </div>
               <div>
-                <label class="fld">Linked Employee #</label
+                <label class="fld" for="uEmp">Linked Employee #</label
                 ><input class="inp" id="uEmp" placeholder="EMP-1001" />
               </div>
               <div>
-                <label class="fld">Status</label
+                <label class="fld" for="uStatus">Status</label
                 ><select class="inp" id="uStatus">
                   <option value="active">Active</option>
                   <option value="disabled">Disabled</option>
                 </select>
               </div>
-              <div style="display: flex; align-items: flex-end">
-                <button class="btn" style="width: 100%" onclick="saveUser()">
+              <div class="u-flex u-align-end">
+                <button class="btn u-w-full" onclick="saveUser()">
                   💾 Save
                 </button>
               </div>
-              <div style="display: flex; align-items: flex-end">
+              <div class="u-flex u-align-end">
                 <button
-                  class="btn ghost"
-                  style="width: 100%"
+                  class="btn ghost u-w-full"
+
                   onclick="clearUserForm()"
                 >
                   Clear
@@ -102,21 +102,22 @@
             </div>
             <span class="note" id="uMsg"></span>
           </div>
-          <div class="card" style="margin-top: 20px">
+          <div class="card u-mt-20">
             <div class="folder-head">
               <h3>
                 <span class="ic">👥</span> Users
                 <span class="badge" id="uCount">0</span>
               </h3>
               <input
-                class="search"
+                class="search u-max-w-240 u-mb-0"
                 id="uSearch"
+                aria-label="Search users"
                 placeholder="🔍 Search…"
-                style="max-width: 240px; margin-bottom: 0"
+
                 oninput="renderUsers()"
               />
             </div>
-            <div style="overflow-x: auto">
+            <div class="u-overflow-x-auto">
               <table id="uTable">
                 <tr>
                   <th>Username</th>
@@ -129,8 +130,66 @@
               </table>
             </div>
           </div>
-          <div class="card" style="margin-top: 20px">
+          <div class="card u-mt-20">
             <h3><span class="ic">🧩</span> Roles & Permissions</h3>
-            <div id="roleMatrix"></div>
+            <div class="role-builder">
+              <div class="folder-head">
+                <div>
+                  <h4 class="u-m-0 u-fs-14">Create Custom Role</h4>
+                  <div class="note">
+                    Start from a fixed role, then choose the access this custom
+                    role should keep.
+                  </div>
+                </div>
+                <span class="badge" id="roleEditBadge">New</span>
+              </div>
+              <div class="db-form role-form">
+                <div>
+                  <label class="fld" for="roleName">Role name</label>
+                  <input class="inp" id="roleName" placeholder="QA Lead" />
+                </div>
+                <div>
+                  <label class="fld" for="roleBase">Base fixed role</label>
+                  <select
+                    class="inp"
+                    id="roleBase"
+                    onchange="loadRoleBaseTemplate()"
+                  ></select>
+                </div>
+                <div>
+                  <label class="fld" for="roleHome">Default view</label>
+                  <select class="inp" id="roleHome"></select>
+                </div>
+                <div>
+                  <label class="fld" for="roleDesc">Description</label>
+                  <input
+                    class="inp"
+                    id="roleDesc"
+                    placeholder="What this role can do"
+                  />
+                </div>
+              </div>
+              <fieldset class="role-perm-box">
+                <legend class="fld">Permissions</legend>
+                <div class="role-perm-grid" id="rolePerms"></div>
+              </fieldset>
+              <div class="row u-mt-10">
+                <button class="btn" onclick="saveCustomRole()">
+                  💾 Save custom role
+                </button>
+                <button class="btn ghost" onclick="resetCustomRoleForm()">
+                  New
+                </button>
+                <button
+                  class="btn ghost hidden"
+                  id="roleDeleteBtn"
+                  onclick="deleteCustomRole()"
+                >
+                  🗑 Delete
+                </button>
+                <span class="note u-m-0" id="roleMsg"></span>
+              </div>
+            </div>
+            <div class="u-mt-14" id="roleMatrix"></div>
           </div>
         </section>

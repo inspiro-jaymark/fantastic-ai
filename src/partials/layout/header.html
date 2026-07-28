@@ -17,12 +17,27 @@
             <p id="brandTag">AI Customer Experience · Voice Platform</p>
           </div>
         </div>
-        <div class="hdr-right">
-          <select
-            class="sel"
+	        <div class="hdr-right">
+	          <button
+	            class="hbtn menu-toggle"
+	            id="navMenuBtn"
+	            type="button"
+	            aria-label="Open navigation menu"
+	            aria-controls="navBar"
+	            aria-expanded="false"
+	            onclick="toggleNavMenu()"
+	          >
+	            <span class="menu-bars" aria-hidden="true">
+	              <span></span>
+	              <span></span>
+	              <span></span>
+	            </span>
+	          </button>
+	          <select
+            class="sel u-max-w-180 u-fs-12"
             id="ftSwitchUser"
             title="Switch user"
-            style="max-width: 180px; font-size: 12px"
+
             onchange="if(this.value)quickSwap(this.value)"
           >
             <option value="">🔀 Switch user…</option>
@@ -31,8 +46,8 @@
             💬
             <span
               id="ftDMCount"
-              class="pill-count hidden"
-              style="position: absolute; top: -4px; right: -4px"
+              class="pill-count hidden u-pill-corner"
+
               >0</span
             >
           </button>
@@ -40,8 +55,8 @@
             🔔
             <span
               id="ftBellCount"
-              class="pill-count hidden"
-              style="position: absolute; top: -4px; right: -4px"
+              class="pill-count hidden u-pill-corner"
+
               >0</span
             >
           </button>

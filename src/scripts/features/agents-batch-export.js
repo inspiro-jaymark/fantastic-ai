@@ -40,7 +40,7 @@ function saveAgent() {
     msg.style.color = "var(--red)";
     msg.textContent = `⚠️ ${missingField.message}`;
     return;
-  } 
+  }
   // if (!emp || !first || !last) {
   //   msg.style.color = "var(--red)";
   //   msg.textContent = "⚠️ Employee # and First Name required.";
@@ -106,17 +106,26 @@ function renderAgents(f) {
         a.section +
         "</td><td>" +
         a.sub +
-        '</td><td><button style="font-size:11px;color:var(--red);background:none;border:none;cursor:pointer" onclick="delAgent(\'' +
+        '</td><td><button class="u-action-link red" onclick="delAgent(\'' +
         a.emp +
         "')\">🗑</button></td>";
     });
 }
 function delAgent(emp) {
-  if (!confirm("Delete " + emp + "?")) return;
-  saveAgents(loadAgents().filter((a) => a.emp !== emp));
-  renderAgents();
-  populateLbSites();
-  logAudit("Agent deleted", emp, "agent");
+  appConfirm(
+    {
+      title: "Delete agent?",
+      message: "Delete agent " + emp + "? This cannot be undone.",
+      confirmText: "Delete",
+      danger: true,
+    },
+    () => {
+      saveAgents(loadAgents().filter((a) => a.emp !== emp));
+      renderAgents();
+      populateLbSites();
+      logAudit("Agent deleted", emp, "agent");
+    },
+  );
 }
 function findAgent(name, id) {
   const arr = loadAgents();
@@ -426,10 +435,10 @@ function renderBatch() {
       "</td><td>" +
       (r.matched
         ? r.site + "/" + r.bu
-        : '<span style="color:var(--muted)">unmatched</span>') +
+        : '<span class="u-color-muted">unmatched</span>') +
       "</td><td>" +
       r.turns +
-      '</td><td><b style="color:' +
+      '</td><td><b data-style-color="' +
       (r.gapPct >= 85
         ? "var(--green)"
         : r.gapPct >= 70

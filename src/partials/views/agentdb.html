@@ -1,7 +1,7 @@
         <section id="agentdb" class="view hidden">
           <div class="folder-head">
             <div>
-              <h3 style="font-size: 17px">
+              <h3 class="u-fs-17">
                 <span class="ic">👥</span> Agent Database
               </h3>
               <div class="note">Master roster.</div>
@@ -9,12 +9,12 @@
             <div class="row">
               <button class="btn ghost" onclick="exportAgents()">
                 ⬇️ Export</button
-              ><label class="btn ghost" style="cursor: pointer"
-                >⬆️ Import<input
+              ><label class="btn ghost u-cursor-pointer"
+                >⬆️ Import<input class="hidden"
                   type="file"
                   id="agImport"
                   accept=".csv"
-                  style="display: none"
+
                   onchange="importAgents(event)"
               /></label>
             </div>
@@ -23,19 +23,19 @@
             <h3><span class="ic">➕</span> Add / Update Agent</h3>
             <div class="db-form">
               <div>
-                <label class="fld">Employee #</label
+                <label class="fld" for="agEmp">Employee #</label
                 ><input class="inp" id="agEmp" placeholder="EMP-1001" />
               </div>
               <div>
-                <label class="fld">First Name</label
+                <label class="fld" for="agFirst">First Name</label
                 ><input class="inp" id="agFirst" placeholder="Juan" />
               </div>
               <div>
-                <label class="fld">Last Name</label
+                <label class="fld" for="agLast">Last Name</label
                 ><input class="inp" id="agLast" placeholder="Dela Cruz" />
               </div>
               <div>
-                <label class="fld">Site</label
+                <label class="fld" for="agSite">Site</label
                 ><select class="inp" id="agSite">
                   <option>Circuit</option>
                   <option>Dumaguete</option>
@@ -47,7 +47,7 @@
                 </select>
               </div>
               <div>
-                <label class="fld">BU</label
+                <label class="fld" for="agBU">BU</label
                 ><select class="inp" id="agBU">
                   <option>JAPAC</option>
                   <option>International</option>
@@ -57,7 +57,7 @@
                 </select>
               </div>
               <div>
-                <label class="fld">Section</label
+                <label class="fld" for="agSection">Section</label
                 ><select class="inp" id="agSection">
                   <option>PLDT</option>
                   <option>Smart</option>
@@ -66,7 +66,7 @@
                 </select>
               </div>
               <div>
-                <label class="fld">Sub-section</label
+                <label class="fld" for="agSub">Sub-section</label
                 ><select class="inp" id="agSub">
                   <option>Billing</option>
                   <option>Repair</option>
@@ -74,15 +74,15 @@
                   <option value="__add">➕ Add…</option>
                 </select>
               </div>
-              <div style="display: flex; align-items: flex-end">
-                <button class="btn" style="width: 100%" onclick="saveAgent()">
+              <div class="u-flex u-align-end">
+                <button class="btn u-w-full" onclick="saveAgent()">
                   💾 Save
                 </button>
               </div>
-              <div style="display: flex; align-items: flex-end">
+              <div class="u-flex u-align-end">
                 <button
-                  class="btn ghost"
-                  style="width: 100%"
+                  class="btn ghost u-w-full"
+
                   onclick="clearAgentForm()"
                 >
                   Clear
@@ -91,7 +91,7 @@
             </div>
             <span class="note" id="agMsg"></span>
           </div>
-          <div class="card" style="margin-top: 20px">
+          <div class="card u-mt-20">
             <div class="folder-head">
               <h3>
                 <span class="ic">📇</span> Roster
@@ -101,14 +101,15 @@
                 <button class="btn ghost" onclick="seedAgents()">
                   🌱 Load sample</button
                 ><input
-                  class="search"
+                  class="search u-max-w-220 u-mb-0"
                   id="agSearch"
+                  aria-label="Search agents"
                   placeholder="🔍 Search…"
-                  style="max-width: 220px; margin-bottom: 0"
+
                 />
               </div>
             </div>
-            <div style="overflow-x: auto">
+            <div class="u-overflow-x-auto">
               <table id="agTable">
                 <tr>
                   <th>Emp #</th>
@@ -122,9 +123,9 @@
               </table>
             </div>
             <div
-              class="note"
+              class="note u-empty-inline"
               id="agEmpty"
-              style="text-align: center; margin: 20px"
+
             >
               No agents yet.
             </div>

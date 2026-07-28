@@ -22,7 +22,10 @@ function myNotifs() {
   const r = currentUser ? currentUser.role : "";
   const u = currentUser ? currentUser.user : "";
   return loadNotif().filter(
-    (n) => n.toRole === r || (n.toUser && n.toUser === u),
+    (n) =>
+      n.toRole === r ||
+      roleReceives(r, n.toRole) ||
+      (n.toUser && n.toUser === u),
   );
 }
 function refreshBell() {
@@ -50,17 +53,17 @@ function renderNotif() {
   const p = document.getElementById("ftNotifPanel");
   const ns = myNotifs();
   p.innerHTML =
-    '<div class="ph"><b>🔔 Notifications</b><button class="btn ghost" style="padding:4px 10px;font-size:11px" onclick="markAllRead()">Mark all read</button></div><div class="pb">' +
+    '<div class="ph"><b>🔔 Notifications</b><button class="btn ghost u-btn-tiny" onclick="markAllRead()">Mark all read</button></div><div class="pb">' +
     (ns.length
       ? ns
           .slice(0, 40)
           .map(
             (n) =>
-              '<div class="lib-card" style="margin-bottom:8px;' +
-              (n.read ? "opacity:.6" : "") +
-              '"><div style="font-size:12.5px">' +
+              '<div class="lib-card u-mb-8' +
+              (n.read ? " is-read-muted" : "") +
+              '"><div class="u-fs-12-5">' +
               esc(n.msg) +
-              '</div><div class="note" style="margin-top:4px">' +
+              '</div><div class="note u-mt-4">' +
               new Date(n.ts).toLocaleString() +
               "</div></div>",
           )
@@ -73,7 +76,8 @@ function markAllRead() {
   const r = currentUser.role,
     u = currentUser.user;
   all.forEach((n) => {
-    if (n.toRole === r || n.toUser === u) n.read = true;
+    if (n.toRole === r || roleReceives(r, n.toRole) || n.toUser === u)
+      n.read = true;
   });
   saveNotif(all);
   renderNotif();
@@ -140,14 +144,14 @@ function dmList() {
     })
     .sort((a, b) => new Date(b.last.ts) - new Date(a.last.ts));
   p.innerHTML =
-    '<div class="ph"><b>💬 Messages</b><select class="sel" id="ftDMNew" style="max-width:160px;font-size:12px"><option value="">✍️ New…</option>' +
+	    '<div class="ph"><b>💬 Messages</b><select class="sel u-max-w-160 u-fs-12" id="ftDMNew" aria-label="Start a new direct message"><option value="">✍️ New…</option>' +
     users
       .map(
         (u) =>
           '<option value="' +
           u.user +
           '">' +
-          ROLES[u.role].em +
+          getRole(u.role).em +
           " " +
           esc(u.name) +
           "</option>",
@@ -158,15 +162,15 @@ function dmList() {
       ? rows
           .map(
             (r) =>
-              '<div class="lib-card" style="margin-bottom:8px;cursor:pointer" onclick="dmOpen(\'' +
+              '<div class="lib-card u-mb-8 u-cursor-pointer" onclick="dmOpen(\'' +
               r.o +
               '\')"><div class="lib-head"><div><b>' +
-              ROLES[r.role].em +
+              getRole(r.role).em +
               " " +
               esc(r.name) +
               "</b>" +
               (r.un ? ' <span class="pill-count">' + r.un + "</span>" : "") +
-              '<div class="note" style="margin-top:2px">' +
+              '<div class="note u-mt-2">' +
               esc((r.last.body || "").slice(0, 54)) +
               '</div></div><div class="note">' +
               new Date(r.last.ts).toLocaleTimeString() +
@@ -206,27 +210,27 @@ function dmOpen(other) {
     .sort((a, b) => new Date(a.ts) - new Date(b.ts));
   p.innerHTML =
     '<div class="ph"><b>' +
-    ROLES[u.role].em +
+    getRole(u.role).em +
     " " +
     esc(u.name) +
-    '</b><button class="btn ghost" style="padding:4px 10px;font-size:11px" onclick="dmList()">← Back</button></div><div class="dmwrap"><div class="dmbody" id="ftDMBody">' +
+    '</b><button class="btn ghost u-btn-tiny" onclick="dmList()">← Back</button></div><div class="dmwrap"><div class="dmbody" id="ftDMBody">' +
     (conv.length
       ? conv
           .map(
             (m) =>
-              '<div class="msg ' +
+              '<div class="msg u-max-w-88p ' +
               (m.from === me ? "ai" : "cust") +
-              '" style="max-width:88%"><div class="who">' +
+              '"><div class="who">' +
               (m.from === me ? "You" : esc(u.name)) +
               '</div><span class="txt">' +
               esc(m.body) +
-              '</span><div class="note" style="margin-top:3px;opacity:.7">' +
+              '</span><div class="note u-muted-timestamp">' +
               new Date(m.ts).toLocaleString() +
               "</div></div>",
           )
           .join("")
-      : '<div class="note" style="text-align:center;margin-top:20px">Say hello 👋</div>') +
-    '</div><div class="dminput"><input class="inp" id="ftDMInput" placeholder="Type a message…" style="flex:1" onkeydown="if(event.key===\'Enter\'){event.preventDefault();dmSend();}"><button class="btn" onclick="dmSend()">Send</button></div></div>';
+      : '<div class="note u-text-center u-mt-20">Say hello 👋</div>') +
+	    '</div><div class="dminput"><input class="inp u-flex-1" id="ftDMInput" aria-label="Direct message text" placeholder="Type a message…" onkeydown="if(event.key===\'Enter\'){event.preventDefault();dmSend();}"><button class="btn" onclick="dmSend()">Send</button></div></div>';
   const b = document.getElementById("ftDMBody");
   if (b) b.scrollTop = b.scrollHeight;
   const inp = document.getElementById("ftDMInput");

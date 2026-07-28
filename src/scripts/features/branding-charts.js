@@ -79,7 +79,7 @@ function hbars(id, rows) {
     d.innerHTML =
       '<span class="name">' +
       r.n +
-      '</span><div class="track"><span style="width:' +
+      '</span><div class="track"><span data-style-width="' +
       Math.max(12, (r.v / max) * 100) +
       '%">' +
       r.v +

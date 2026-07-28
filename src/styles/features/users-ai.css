@@ -1,21 +1,27 @@
 /* Users, Password Fields, Team, And AI Provider UI */
 
 .db-form {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
+  display:flex;
+  flex-wrap:wrap;
   gap:10px;
   margin-bottom:12px
 }
 
+.db-form>* {
+  flex:1 1 calc((100% - 20px) / 3);
+  min-width:220px
+}
+
 @media(max-width:800px) {
-  .db-form {
-    grid-template-columns:1fr 1fr
+  .db-form>* {
+    flex-basis:calc((100% - 10px) / 2)
   }
 }
 
 @media(max-width:520px) {
-  .db-form {
-    grid-template-columns:1fr
+  .db-form>* {
+    flex-basis:100%;
+    min-width:0
   }
 }
 
@@ -46,8 +52,9 @@
   border-radius:8px;
   background:transparent;
   color:var(--muted);
-  display:grid;
-  place-items:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   line-height:1
 }
 

@@ -2,17 +2,19 @@
           <div class="role-bar">
             <span class="lbl">👤 Session:</span
             ><input
-              class="search"
-              id="acAgentName"
-              placeholder="Agent name"
-              style="margin-bottom: 0; max-width: 140px"
+	              class="search u-mb-0 u-max-w-140"
+	              id="acAgentName"
+	              aria-label="Agent name"
+	              placeholder="Agent name"
+
             /><input
-              class="search"
-              id="acAgentId"
-              placeholder="Agent ID"
-              style="margin-bottom: 0; max-width: 100px"
+	              class="search u-mb-0 u-max-w-100"
+	              id="acAgentId"
+	              aria-label="Agent ID"
+	              placeholder="Agent ID"
+
             />
-            <select class="sel" id="acLang">
+	            <select class="sel" id="acLang" aria-label="Session language">
               <option value="en-US">English (US)</option>
               <option value="en-PH" selected>English (PH)/Taglish</option>
               <option value="fil-PH">Filipino</option>
@@ -30,9 +32,14 @@
               🖥️ Share + 🔊 audio
             </button>
             <div class="dia-ctl">
-              <span class="lbl" style="font-size: 11.5px">🗣️</span
+              <span class="lbl u-fs-11-5">🗣️</span
               ><label class="switch"
-                ><input type="checkbox" id="acDiaOn" checked /><span
+	                ><input
+	                  type="checkbox"
+	                  id="acDiaOn"
+	                  aria-label="Enable diarization"
+	                  checked
+	                /><span
                   class="slider"
                 ></span></label
               ><span class="dia-mode"
@@ -57,17 +64,18 @@
                 </button></span
               >
             </div>
-            <span class="row" style="flex-basis: 100%; margin-top: 6px"
-              ><span class="lbl" style="font-size: 11.5px">🎤 Mic:</span
+            <span class="row u-row-break u-mt-6"
+              ><span class="lbl u-fs-11-5">🎤 Mic:</span
               ><select
-                class="sel ftMicSel"
-                onchange="ftOnMicChange(this.value)"
-                style="max-width: 200px"
+	                class="sel ftMicSel u-max-w-200"
+	                aria-label="Microphone device"
+	                onchange="ftOnMicChange(this.value)"
+
               >
                 <option value="">System default mic</option></select
               ><button
-                class="btn ghost"
-                style="padding: 6px 10px; font-size: 12px"
+                class="btn ghost u-btn-compact"
+
                 onclick="ftGrantMic()"
               >
                 🔄 Detect</button
@@ -83,33 +91,34 @@
             <div class="card">
               <h3>
                 <span class="ic">📝</span> Live Transcript
-                <span class="mic-ind hidden" id="acMicInd" style="margin: 0"
+                <span class="mic-ind hidden u-m-0" id="acMicInd"
                   ><span class="rec"></span> mic</span
-                ><span class="sys-ind hidden" id="acSysInd" style="margin: 0"
+                ><span class="sys-ind hidden u-m-0" id="acSysInd"
                   ><span class="rec"></span> system audio</span
                 >
               </h3>
-              <div class="transcript" id="acTranscript" style="height: 300px">
+              <div class="transcript u-h-300" id="acTranscript">
                 <div class="empty-t" id="acEmptyT">
                   Press <b>Start</b> for the mic, or <b>Share + audio</b>. 🎧
                 </div>
               </div>
-              <textarea
-                id="acManual"
-                placeholder="…type/paste an agent line and press Enter to inject"
-                style="min-height: 44px; margin-top: 10px"
+	              <textarea class="u-min-h-44 u-mt-10"
+	                id="acManual"
+	                aria-label="Manual transcript line"
+	                placeholder="…type/paste an agent line and press Enter to inject"
+
                 onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();acInjectManual();}"
               ></textarea>
             </div>
             <div>
               <div class="ai-panel">
-                <div class="row" style="justify-content: space-between">
-                  <h3 style="margin: 0; font-size: 14px">
+                <div class="row u-justify-between">
+                  <h3 class="u-m-0 u-fs-14">
                     <span class="ic">🤖</span> AI Script Guidance
                   </h3>
                   <span class="ai-badge claude" id="acAiBadge">CLAUDE</span>
                 </div>
-                <div class="ai-provsel" style="margin-top: 10px">
+                <div class="ai-provsel u-mt-10">
                   <button
                     class="ai-prov kb"
                     id="provKB"
@@ -129,33 +138,33 @@
                   >
                     <span class="ai-dot copilot"></span>Copilot</button
                   ><label class="switch" title="Auto-insert"
-                    ><input type="checkbox" id="autoInsert" /><span
+	                    ><input
+	                      type="checkbox"
+	                      id="autoInsert"
+	                      aria-label="Auto-insert AI guidance"
+	                    /><span
                       class="slider"
                     ></span></label
-                  ><span
-                    style="
-                      font-size: 11px;
-                      color: var(--muted);
-                      font-weight: 600;
-                    "
+                  ><span class="u-muted-label"
+
                     >Auto-insert</span
                   ><button
-                    class="btn ghost"
-                    style="padding: 5px 10px; font-size: 12px"
+                    class="btn ghost u-btn-compact-tight"
+
                     onclick="aiGuideManual()"
                   >
                     ↻ Guide
                   </button>
                 </div>
                 <div
-                  class="ai-guide-box"
+                  class="ai-guide-box u-mt-10"
                   id="acAiGuide"
-                  style="margin-top: 10px"
+
                 >
                   <span class="note">Claude guidance appears here.</span>
                 </div>
               </div>
-              <div class="card" style="margin-top: 16px">
+              <div class="card u-mt-16">
                 <h3><span class="ic">⏱️</span> Per-Speaker Talk-Time</h3>
                 <div id="acTalkTime">
                   <div class="note">Analytics appear live.</div>
@@ -163,23 +172,23 @@
               </div>
             </div>
           </div>
-          <div class="card" style="margin-top: 20px">
+          <div class="card u-mt-20">
             <h3><span class="ic">📊</span> Interruption & Overtalk Timeline</h3>
             <div id="acTimeline">
               <div class="note">A color-coded timeline builds live.</div>
             </div>
           </div>
-          <div class="grid g2" style="margin-top: 20px">
+          <div class="grid g2 u-mt-20">
             <div class="card">
               <h3><span class="ic">✅</span> Live Quality Checklist</h3>
               <div id="acChecklist"></div>
               <div
-                class="row"
-                style="justify-content: space-between; margin-top: 12px"
+                class="row u-justify-between u-mt-12"
+
               >
-                <span style="font-weight: 700">Live quality score</span
-                ><span
-                  style="font-weight: 800; font-size: 20px; color: var(--teal)"
+                <span class="u-fw-700">Live quality score</span
+                ><span class="u-score-teal"
+
                   id="acLiveScore"
                   >—</span
                 >
@@ -191,19 +200,19 @@
                 <span id="acShareMsg">No screen shared.</span>
               </div>
               <div class="note" id="acShareNote"></div>
-              <div class="note" id="acRecInd" style="display: none">
+              <div class="note hidden" id="acRecInd">
                 🔴 <b>Recording</b> — mixing mic + system audio…
               </div>
               <button
-                class="btn"
+                class="btn u-mt-10 hidden"
                 id="acDlRec"
-                style="margin-top: 10px; display: none"
+
               >
                 ⬇️ Download recording
               </button>
             </div>
           </div>
-          <div class="grid g2" style="margin-top: 20px">
+          <div class="grid g2 u-mt-20">
             <div class="card">
               <h3><span class="ic">📄</span> AI-Drafted Post-Call Summary</h3>
               <div id="acSummary">
@@ -212,8 +221,8 @@
                 </div>
               </div>
               <button
-                class="btn ghost"
-                style="margin-top: 10px"
+                class="btn ghost u-mt-10"
+
                 onclick="aiDraftSummary('ac')"
               >
                 ✨ AI draft now
@@ -222,11 +231,12 @@
             <div class="card">
               <h3><span class="ic">📄</span> Transcript Evaluation</h3>
               <textarea
-                class="ta"
-                id="acTaInput"
-                placeholder="Paste a transcript, or use the live one…"
+	                class="ta"
+	                id="acTaInput"
+	                aria-label="Transcript evaluation input"
+	                placeholder="Paste a transcript, or use the live one…"
               ></textarea>
-              <div class="row" style="margin-top: 10px">
+              <div class="row u-mt-10">
                 <button class="btn" onclick="acEvalTranscript()">
                   🔍 Evaluate</button
                 ><button class="btn ghost" onclick="acUseLive()">
@@ -235,7 +245,7 @@
                   🏁 End & post
                 </button>
               </div>
-              <div id="acEvalResult" style="margin-top: 14px"></div>
+              <div class="u-mt-14" id="acEvalResult"></div>
             </div>
           </div>
         </section>

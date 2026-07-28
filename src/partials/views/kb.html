@@ -8,39 +8,40 @@
               <h4>📎 Add Documents & Web Sources</h4>
               <div class="tgrid">
                 <div>
-                  <label class="fld"
-                    >Upload files (any type:
-                    PDF/Word/Excel/images/txt/csv)</label
+                  <label class="fld" for="ftKBFiles"
+                    >Upload files (PDF/Word/Excel/images/txt/csv, max 50
+                    MB)</label
                   ><input
                     class="inp"
                     type="file"
                     id="ftKBFiles"
                     multiple
+                    accept=".pdf,.doc,.docx,.docm,.xls,.xlsx,.xlsm,.xlsb,.txt,.csv,image/*"
                     onchange="kbUpload(event)"
                   />
                 </div>
                 <div>
-                  <label class="fld"
+                  <label class="fld" for="ftKBUrl"
                     >Connect a public website (fetch text)</label
                   >
                   <div class="row">
                     <input
-                      class="inp"
+                      class="inp u-flex-1"
                       id="ftKBUrl"
                       placeholder="https://example.com/help"
-                      style="flex: 1"
+
                     /><button class="btn" onclick="kbFetch()">🌐 Fetch</button>
                   </div>
                 </div>
               </div>
               <div class="conn" id="ftKBMsg"></div>
-              <div id="ftKBAssets" style="margin-top: 10px"></div>
+              <div class="u-mt-10" id="ftKBAssets"></div>
             </div>
             <div class="trainer-box">
               <h4>🧑‍🏫 Trainer: Add / Update Module</h4>
               <div class="tgrid">
                 <div>
-                  <label class="fld">Title</label
+                  <label class="fld" for="tTitle">Title</label
                   ><input
                     class="inp"
                     id="tTitle"
@@ -48,7 +49,7 @@
                   />
                 </div>
                 <div>
-                  <label class="fld">Category</label
+                  <label class="fld" for="tCat">Category</label
                   ><select class="inp" id="tCat">
                     <option>Billing & Payments</option>
                     <option>Technical Support</option>
@@ -59,14 +60,14 @@
                   </select>
                 </div>
               </div>
-              <label class="fld">Answer</label
+              <label class="fld" for="tBody">Answer</label
               ><textarea
                 id="tBody"
                 placeholder="The answer the AI should give…"
               ></textarea>
-              <div class="tgrid" style="margin-top: 10px">
+              <div class="tgrid u-mt-10">
                 <div>
-                  <label class="fld">Keywords</label
+                  <label class="fld" for="tKeys">Keywords</label
                   ><input
                     class="inp"
                     id="tKeys"
@@ -74,18 +75,18 @@
                   />
                 </div>
                 <div>
-                  <label class="fld">Reference link</label
+                  <label class="fld" for="tLink">Reference link</label
                   ><input class="inp" id="tLink" placeholder="https://…" />
                 </div>
               </div>
-              <div class="row" style="margin-top: 12px">
+              <div class="row u-mt-12">
                 <button class="btn" onclick="addModule()">➕ Add</button
                 ><button class="btn ghost" onclick="exportKB()">
                   ⬇️ Export</button
-                ><span class="note" id="tMsg" style="margin: 0"></span>
+                ><span class="note u-m-0" id="tMsg"></span>
               </div>
             </div>
-            <input class="search" id="kbSearch" placeholder="🔍 Search…" />
+            <input class="search" id="kbSearch" aria-label="Search knowledge base" placeholder="🔍 Search…" />
             <div id="kbList"></div>
           </div>
         </section>

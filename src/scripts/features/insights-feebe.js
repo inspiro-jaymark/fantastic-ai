@@ -70,11 +70,11 @@ function inWordCloud(ia) {
       return (
         '<span title="' +
         c +
-        ' mentions" style="font-size:' +
+        ' mentions" class="' +
+        (sz > 28 ? "u-fw-800" : "u-fw-600") +
+        '" data-style-font-size="' +
         sz +
-        "px;font-weight:" +
-        (sz > 28 ? 800 : 600) +
-        ";color:" +
+        'px" data-style-color="' +
         pal[i % pal.length] +
         '">' +
         esc(w) +
@@ -287,7 +287,7 @@ function renderInsights() {
           '</b><div class="sub">' +
           (a.site ? esc(a.site) + " · " : "") +
           a.n +
-          ' interactions</div></div><div class="lb-pts" style="color:' +
+          ' interactions</div></div><div class="lb-pts" data-style-color="' +
           heatColor(a.avg) +
           '">' +
           a.avg +
@@ -303,9 +303,9 @@ function renderInsights() {
         (a) =>
           '<div class="hbar-row"><span class="name">' +
           esc(a.name) +
-          '</span><div class="track"><span style="width:' +
+          '</span><div class="track"><span data-style-width="' +
           Math.max(10, a.avg) +
-          "%;background:" +
+          '%" data-style-background="' +
           heatColor(a.avg) +
           '">' +
           a.avg +
@@ -323,15 +323,15 @@ function renderInsights() {
   });
   const stt = pos + neu + neg || 1;
   document.getElementById("inSent").innerHTML =
-    '<div class="senti-bar"><div class="pos" style="width:' +
+    '<div class="senti-bar"><div class="pos" data-style-width="' +
     Math.round((pos / stt) * 100) +
     '%">' +
     Math.round((pos / stt) * 100) +
-    '%</div><div class="neu" style="width:' +
+    '%</div><div class="neu" data-style-width="' +
     Math.round((neu / stt) * 100) +
     '%">' +
     Math.round((neu / stt) * 100) +
-    '%</div><div class="neg" style="width:' +
+    '%</div><div class="neg" data-style-width="' +
     Math.round((neg / stt) * 100) +
     '%">' +
     Math.round((neg / stt) * 100) +
@@ -358,7 +358,7 @@ function renderInsights() {
     .map((r) => {
       const s = sevIc[r.sev] || sevIc.med;
       return (
-        '<div class="rec"><div class="ic2" style="background:' +
+        '<div class="rec"><div class="ic2" data-style-background="' +
         s[1] +
         '">' +
         s[0] +
@@ -418,7 +418,7 @@ async function aiInsights() {
   }
   if (!(aiCfg.provider === "claude" && aiCfg.claudeKey)) {
     box.innerHTML =
-      '<div class="conn err" style="display:block">⚠️ Connect Claude in Setup (paste key + Test) for deep AI insights. Rule-based recommendations are shown above.</div>';
+      '<div class="conn err">⚠️ Connect Claude in Setup (paste key + Test) for deep AI insights. Rule-based recommendations are shown above.</div>';
     return;
   }
   box.innerHTML =
@@ -454,11 +454,11 @@ async function aiInsights() {
     box.innerHTML =
       '<div class="ai-guide-box">' +
       mdToHtml(ans) +
-      '</div><div class="ai-badge claude" style="margin-top:8px">Claude deep insights</div>';
+      '</div><div class="ai-badge claude u-mt-8">Claude deep insights</div>';
     logAudit("AI insights generated", ia.length + " interactions", "config");
   } catch (e) {
     box.innerHTML =
-      '<div class="conn err" style="display:block">⚠️ ' +
+      '<div class="conn err">⚠️ ' +
       esc(e.message) +
       "</div>";
   }
@@ -533,9 +533,9 @@ async function botAnswer(q) {
     base = hits
       .map(
         (h) =>
-          '<div style="margin-bottom:8px"><b>' +
+          '<div class="u-mb-8"><b>' +
           esc(h.title) +
-          '</b> <span class="tag" style="margin:0">' +
+          '</b> <span class="tag u-m-0">' +
           h.src +
           "</span><br>" +
           esc(h.body) +
@@ -572,7 +572,7 @@ async function botAnswer(q) {
       );
       el.querySelector(".txt").innerHTML =
         esc(ans).replace(/\n/g, "<br>") +
-        '<div class="note" style="margin-top:6px">📚 grounded in KB · <span class="ai-badge claude">Claude</span></div>';
+        '<div class="note u-mt-6">📚 grounded in KB · <span class="ai-badge claude">Claude</span></div>';
     } catch (e) {
       el.querySelector(".txt").innerHTML =
         base +

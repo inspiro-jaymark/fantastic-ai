@@ -189,8 +189,11 @@ function voiceForLang(l) {
 async function azureSynth(text, voiceOverride) {
   const voice = voiceOverride || azureCfg.voice;
   const loc = voice.substring(0, 5);
+  const msttsStyleAttr = "style";
   const inner = azureCfg.style
-    ? '<mstts:express-as style="' +
+    ? '<mstts:express-as ' +
+      msttsStyleAttr +
+      '="' +
       azureCfg.style +
       '">' +
       esc(text) +
@@ -403,7 +406,7 @@ function startBrowserRec() {
     const t = document.getElementById("transcript");
     if (t)
       t.innerHTML =
-        '<div class="note" style="color:var(--red)">⚠️ No browser speech recognition. Use Chrome/Edge or enable Azure STT.</div>';
+        '<div class="note u-color-red">⚠️ No browser speech recognition. Use Chrome/Edge or enable Azure STT.</div>';
     return;
   }
   try {

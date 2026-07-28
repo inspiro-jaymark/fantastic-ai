@@ -1,12 +1,12 @@
         <section id="supqueue" class="view hidden">
           <div class="folder-head">
             <div>
-              <h3 style="font-size: 17px">
+              <h3 class="u-fs-17">
                 <span class="ic">📥</span> Evaluations Inbox
                 <span
-                  class="pill-count hidden"
+                  class="pill-count hidden u-bg-magenta"
                   id="supInboxCount"
-                  style="background: var(--magenta)"
+
                   >0</span
                 >
               </h3>
@@ -14,7 +14,7 @@
                 Evaluations sent by QA. Add feedback, then Notify QA.
               </div>
             </div>
-            <select class="sel" id="supFilter" onchange="renderSupQueue()">
+            <select class="sel" id="supFilter" aria-label="Supervisor queue filter" onchange="renderSupQueue()">
               <option value="all">All</option>
               <option value="sent">Awaiting feedback</option>
               <option value="feedback_done">Feedback done</option>
@@ -23,9 +23,9 @@
           </div>
           <div id="supQueueList"></div>
           <div
-            class="note"
+            class="note u-empty-inline"
             id="supQueueEmpty"
-            style="text-align: center; margin: 20px"
+
           >
             No evaluations yet.
           </div>

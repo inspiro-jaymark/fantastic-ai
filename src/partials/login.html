@@ -11,9 +11,9 @@
         </div>
         <h2>FANTASTIC TOOL</h2>
         <div class="sub">AI Customer Experience Voice Platform · v3.2</div>
-        <label class="fld">Username</label
+        <label class="fld" for="loginUser">Username</label
         ><input class="inp" id="loginUser" placeholder="e.g. admin" />
-        <label class="fld">Password</label>
+        <label class="fld" for="loginPass">Password</label>
         <div class="password-wrap">
           <input
             class="inp"
@@ -46,8 +46,7 @@
           </button>
         </div>
         <button
-          class="btn"
-          style="width: 100%; margin-top: 8px"
+          class="btn u-w-full u-mt-8"
           onclick="doLogin()"
         >
           🔐 Sign in
@@ -55,7 +54,7 @@
         <div class="login-err" id="loginErr"></div>
         <div class="demo-hint">
           <b>Demo accounts</b> (click to fill):
-          <div class="role-hero" style="margin-top: 8px">
+          <div class="role-hero u-mt-8">
             <div class="role-tile" onclick="fillLogin('admin','admin123')">
               <div class="em">👑</div>
               <div class="t">Admin</div>

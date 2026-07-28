@@ -187,8 +187,8 @@ function aiFormat(txt, target) {
       });
     } else if (tip)
       html +=
-        '<div class="note" style="margin-top:8px">🎓 ' + tip[1] + "</div>";
-    else html += '<div style="margin-top:6px">' + l + "</div>";
+        '<div class="note u-mt-8">🎓 ' + tip[1] + "</div>";
+    else html += '<div class="u-mt-6">' + l + "</div>";
   });
   return html || "<div>" + txt + "</div>";
 }
@@ -231,7 +231,7 @@ function kbGuide(target) {
   if (best && score > 0) {
     box.innerHTML =
       sugg(best.a.split(".")[0] + ".", target, true) +
-      '<div class="note" style="margin-top:6px">📌 KB: ' +
+      '<div class="note u-mt-6">📌 KB: ' +
       best.q +
       "</div>";
     window._lastSay = best.a.split(".")[0] + ".";
@@ -242,7 +242,7 @@ function kbGuide(target) {
         target,
         true,
       ) +
-      '<div class="note" style="margin-top:6px">Built-in KB guidance (connect Claude for full multilingual script).</div>';
+      '<div class="note u-mt-6">Built-in KB guidance (connect Claude for full multilingual script).</div>';
     window._lastSay = "Acknowledge, empathize, and ask a clarifying question.";
   }
   maybeAutoInsert(target);
@@ -286,7 +286,7 @@ async function aiGuide(target, force) {
     maybeAutoInsert(target);
   } catch (e) {
     box.innerHTML =
-      '<div class="conn err" style="display:block">⚠️ ' +
+      '<div class="conn err">⚠️ ' +
       e.message +
       " — using KB.</div>";
     kbGuide(target);
@@ -361,16 +361,14 @@ async function aiDraftSummary(target) {
       box.innerHTML =
         '<div class="ai-guide-box">' +
         txt.replace(/\n/g, "<br>") +
-        '</div><div class="ai-badge ' +
-        aiCfg.provider +
-        '" style="margin-top:8px">' +
+        '</div><div class="ai-badge ' + aiCfg.provider + ' u-mt-8">' +
         (aiCfg.provider === "claude" ? "Claude" : "Copilot") +
         "-drafted</div>";
     return txt;
   } catch (e) {
     if (box)
       box.innerHTML =
-        '<div class="conn err" style="display:block">⚠️ ' +
+        '<div class="conn err">⚠️ ' +
         e.message +
         "</div>";
   }

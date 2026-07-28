@@ -344,8 +344,9 @@ function applyRole(mode) {
   document
     .getElementById("roleCustomer")
     .classList.toggle("on", mode === "customer");
-  document.getElementById("scenarioPick").style.display =
-    mode === "customer" ? "" : "none";
+  document
+    .getElementById("scenarioPick")
+    .classList.toggle("hidden", mode !== "customer");
   document.getElementById("agName").textContent =
     mode === "customer"
       ? "Customer (AI)"

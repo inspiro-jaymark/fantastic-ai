@@ -221,7 +221,9 @@ function renderRules() {
       r.sev +
       "</span><p>" +
       r.desc +
-      '</p></div><label class="switch"><input type="checkbox" ' +
+	      '</p></div><label class="switch"><input type="checkbox" aria-label="Enable ' +
+	      esc(r.name) +
+	      ' fraud detection rule" ' +
       (r.on ? "checked" : "") +
       " onchange=\"toggleRule('" +
       r.id +

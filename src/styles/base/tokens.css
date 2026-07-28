@@ -19,5 +19,7 @@
   --blue:#2563eb;
   --claude:#d97757;
   --copilot:#0078d4;
-  --shadow:0 10px 30px rgba(14,124,123,.10)
+  --shadow:0 10px 30px rgba(14,124,123,.10);
+  --header-height:68px;
+  --side-nav-width:276px
 }

@@ -400,9 +400,9 @@ async function startMixRecording() {
     };
     mixRec.start(1000);
     const b = document.getElementById("acDlRec");
-    if (b) b.style.display = "none";
+    if (b) b.classList.add("hidden");
     const s = document.getElementById("acRecInd");
-    if (s) s.style.display = "";
+    if (s) s.classList.remove("hidden");
   } catch (e) {
     console.warn("mix", e);
   }
@@ -436,7 +436,7 @@ function stopMixRecording() {
       const kb = Math.round(blob.size / 1024);
       const b = document.getElementById("acDlRec");
       if (b) {
-        b.style.display = "";
+        b.classList.remove("hidden");
         b.textContent = "⬇️ Download recording (" + kb + " KB · mic + system)";
         b.onclick = () => {
           const a = document.createElement("a");
@@ -449,7 +449,7 @@ function stopMixRecording() {
         };
       }
       const s = document.getElementById("acRecInd");
-      if (s) s.style.display = "none";
+      if (s) s.classList.add("hidden");
       try {
         acMicStream && acMicStream.getTracks().forEach((t) => t.stop());
       } catch (e) {}
@@ -553,11 +553,11 @@ function acRenderTalkTime() {
   const interr = acConvo.filter((c) => c.interrupted).length;
   const sys = acConvo.filter((c) => c.src === "system").length;
   el.innerHTML =
-    '<div class="tt-wrap"><div class="tt-a" style="width:' +
+    '<div class="tt-wrap"><div class="tt-a" data-style-width="' +
     Math.max(6, aPct) +
     '%">🎧 ' +
     aPct +
-    '%</div><div class="tt-c" style="width:' +
+    '%</div><div class="tt-c" data-style-width="' +
     Math.max(6, cPct) +
     '%">🧑 ' +
     cPct +
@@ -593,14 +593,14 @@ function acRenderTimeline() {
         const w = ((c.dur || 1) / total) * 100;
         if (c.speaker !== role)
           return (
-            '<div class="tl-seg" style="width:' +
+            '<div class="tl-seg u-bg-transparent" data-style-width="' +
             w +
-            '%;background:transparent"></div>'
+            '%"></div>'
           );
         return (
           '<div class="tl-seg ' +
           (c.interrupted ? "overtalk" : role) +
-          '" style="width:' +
+          '" data-style-width="' +
           w +
           '%" title="' +
           role +
@@ -619,7 +619,7 @@ function acRenderTimeline() {
     segs("agent") +
     '</div></div><div class="tl-row"><div class="tl-lab">🧑 Customer</div><div class="tl-track">' +
     segs("customer") +
-    '</div></div></div><div class="tl-legend"><span><i style="background:var(--teal)"></i>Agent</span><span><i style="background:#475569"></i>Customer</span><span><i style="background:#dc2626"></i>🔴 Overtalk</span></div><div class="note">' +
+    '</div></div></div><div class="tl-legend"><span><i class="u-bg-teal"></i>Agent</span><span><i class="u-bg-slate"></i>Customer</span><span><i class="u-bg-red"></i>🔴 Overtalk</span></div><div class="note">' +
     acConvo.length +
     " turns · " +
     interr +
@@ -755,11 +755,11 @@ function acEvalTranscript() {
   });
   const pct = Math.round((earned / total) * 100);
   document.getElementById("acEvalResult").innerHTML =
-    '<div style="font-size:30px;font-weight:800;color:' +
+    '<div class="u-score-large" data-style-color="' +
     (pct >= 85 ? "var(--green)" : pct >= 70 ? "var(--amber)" : "var(--red)") +
     '">' +
     pct +
-    '<span style="font-size:15px">/100</span></div>' +
+    '<span class="u-fs-15">/100</span></div>' +
     rows
       .map(
         (r) =>
@@ -769,7 +769,7 @@ function acEvalTranscript() {
           (r.ok ? "✓" : "✕") +
           "</div><div>" +
           r.label +
-          '</div><span style="margin-left:auto;font-weight:700">' +
+          '</div><span class="u-right-strong">' +
           (r.ok ? r.w : 0) +
           "/" +
           r.w +

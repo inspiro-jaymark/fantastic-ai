@@ -1,13 +1,13 @@
         <section id="team" class="view hidden">
           <div class="folder-head">
             <div>
-              <h3 style="font-size: 17px">
+              <h3 class="u-fs-17">
                 <span class="ic">🏢</span> Team Dashboard
               </h3>
               <div class="note">Rolls up scores & team leaders by group.</div>
             </div>
             <div class="row">
-              <label class="fld" style="margin: 0">Group by:</label
+              <label class="fld u-m-0" for="teamGroup">Group by:</label
               ><select class="sel" id="teamGroup" onchange="renderTeam()">
                 <option value="site">Site</option>
                 <option value="bu">BU</option>
@@ -36,7 +36,7 @@
               <div class="l">Top Team</div>
             </div>
           </div>
-          <div class="card" style="margin-top: 20px">
+          <div class="card u-mt-20">
             <h3><span class="ic">🏅</span> Team Leaders</h3>
             <div id="teamLeaders">
               <div class="note">
@@ -44,7 +44,7 @@
               </div>
             </div>
           </div>
-          <div class="grid g2" style="margin-top: 20px">
+          <div class="grid g2 u-mt-20">
             <div class="card">
               <h3><span class="ic">📊</span> Avg by Group</h3>
               <div id="teamBars"><div class="note">No data yet.</div></div>
@@ -54,13 +54,13 @@
               <div id="teamVol"><div class="note">No data yet.</div></div>
             </div>
           </div>
-          <div class="card" style="margin-top: 20px">
+          <div class="card u-mt-20">
             <h3><span class="ic">🗂️</span> Group Rollup</h3>
             <div id="teamDetail"></div>
             <div
-              class="note"
+              class="note u-empty-inline"
               id="teamEmpty"
-              style="text-align: center; margin: 20px"
+
             >
               No matched interactions yet.
             </div>

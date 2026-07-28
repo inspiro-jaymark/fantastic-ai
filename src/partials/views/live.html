@@ -24,7 +24,7 @@
                 🧑 Customer (train)
               </button>
             </div>
-            <select class="sel" id="scenarioPick" style="display: none">
+	            <select class="sel hidden" id="scenarioPick" aria-label="Training scenario">
               <option value="billing">💳 Billing</option>
               <option value="outage">📡 Outage</option>
               <option value="cancel">😠 Cancel</option>
@@ -32,8 +32,8 @@
               <option value="refund">💵 Refund</option>
               <option value="random">🎲 Random</option>
             </select>
-            <span class="lbl" style="margin-left: auto">🌐 Reply:</span
-            ><select class="sel" id="liveLangMode">
+            <span class="lbl u-ml-auto">🌐 Reply:</span
+	            ><select class="sel" id="liveLangMode" aria-label="Reply language">
               <option value="auto" selected>Auto (match caller)</option>
               <option value="en">English</option>
               <option value="tl">Tagalog</option>
@@ -43,26 +43,31 @@
               <option value="war">Waray</option>
               <option value="taglish">Taglish</option>
             </select>
-            <span class="row" style="flex-basis: 100%; margin-top: 6px"
-              ><span class="lbl" style="font-size: 11.5px">🎤 Mic:</span
+            <span class="row u-row-break u-mt-6"
+              ><span class="lbl u-fs-11-5">🎤 Mic:</span
               ><select
-                class="sel ftMicSel"
-                onchange="ftOnMicChange(this.value)"
-                style="max-width: 200px"
+	                class="sel ftMicSel u-max-w-200"
+	                aria-label="Microphone device"
+	                onchange="ftOnMicChange(this.value)"
+
               >
                 <option value="">System default mic</option></select
               ><button
-                class="btn ghost"
-                style="padding: 6px 10px; font-size: 12px"
+                class="btn ghost u-btn-compact"
+
                 onclick="ftGrantMic()"
               >
                 🔄 Detect</button
               ><label class="switch" title="Remember as default"
-                ><input type="checkbox" id="ftMicDefault" /><span
+	                ><input
+	                  type="checkbox"
+	                  id="ftMicDefault"
+	                  aria-label="Remember selected microphone as default"
+	                /><span
                   class="slider"
                 ></span></label
-              ><span
-                style="font-size: 11px; color: var(--muted); font-weight: 600"
+              ><span class="u-muted-label"
+
                 >Default</span
               ><span class="lvlmeter"><span id="ftLvlBar"></span></span
             ></span>
@@ -114,13 +119,13 @@
                   </div>
                 </div>
               </div>
-              <div class="card" style="margin-top: 16px">
+              <div class="card u-mt-16">
                 <h3>
                   <span class="ic">📷</span> Agent Camera & Mood
                   <span
-                    class="ai-badge"
+                    class="ai-badge u-bg-face"
                     id="moodBadge"
-                    style="background: #ede9fe; color: #6d28d9"
+
                     >FACE-API</span
                   >
                 </h3>
@@ -139,17 +144,17 @@
                     >🔴 Live · on-device</span
                   >
                 </div>
-                <div class="row" style="justify-content: space-between">
-                  <div style="display: flex; align-items: center; gap: 10px">
+                <div class="row u-justify-between">
+                  <div class="u-flex u-items-center u-gap-10">
                     <span class="moodface" id="moodFace">😐</span>
                     <div>
-                      <div style="font-weight: 800" id="moodLabel">Neutral</div>
-                      <div class="note" style="margin: 0" id="moodDetail">
+                      <div class="u-fw-800" id="moodLabel">Neutral</div>
+                      <div class="note u-m-0" id="moodDetail">
                         Expression: —
                       </div>
                     </div>
                   </div>
-                  <span class="note" id="moodConf" style="margin: 0"></span>
+                  <span class="note u-m-0" id="moodConf"></span>
                 </div>
                 <div class="mood-meter"><span id="moodBar"></span></div>
                 <div class="mood-scale">
@@ -157,7 +162,7 @@
                   ><span>😀 Positive</span>
                 </div>
               </div>
-              <div class="card" style="margin-top: 16px">
+              <div class="card u-mt-16">
                 <h3>
                   <span class="ic">🤖</span> AI Script (Claude)
                   <span class="ai-badge claude" id="liveAiBadge">CLAUDE</span>
@@ -169,30 +174,30 @@
                   >
                 </div>
               </div>
-              <div class="card" style="margin-top: 16px">
+              <div class="card u-mt-16">
                 <h3><span class="ic">😊</span> Customer Sentiment</h3>
                 <div class="senti-bar">
-                  <div class="pos" id="sPos" style="width: 34%">34%</div>
-                  <div class="neu" id="sNeu" style="width: 50%">50%</div>
-                  <div class="neg" id="sNeg" style="width: 16%">16%</div>
+                  <div class="pos w-34pct" id="sPos">34%</div>
+                  <div class="neu w-50pct" id="sNeu">50%</div>
+                  <div class="neg w-16pct" id="sNeg">16%</div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="card" style="margin-top: 20px">
+          <div class="card u-mt-20">
             <div class="folder-head">
-              <h3 style="margin: 0">
+              <h3 class="u-m-0">
                 <span class="ic">📋</span> QA Evaluation & Call Rating
               </h3>
               <div class="row">
                 <span
-                  class="note"
+                  class="note u-m-0 u-fw-700"
                   id="liveQAScore"
-                  style="margin: 0; font-weight: 700"
+
                 ></span
                 ><button
-                  class="btn ghost"
-                  style="padding: 6px 12px; font-size: 12px"
+                  class="btn ghost u-btn-compact-wide"
+
                   onclick="exportLiveQA()"
                 >
                   ⬇️ Export QA (CSV)
@@ -219,12 +224,8 @@
                 </div>
               </div>
               <div
-                class="row"
-                style="
-                  justify-content: space-between;
-                  margin-top: 16px;
-                  align-items: center;
-                "
+                class="row u-justify-between u-mt-16 u-items-center"
+
               >
                 <div>
                   <label class="fld">Your rating</label>
@@ -236,15 +237,15 @@
                     ><span class="st" data-v="5">★</span>
                   </div>
                 </div>
-                <div style="flex: 1; min-width: 200px">
-                  <label class="fld">Evaluator note</label
+                <div class="u-flex-1-min-200">
+	                  <label class="fld" for="liveRateNote">Evaluator note</label
                   ><input
                     class="inp"
                     id="liveRateNote"
                     placeholder="Coaching note…"
                   />
                 </div>
-                <div style="display: flex; align-items: flex-end">
+                <div class="u-flex u-align-end">
                   <button class="btn yellow" onclick="submitLiveRating()">
                     ✅ Submit rating
                   </button>

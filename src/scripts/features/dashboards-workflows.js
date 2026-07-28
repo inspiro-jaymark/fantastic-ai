@@ -77,11 +77,11 @@ function renderAgentDash() {
             (x.topic ? ' <span class="tag">' + esc(x.topic) + "</span>" : "") +
             '<div class="lib-meta"><span>' +
             new Date(x.ts).toLocaleString() +
-            '</span></div><div class="script-card" style="margin-top:6px">' +
+            '</span></div><div class="script-card u-mt-6">' +
             mdToHtml(x.body) +
             '</div></div><div class="lib-actions">' +
             (x.ack
-              ? '<span class="tag" style="background:#dcfce7;color:#166534">✓ acknowledged</span>'
+              ? '<span class="tag u-bg-ack">✓ acknowledged</span>'
               : "<button onclick=\"ackCoach('" +
                 x.id +
                 "')\">✅ Acknowledge</button>") +
@@ -198,34 +198,34 @@ function autoGap(rec) {
 function evalActionsHTML(rec) {
   const topics = loadTopics();
   const sups = loadUsers().filter(
-    (u) => u.role === "supervisor" && u.status === "active",
+    (u) => roleReceives(u.role, "supervisor") && u.status === "active",
   );
   return (
-    '<div class="script-card" style="margin-top:10px"><div class="row" style="justify-content:space-between"><b>🧪 QA action</b><button class="btn ghost" style="padding:4px 10px;font-size:11px" onclick="evAutoGap(\'' +
+    '<div class="script-card u-mt-10"><div class="row u-justify-between"><b>🧪 QA action</b><button class="btn ghost u-btn-tiny" onclick="evAutoGap(\'' +
     rec.id +
     '\')">⚡ Auto gap analysis</button></div><div id="gap_' +
     rec.id +
-    '" class="note" style="margin-top:6px"></div><div class="tgrid" style="margin-top:8px"><div><label class="fld">Recommend enroll to topic</label><select class="inp" id="etopic_' +
+	    '" class="note u-mt-6"></div><div class="tgrid u-mt-8"><div><label class="fld">Recommend enroll to topic</label><select class="inp" aria-label="Recommend enrollment topic" id="etopic_' +
     rec.id +
     '">' +
     topics
       .map((t) => '<option value="' + t.id + '">' + esc(t.name) + "</option>")
       .join("") +
-    '</select></div><div><label class="fld">Send to supervisor</label><select class="inp" id="esup_' +
+	    '</select></div><div><label class="fld">Send to supervisor</label><select class="inp" aria-label="Send evaluation to supervisor" id="esup_' +
     rec.id +
     '"><option value="">(any supervisor)</option>' +
     sups
       .map((u) => '<option value="' + u.user + '">' + esc(u.name) + "</option>")
       .join("") +
-    '</select></div></div><label class="fld" style="margin-top:6px">Evaluation notes (Markdown)</label><textarea id="enote_' +
+	    '</select></div></div><label class="fld u-mt-6">Evaluation notes (Markdown)</label><textarea aria-label="Evaluation notes" id="enote_' +
     rec.id +
-    '" placeholder="## Coaching&#10;- **Empathy:** apologize sooner&#10;- Enroll to *De-escalation*"></textarea><div class="row" style="margin-top:8px"><button class="btn" onclick="evSend(\'' +
+    '" placeholder="## Coaching&#10;- **Empathy:** apologize sooner&#10;- Enroll to *De-escalation*"></textarea><div class="row u-mt-8"><button class="btn" onclick="evSend(\'' +
     rec.id +
     '\')">📤 Send eval to Supervisor</button><button class="btn yellow" onclick="evRecommend(\'' +
     rec.id +
-    '\')">🎓 Recommend enrollment</button><span class="note" id="emsg_' +
+    '\')">🎓 Recommend enrollment</button><span class="note u-m-0" id="emsg_' +
     rec.id +
-    '" style="margin:0"></span></div></div>'
+    '"></span></div></div>'
   );
 }
 function renderEval() {
@@ -272,9 +272,9 @@ function renderEval() {
           (r) =>
             '<div class="hbar-row"><span class="name">' +
             esc(r.agent || "Unknown") +
-            '</span><div class="track"><span style="width:' +
+            '</span><div class="track"><span data-style-width="' +
             Math.max(12, r.gapPct) +
-            "%;background:" +
+            '%" data-style-background="' +
             heatColor(r.gapPct) +
             '">' +
             r.gapPct +
@@ -322,7 +322,7 @@ function evAutoGap(id) {
   const g = autoGap(rec);
   const box = document.getElementById("gap_" + id);
   box.innerHTML =
-    'Auto QA: <b style="color:' +
+    'Auto QA: <b data-style-color="' +
     (g.pct >= 85
       ? "var(--green)"
       : g.pct >= 70
@@ -467,7 +467,7 @@ function renderFraudDash() {
             esc(r.agent || "Unknown") +
             '</b><div class="lib-meta"><span>' +
             new Date(r.date).toLocaleDateString() +
-            '</span><span style="color:var(--red)">🛡️ Risk ' +
+            '</span><span class="u-color-red">🛡️ Risk ' +
             r.fraudScore +
             "</span></div></div></div></div>",
         )
@@ -518,7 +518,7 @@ function renderAdminDash() {
   );
   const roles = {};
   users.forEach(
-    (u) => (roles[ROLES[u.role].label] = (roles[ROLES[u.role].label] || 0) + 1),
+    (u) => (roles[getRole(u.role).label] = (roles[getRole(u.role).label] || 0) + 1),
   );
   hbars(
     "admRoles",
@@ -535,9 +535,15 @@ function renderAdminDash() {
     (aiCfg.provider === "copilot" && aiCfg.copKey)
       ? " · key set"
       : " · no key") +
-    '</span></div><div class="sum-line"><b>Roles</b><span>6 (Agent·Evaluator·Supervisor·Trainer·Fraud·Admin)</span></div><div class="sum-line"><b>Insights</b><span>📈 word cloud · gap analysis · recommendations</span></div><div class="sum-line"><b>KB Bot</b><span>FeeBe 🤖 active</span></div><div class="sum-line"><b>Languages</b><span>EN·TL·Ceb·Hil·Ilo·War·Taglish·JP·HK</span></div><div class="sum-line"><b>Audit events</b><span>' +
+    '</span></div><div class="sum-line"><b>Roles</b><span>' +
+    Object.keys(ROLES).length +
+    " (" +
+    FIXED_ROLE_IDS.length +
+    " fixed · " +
+    loadCustomRoles().length +
+    ' custom)</span></div><div class="sum-line"><b>Insights</b><span>📈 word cloud · gap analysis · recommendations</span></div><div class="sum-line"><b>KB Bot</b><span>FeeBe 🤖 active</span></div><div class="sum-line"><b>Languages</b><span>EN·TL·Ceb·Hil·Ilo·War·Taglish·JP·HK</span></div><div class="sum-line"><b>Audit events</b><span>' +
     loadAudit().length +
-    '</span></div><div style="margin-top:12px"><button class="btn ghost" onclick="showView(\'insights\')">📈 Insights</button> <button class="btn ghost" onclick="showView(\'access\')">🔐 Access</button> <button class="btn ghost" onclick="showView(\'audit\')">🧾 Audit</button></div>';
+    '</span></div><div class="u-mt-12"><button class="btn ghost" onclick="showView(\'insights\')">📈 Insights</button> <button class="btn ghost" onclick="showView(\'access\')">🔐 Access</button> <button class="btn ghost" onclick="showView(\'audit\')">🧾 Audit</button></div>';
 }
 function renderSupervisorDash() {
   const evs = loadEvals();
@@ -565,9 +571,9 @@ function renderSupervisorDash() {
           (e) =>
             '<div class="hbar-row"><span class="name">' +
             esc(e.agent) +
-            '</span><div class="track"><span style="width:' +
+            '</span><div class="track"><span data-style-width="' +
             Math.max(12, e.score) +
-            "%;background:" +
+            '%" data-style-background="' +
             heatColor(e.score) +
             '">' +
             e.score +
@@ -593,7 +599,7 @@ function renderSupervisorDash() {
   const sel = document.getElementById("coachAgent");
   if (sel) {
     const ags = loadUsers().filter(
-      (u) => u.role === "agent" && u.status === "active",
+      (u) => roleReceives(u.role, "agent") && u.status === "active",
     );
     sel.innerHTML =
       ags
@@ -674,7 +680,7 @@ function renderCoachHist() {
   const el = document.getElementById("coachHist");
   if (!el) return;
   const mine = loadCoach().filter(
-    (x) => x.from === currentUser.user || currentUser.role === "admin",
+    (x) => x.from === currentUser.user || roleActsAs(currentUser.role, "admin"),
   );
   el.innerHTML = mine.length
     ? mine
@@ -686,11 +692,11 @@ function renderCoachHist() {
             "</b>" +
             (x.topic ? ' <span class="tag">' + esc(x.topic) + "</span>" : "") +
             (x.ack
-              ? ' <span class="tag" style="background:#dcfce7;color:#166534">acknowledged</span>'
+              ? ' <span class="tag u-bg-ack">acknowledged</span>'
               : ' <span class="tag y">sent</span>') +
             '<div class="lib-meta"><span>' +
             new Date(x.ts).toLocaleString() +
-            '</span></div><div class="script-card" style="margin-top:6px">' +
+            '</span></div><div class="script-card u-mt-6">' +
             mdToHtml(x.body) +
             "</div></div></div></div>",
         )
@@ -713,7 +719,7 @@ function renderSupQueue() {
           ? '<span class="tag y">Awaiting feedback</span>'
           : e.status === "feedback_done"
             ? '<span class="tag">Feedback done</span>'
-            : '<span class="tag" style="background:#dcfce7;color:#166534">QA notified</span>';
+            : '<span class="tag u-bg-ack">QA notified</span>';
       const rec = loadInteractions().find((x) => x.id === e.interactionId);
       return (
         '<div class="lib-card"><div class="lib-head"><div><b>' +
@@ -732,19 +738,19 @@ function renderSupQueue() {
         (topic ? "<span>🎓 rec: " + esc(topic.name) + "</span>" : "") +
         "</div>" +
         (e.gaps && e.gaps.length
-          ? '<div style="margin-top:6px">' +
+          ? '<div class="u-mt-6">' +
             e.gaps
               .map((g) => '<span class="tag r">' + esc(g) + "</span>")
               .join("") +
             "</div>"
           : "") +
         (e.note
-          ? '<div class="script-card" style="margin-top:8px">' +
+          ? '<div class="script-card u-mt-8">' +
             mdToHtml(e.note) +
             "</div>"
           : "") +
         (e.feedback
-          ? '<div class="ai-guide-box" style="margin-top:8px"><b>🧑‍✈️ Feedback:</b><br>' +
+          ? '<div class="ai-guide-box u-mt-8"><b>🧑‍✈️ Feedback:</b><br>' +
             mdToHtml(e.feedback) +
             "</div>"
           : "") +
@@ -754,15 +760,17 @@ function renderSupQueue() {
         esc(e.from) +
         "')\">💬 QA</button></div></div>" +
         (e.status !== "qa_notified"
-          ? '<div class="row" style="margin-top:10px"><input class="inp" id="fb_' +
+          ? '<div class="u-mt-10"><label class="fld" for="fb_' +
             e.id +
-            '" placeholder="Feedback (Markdown ok)…" style="flex:1" value="' +
+            '">Supervisor feedback (Markdown)</label><textarea class="inp" aria-label="Supervisor feedback" id="fb_' +
+            e.id +
+            '" rows="4" placeholder="## Feedback&#10;- **Strength:** clear ownership&#10;- **Improve:** summarize next steps">' +
             esc(e.feedback || "") +
-            '"><button class="btn" onclick="supSaveFeedback(\'' +
+            '</textarea><div class="row u-mt-8"><button class="btn" onclick="supSaveFeedback(\'' +
             e.id +
             '\')">💾 Save</button><button class="btn mag" onclick="supNotifyQA(\'' +
             e.id +
-            "')\">🔔 Notify QA</button></div>"
+            "')\">🔔 Notify QA</button></div></div>"
           : "") +
         '<div class="replay" id="rp_' +
         e.interactionId +
@@ -775,11 +783,15 @@ function renderSupQueue() {
   refreshBell();
 }
 window.renderSupQueue = renderSupQueue;
+function readSupervisorFeedbackMarkdown(evId) {
+  const field = document.getElementById("fb_" + evId);
+  return ((field && field.value) || "").replace(/\r\n?/g, "\n").trim();
+}
 function supSaveFeedback(evId) {
   const evs = loadEvals();
   const e = evs.find((x) => x.id === evId);
   if (!e) return;
-  e.feedback = (document.getElementById("fb_" + evId) || {}).value || "";
+  e.feedback = readSupervisorFeedbackMarkdown(evId);
   if (e.status === "sent") e.status = "feedback_done";
   saveEvals(evs);
   renderSupQueue();
@@ -790,8 +802,7 @@ function supNotifyQA(evId) {
   const evs = loadEvals();
   const e = evs.find((x) => x.id === evId);
   if (!e) return;
-  if (!e.feedback)
-    e.feedback = (document.getElementById("fb_" + evId) || {}).value || "";
+  e.feedback = readSupervisorFeedbackMarkdown(evId);
   e.status = "qa_notified";
   saveEvals(evs);
   notify(
@@ -837,13 +848,13 @@ function renderTrainer() {
             esc(x.by) +
             "</span><span>" +
             new Date(x.ts).toLocaleDateString() +
-            '</span><span class="tag ' +
+            '</span><span class="tag u-m-0 ' +
             (x.status === "completed" ? "" : "y") +
-            '" style="margin:0">' +
+            '">' +
             x.status +
             "</span></div>" +
             (x.note
-              ? '<div class="script-card" style="margin-top:6px">' +
+              ? '<div class="script-card u-mt-6">' +
                 mdToHtml(x.note) +
                 "</div>"
               : "") +
@@ -875,9 +886,9 @@ function renderTrainer() {
       (t) =>
         '<div class="sum-line"><b>' +
         esc(t.name) +
-        '</b><span><button class="btn ghost" style="padding:3px 8px;font-size:11px" onclick="trEditTopic(\'' +
+        '</b><span><button class="btn ghost u-btn-mini" onclick="trEditTopic(\'' +
         t.id +
-        '\')">✏️</button> <button class="btn ghost" style="padding:3px 8px;font-size:11px" onclick="trViewTopic(\'' +
+        '\')">✏️</button> <button class="btn ghost u-btn-mini" onclick="trViewTopic(\'' +
         t.id +
         "')\">👁</button></span></div>",
     )

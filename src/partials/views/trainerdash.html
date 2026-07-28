@@ -1,7 +1,7 @@
         <section id="trainerdash" class="view hidden">
           <div class="folder-head">
             <div>
-              <h3 style="font-size: 17px">
+              <h3 class="u-fs-17">
                 <span class="ic">🧑‍🏫</span> Trainer Dashboard
               </h3>
               <div class="note">
@@ -10,16 +10,17 @@
             </div>
           </div>
           <div class="grid g4" id="trKpis"></div>
-          <div class="grid g2" style="margin-top: 20px">
+          <div class="grid g2 u-mt-20">
             <div class="card">
               <div class="folder-head">
-                <h3 style="margin: 0">
+                <h3 class="u-m-0">
                   <span class="ic">🎓</span> Enrollment Queue
                 </h3>
                 <select
-                  class="sel"
-                  id="trEnrollFilter"
-                  onchange="renderTrainer()"
+	                  class="sel"
+	                  id="trEnrollFilter"
+	                  aria-label="Enrollment status filter"
+	                  onchange="renderTrainer()"
                 >
                   <option value="all">All</option>
                   <option value="pending">Pending</option>
@@ -33,38 +34,38 @@
               <h3><span class="ic">📚</span> Training Topics</h3>
               <div class="tgrid">
                 <div>
-                  <label class="fld">Topic name</label
+	                  <label class="fld" for="trTopicName">Topic name</label
                   ><input
                     class="inp"
                     id="trTopicName"
                     placeholder="e.g. De-escalation"
                   />
                 </div>
-                <div style="display: flex; align-items: flex-end">
+                <div class="u-flex u-align-end">
                   <button
-                    class="btn"
-                    style="width: 100%"
+                    class="btn u-w-full"
+
                     onclick="trSaveTopic()"
                   >
                     💾 Save
                   </button>
                 </div>
               </div>
-              <label class="fld">Markdown content</label
+	              <label class="fld" for="trTopicMd">Markdown content</label
               ><textarea
                 id="trTopicMd"
                 placeholder="# Title&#10;- point&#10;**bold**"
               ></textarea>
-              <div class="row" style="margin-top: 8px">
+              <div class="row u-mt-8">
                 <button class="btn ghost" onclick="trPreview()">
                   👁 Preview
                 </button>
               </div>
-              <div id="trTopicList" style="margin-top: 12px"></div>
+              <div class="u-mt-12" id="trTopicList"></div>
               <div
                 id="trPreview"
-                class="script-card hidden"
-                style="margin-top: 10px"
+                class="script-card hidden u-mt-10"
+
               ></div>
             </div>
           </div>

@@ -23,7 +23,7 @@
                   />
                 </svg>
                 <div class="val">
-                  <div class="num" id="riskNum" style="color: #16a34a">0</div>
+                  <div class="num u-color-green" id="riskNum">0</div>
                   <div class="lab" id="riskLab">Low risk</div>
                 </div>
               </div>
@@ -40,7 +40,7 @@
                 <b>PCI-masked</b><span id="fMask">0</span>
               </div>
               <div class="sum-line"><b>Highest</b><span id="fMax">—</span></div>
-              <div style="margin-top: 12px">
+              <div class="u-mt-12">
                 <button class="btn ghost" onclick="exportFraud()">
                   ⬇️ Export
                 </button>
@@ -54,24 +54,29 @@
                   <p>Card, CVV & OTP masked</p>
                 </div>
                 <label class="switch"
-                  ><input type="checkbox" id="maskToggle" checked /><span
+	                  ><input
+	                    type="checkbox"
+	                    id="maskToggle"
+	                    aria-label="Auto-mask sensitive data"
+	                    checked
+	                  /><span
                     class="slider"
                   ></span
                 ></label>
               </div>
-              <div class="assist" style="margin-top: 12px">
+              <div class="assist u-mt-12">
                 <b>RA 10173 aligned</b>
               </div>
             </div>
           </div>
-          <div class="grid g2" style="margin-top: 20px">
+          <div class="grid g2 u-mt-20">
             <div class="card">
               <h3><span class="ic">⚙️</span> Detection Rules</h3>
               <div id="ruleList"></div>
             </div>
             <div class="card">
               <h3><span class="ic">🚨</span> Detection Log</h3>
-              <div style="max-height: 340px; overflow-y: auto">
+              <div class="u-scroll-y-340">
                 <table id="fraudLog">
                   <tr>
                     <th>Time</th>
@@ -81,9 +86,9 @@
                   </tr>
                 </table>
                 <div
-                  class="note"
+                  class="note u-text-center u-mt-30"
                   id="fraudEmpty"
-                  style="text-align: center; margin-top: 30px"
+
                 >
                   No signals yet.
                 </div>

@@ -65,7 +65,7 @@ async function bootApp() {
     console.error(error);
     document.body.insertAdjacentHTML(
       "beforeend",
-      `<div style="padding:16px;color:#dc2626;font-weight:700">
+      `<div class="u-error-banner">
         Unable to load the app layout. Run through the local server and check the console.
       </div>`,
     );

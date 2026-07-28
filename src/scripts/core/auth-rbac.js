@@ -131,6 +131,7 @@ function logout() {
   try {
     localStorage.removeItem("ft_session");
   } catch (e) {}
+  setNavMenuOpen(false);
   const app = document.getElementById("app");
   if (app) app.classList.add("hidden");
   const ov = document.getElementById("loginOverlay");
@@ -178,8 +179,37 @@ function restoreSession() {
   } catch (e) {}
 }
 function can(view) {
-  return currentUser && ROLES[currentUser.role].perms.includes(view);
+  return currentUser && getRole(currentUser.role).perms.includes(view);
 }
+function isDesktopNav() {
+  return window.matchMedia("(min-width: 901px)").matches;
+}
+function setNavMenuOpen(open) {
+  const nav = document.getElementById("navBar");
+  const btn = document.getElementById("navMenuBtn");
+  if (!nav) return;
+
+  document.body.classList.toggle("nav-open", !!open);
+  nav.classList.toggle("is-open", !!open);
+  nav.setAttribute("aria-hidden", open ? "false" : "true");
+  try {
+    nav.inert = !open;
+  } catch (e) {}
+
+  if (btn) {
+    btn.classList.toggle("is-open", !!open);
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.setAttribute(
+      "aria-label",
+      open ? "Close navigation menu" : "Open navigation menu",
+    );
+  }
+}
+function toggleNavMenu() {
+  const nav = document.getElementById("navBar");
+  setNavMenuOpen(!(nav && nav.classList.contains("is-open")));
+}
+window.toggleNavMenu = toggleNavMenu;
 function fillSwitchUser() {
   const sw = document.getElementById("ftSwitchUser");
   if (!sw) return;
@@ -194,17 +224,17 @@ function fillSwitchUser() {
           '"' +
           (currentUser && currentUser.user === u.user ? " selected" : "") +
           ">" +
-          ROLES[u.role].em +
+          getRole(u.role).em +
           " " +
           esc(u.name) +
           " (" +
-          u.role +
+          esc(getRole(u.role).label) +
           ")</option>",
       )
       .join("");
 }
 function applyRBAC() {
-  const r = ROLES[currentUser.role];
+  const r = getRole(currentUser.role);
   document.getElementById("userName").textContent = currentUser.name;
   document.getElementById("userRole").textContent = r.em + " " + r.label;
   const nav = document.getElementById("navBar");
@@ -212,15 +242,16 @@ function applyRBAC() {
   NAV_ITEMS.forEach(([id, label]) => {
     if (r.perms.includes(id)) {
       const b = document.createElement("button");
+      b.type = "button";
       b.className = "tab";
       b.dataset.view = id;
       b.innerHTML =
         label +
         (id === "supqueue"
-          ? ' <span class="pill-count hidden" id="supInboxCount" style="background:var(--magenta)">0</span>'
+          ? ' <span class="pill-count hidden u-bg-magenta" id="supInboxCount">0</span>'
           : "") +
         (id === "audit"
-          ? ' <span class="pill-count hidden" id="auditTabCount" style="background:var(--teal)">0</span>'
+          ? ' <span class="pill-count hidden u-bg-teal" id="auditTabCount">0</span>'
           : "");
       b.onclick = () => showView(id);
       nav.appendChild(b);
@@ -228,6 +259,7 @@ function applyRBAC() {
   });
   const lb = document.getElementById("logoutBtn");
   if (lb) lb.onclick = logout;
+  setNavMenuOpen(isDesktopNav());
   buildHome();
   showView(r.home);
   fillSwitchUser();
@@ -241,7 +273,7 @@ function applyRBAC() {
   }
 }
 function showView(id) {
-  if (!can(id)) id = ROLES[currentUser.role].home;
+  if (!can(id)) id = getRole(currentUser.role).home;
   document
     .querySelectorAll("#navBar .tab")
     .forEach((t) => t.classList.toggle("active", t.dataset.view === id));
@@ -283,12 +315,12 @@ function showView(id) {
     }
 }
 function buildHome() {
-  const r = ROLES[currentUser.role];
+  const r = getRole(currentUser.role);
   document.getElementById("homeWelcome").textContent =
     "Welcome, " + currentUser.name + "!";
   document.getElementById("homeRoleDesc").innerHTML =
     '<span class="acc-role ' +
-    currentUser.role +
+    roleBadgeClass(currentUser.role) +
     '">' +
     r.em +
     " " +

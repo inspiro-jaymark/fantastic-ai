@@ -1,7 +1,7 @@
         <section id="batch" class="view hidden">
           <div class="folder-head">
             <div>
-              <h3 style="font-size: 17px">
+              <h3 class="u-fs-17">
                 <span class="ic">📤</span> Batch Upload
               </h3>
               <div class="note">Paste or CSV-upload transcripts.</div>
@@ -12,11 +12,11 @@
               <h3><span class="ic">✍️</span> Paste Single</h3>
               <div class="tgrid">
                 <div>
-                  <label class="fld">File Name</label
+                  <label class="fld" for="bFile">File Name</label
                   ><input class="inp" id="bFile" placeholder="call_001.wav" />
                 </div>
                 <div>
-                  <label class="fld">Agent Name</label
+                  <label class="fld" for="bAgent">Agent Name</label
                   ><input
                     class="inp"
                     id="bAgent"
@@ -26,7 +26,7 @@
               </div>
               <div class="tgrid">
                 <div>
-                  <label class="fld">Agent ID</label
+                  <label class="fld" for="bAgentId">Agent ID</label
                   ><input
                     class="inp"
                     id="bAgentId"
@@ -35,17 +35,17 @@
                   />
                 </div>
                 <div>
-                  <label class="fld">Start</label
+                  <label class="fld" for="bStart">Start</label
                   ><input class="inp" id="bStart" type="datetime-local" />
                 </div>
               </div>
               <div class="tgrid">
                 <div>
-                  <label class="fld">End</label
+                  <label class="fld" for="bEnd">End</label
                   ><input class="inp" id="bEnd" type="datetime-local" />
                 </div>
                 <div>
-                  <label class="fld">Language</label
+                  <label class="fld" for="bLang">Language</label
                   ><select class="sel inp" id="bLang">
                     <option>English</option>
                     <option>Tagalog</option>
@@ -58,18 +58,18 @@
                 </div>
               </div>
               <div class="conn" id="bMatch"></div>
-              <label class="fld">Conversation (Agent:/Customer:)</label
+              <label class="fld" for="bConvo">Conversation (Agent:/Customer:)</label
               ><textarea
                 class="ta"
                 id="bConvo"
                 placeholder="Agent: Thank you for calling...&#10;Customer: My bill is wrong..."
               ></textarea>
-              <div class="row" style="margin-top: 10px">
+              <div class="row u-mt-10">
                 <button class="btn" onclick="batchAddSingle()">
                   ➕ Evaluate & save</button
                 ><button class="btn ghost" onclick="batchClearForm()">
                   Clear</button
-                ><span class="note" id="bMsg" style="margin: 0"></span>
+                ><span class="note u-m-0" id="bMsg"></span>
               </div>
             </div>
             <div class="card">
@@ -82,13 +82,13 @@
                 >
               </div>
               <label
-                class="btn ghost"
-                style="cursor: pointer; display: inline-block"
-                >⬆️ Choose CSV<input
+                class="btn ghost u-cursor-pointer u-inline-block"
+
+                >⬆️ Choose CSV<input class="hidden"
                   type="file"
                   id="bCsv"
                   accept=".csv"
-                  style="display: none"
+
                   onchange="batchUploadCSV(event)" /></label
               ><button class="btn ghost" onclick="downloadCSVTemplate()">
                 ⬇️ Template
@@ -96,7 +96,7 @@
               <div class="conn" id="bCsvMsg"></div>
             </div>
           </div>
-          <div class="card" style="margin-top: 20px">
+          <div class="card u-mt-20">
             <div class="folder-head">
               <h3>
                 <span class="ic">📋</span> Processed
@@ -113,7 +113,7 @@
                 </button>
               </div>
             </div>
-            <div style="overflow-x: auto">
+            <div class="u-overflow-x-auto">
               <table id="batchTable">
                 <tr>
                   <th>File</th>
@@ -127,9 +127,9 @@
               </table>
             </div>
             <div
-              class="note"
+              class="note u-empty-inline"
               id="batchEmpty"
-              style="text-align: center; margin: 20px"
+
             >
               No records yet.
             </div>

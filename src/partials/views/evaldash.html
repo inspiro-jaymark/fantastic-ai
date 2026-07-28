@@ -1,9 +1,9 @@
         <section id="evaldash" class="view hidden">
-          <h3 style="font-size: 18px; margin-bottom: 14px">
+          <h3 class="u-dashboard-title">
             <span class="ic">✅</span> Evaluator Dashboard
           </h3>
           <div class="grid g4" id="evKpis"></div>
-          <div class="grid g2" style="margin-top: 20px">
+          <div class="grid g2 u-mt-20">
             <div class="card">
               <h3><span class="ic">📊</span> Score Distribution</h3>
               <div id="evDist"></div>
@@ -13,17 +13,18 @@
               <div id="evLow"></div>
             </div>
           </div>
-          <div class="card" style="margin-top: 20px">
+          <div class="card u-mt-20">
             <div class="folder-head">
               <h3><span class="ic">🗂️</span> All Interactions to Review</h3>
               <div class="row">
                 <button class="btn ghost" onclick="exportEvalQA()">
                   ⬇️ Export QA Results (CSV)</button
                 ><input
-                  class="search"
+                  class="search u-max-w-260 u-mb-0"
                   id="evSearch"
+                  aria-label="Search evaluations"
                   placeholder="🔍 Search…"
-                  style="max-width: 260px; margin-bottom: 0"
+
                   oninput="renderEval()"
                 />
               </div>

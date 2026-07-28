@@ -72,9 +72,9 @@ function renderTeam() {
             r.key +
             '</b><span class="lb-av">' +
             r.leader.name.substring(0, 2).toUpperCase() +
-            '</span></div><div style="margin-top:6px"><b>🏅 ' +
+            '</span></div><div class="u-mt-6"><b>🏅 ' +
             r.leader.name +
-            '</b> <span class="team-score" style="font-size:16px;color:' +
+            '</b> <span class="team-score u-fs-16" data-style-color="' +
             heatColor(r.leader.avg) +
             '">' +
             r.leader.avg +
@@ -93,9 +93,9 @@ function renderTeam() {
       (r) =>
         '<div class="hbar-row"><span class="name">' +
         r.key +
-        '</span><div class="track"><span style="width:' +
+        '</span><div class="track"><span data-style-width="' +
         Math.max(12, (r.avg / maxA) * 100) +
-        "%;background:" +
+        '%" data-style-background="' +
         heatColor(r.avg) +
         '">' +
         r.avg +
@@ -110,7 +110,7 @@ function renderTeam() {
       (r) =>
         '<div class="hbar-row"><span class="name">' +
         r.key +
-        '</span><div class="track"><span style="width:' +
+        '</span><div class="track"><span data-style-width="' +
         Math.max(12, (r.n / maxN) * 100) +
         '%">' +
         r.n +
@@ -122,7 +122,7 @@ function renderTeam() {
       (r) =>
         '<div class="team-card"><div class="th"><b>' +
         r.key +
-        '</b><span class="team-score" style="color:' +
+        '</b><span class="team-score" data-style-color="' +
         heatColor(r.avg) +
         '">' +
         r.avg +
@@ -282,7 +282,7 @@ function renderLeaderboard() {
         p.name +
         '</div><div class="pts">' +
         p.points +
-        '</div><div style="font-size:10px">' +
+        '</div><div class="u-fs-10">' +
         rankName(levelFor(p.points)) +
         "</div></div>"
       );

@@ -68,14 +68,16 @@
 
 .tt-wrap .tt-a {
   background:var(--teal);
-  display:grid;
-  place-items:center
+  display:flex;
+  align-items:center;
+  justify-content:center
 }
 
 .tt-wrap .tt-c {
   background:#475569;
-  display:grid;
-  place-items:center
+  display:flex;
+  align-items:center;
+  justify-content:center
 }
 
 .tl-wrap {
@@ -217,8 +219,9 @@
   border-radius:50%;
   background:linear-gradient(135deg,var(--teal),var(--teal-dark));
   color:#fff;
-  display:grid;
-  place-items:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   font-weight:700;
   font-size:14px
 }

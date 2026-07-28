@@ -1,9 +1,9 @@
         <section id="settings" class="view hidden">
-          <div class="card" style="margin-bottom: 20px">
+          <div class="card u-mb-20">
             <h3>
               <span class="ic">🤖</span> AI Script Guidance — Claude & Copilot
             </h3>
-            <div class="ai-provsel" style="margin-bottom: 12px">
+            <div class="ai-provsel u-mb-12">
               <button
                 class="ai-prov kb"
                 id="setProvKB"
@@ -23,9 +23,9 @@
               >
                 <span class="ai-dot copilot"></span>Copilot</button
               ><button
-                class="btn ghost"
+                class="btn ghost u-btn-compact-wide"
                 id="setTestBoth"
-                style="padding: 6px 12px; font-size: 12px"
+
                 onclick="testBothAI()"
               >
                 🔈 Test both
@@ -34,26 +34,26 @@
             <div class="grid g2">
               <div>
                 <div
-                  class="assist"
-                  style="background: #fdeee7; border-color: #f5c6b0"
+                  class="assist u-soft-claude"
+
                 >
-                  <b style="color: var(--claude)">🟠 Claude AI</b> — provides
+                  <b class="u-color-claude">🟠 Claude AI</b> — provides
                   the live script, FeeBe bot & deep insights; speaks
                   EN/TL/Cebuano/Hiligaynon/Ilokano/Waray
                 </div>
-                <label class="fld">Anthropic API Key</label
+	                <label class="fld" for="claudeKey">Anthropic API Key</label
                 ><input
-                  class="inp"
+                  class="inp u-mb-10"
                   id="claudeKey"
                   type="password"
                   placeholder="sk-ant-…"
-                  style="margin-bottom: 10px"
+
                 />
-                <label class="fld">Model</label
+	                <label class="fld" for="claudeModel">Model</label
                 ><select
-                  class="inp"
+                  class="inp u-mb-10"
                   id="claudeModel"
-                  style="margin-bottom: 10px"
+
                 >
                   <option value="claude-opus-4-1-20250805" selected>
                     Claude Opus 4.1
@@ -71,13 +71,13 @@
                     claude-opus-5 (if enabled on your account)
                   </option>
                 </select>
-                <div class="note" style="margin: 0 0 10px">
+                <div class="note u-m-0-0-10">
                   If you get "model not found", pick a different model (defaults
                   to a known-good id). Keys stay in your browser.
                 </div>
                 <button
-                  class="btn"
-                  style="background: var(--claude)"
+                  class="btn u-bg-claude"
+
                   onclick="testAI('claude')"
                 >
                   🔈 Test Claude
@@ -86,34 +86,34 @@
               </div>
               <div>
                 <div
-                  class="assist"
-                  style="background: #e6f2ff; border-color: #b3d7f5"
+                  class="assist u-soft-copilot"
+
                 >
-                  <b style="color: var(--copilot)">🔵 Copilot (Azure OpenAI)</b>
+                  <b class="u-color-copilot">🔵 Copilot (Azure OpenAI)</b>
                   — gpt-4o · East US
                 </div>
-                <label class="fld">Endpoint (base URL)</label
+	                <label class="fld" for="copilotEndpoint">Endpoint (base URL)</label
                 ><input
-                  class="inp"
+                  class="inp u-mb-10"
                   id="copilotEndpoint"
                   placeholder="https://YOUR-RESOURCE.openai.azure.com"
-                  style="margin-bottom: 10px"
+
                 />
-                <label class="fld">API Key</label
+	                <label class="fld" for="copilotKey">API Key</label
                 ><input
-                  class="inp"
+                  class="inp u-mb-10"
                   id="copilotKey"
                   type="password"
                   placeholder="Azure OpenAI key"
-                  style="margin-bottom: 10px"
+
                 />
                 <div class="tgrid">
                   <div>
-                    <label class="fld">Deployment name</label
+	                    <label class="fld" for="copilotDeploy">Deployment name</label
                     ><input class="inp" id="copilotDeploy" value="gpt-4o" />
                   </div>
                   <div>
-                    <label class="fld">API version</label
+	                    <label class="fld" for="copilotVer">API version</label
                     ><input
                       class="inp"
                       id="copilotVer"
@@ -122,8 +122,8 @@
                   </div>
                 </div>
                 <button
-                  class="btn"
-                  style="background: var(--copilot); margin-top: 4px"
+                  class="btn u-bg-copilot u-mt-4"
+
                   onclick="testAI('copilot')"
                 >
                   🔈 Test Copilot
@@ -131,17 +131,27 @@
                 <div class="conn" id="copilotConn"></div>
               </div>
             </div>
-            <div class="row" style="margin-top: 14px">
+            <div class="row u-mt-14">
               <label class="switch"
-                ><input type="checkbox" id="aiAutoGuide" checked /><span
+	                ><input
+	                  type="checkbox"
+	                  id="aiAutoGuide"
+	                  aria-label="Auto-guide during calls"
+	                  checked
+	                /><span
                   class="slider"
                 ></span></label
-              ><span class="fld" style="margin: 0">Auto-guide during calls</span
-              ><label class="switch" style="margin-left: 14px"
-                ><input type="checkbox" id="aiAutoSummary" checked /><span
+              ><span class="fld u-m-0">Auto-guide during calls</span
+              ><label class="switch u-ml-14"
+	                ><input
+	                  type="checkbox"
+	                  id="aiAutoSummary"
+	                  aria-label="Auto-draft summaries"
+	                  checked
+	                /><span
                   class="slider"
                 ></span></label
-              ><span class="fld" style="margin: 0">Auto-draft summaries</span>
+              ><span class="fld u-m-0">Auto-draft summaries</span>
             </div>
           </div>
           <div class="grid g2">
@@ -164,7 +174,7 @@
               <div id="azurePanel" class="hidden">
                 <div class="pick-row">
                   <div class="pick">
-                    <label class="fld">Speech Key</label
+	                    <label class="fld" for="azKey">Speech Key</label
                     ><input
                       class="inp"
                       id="azKey"
@@ -173,7 +183,7 @@
                     />
                   </div>
                   <div class="pick">
-                    <label class="fld">Region</label
+	                    <label class="fld" for="azRegion">Region</label
                     ><select class="inp" id="azRegion">
                       <option value="southeastasia" selected>
                         southeastasia
@@ -185,7 +195,7 @@
                 </div>
                 <div class="pick-row">
                   <div class="pick">
-                    <label class="fld">Voice</label
+	                    <label class="fld" for="azVoice">Voice</label
                     ><select class="inp" id="azVoice">
                       <option value="fil-PH-BlessicaNeural" selected>
                         Blessica ♀ (Fil)
@@ -201,7 +211,7 @@
                     </select>
                   </div>
                   <div class="pick">
-                    <label class="fld">Style</label
+	                    <label class="fld" for="azStyle">Style</label
                     ><select class="inp" id="azStyle">
                       <option value="">General</option>
                       <option value="empathetic">Empathetic</option>
@@ -214,7 +224,7 @@
                 </div>
                 <div class="conn" id="azConn"></div>
               </div>
-              <div style="margin-top: 16px">
+              <div class="u-mt-16">
                 <label class="fld">Speech-to-Text</label>
                 <div class="tts-mode">
                   <button
@@ -233,33 +243,34 @@
                   & shared system audio.
                 </div>
               </div>
-              <div id="ftMicSetup" style="margin-top: 14px">
+              <div class="u-mt-14" id="ftMicSetup">
                 <label class="fld"
                   >🎤 Microphone device (system / virtual)</label
                 >
                 <div class="row">
                   <select
-                    class="sel ftMicSel"
-                    onchange="ftOnMicChange(this.value)"
-                    style="max-width: 230px"
+	                    class="sel ftMicSel u-max-w-230"
+	                    aria-label="Microphone device"
+	                    onchange="ftOnMicChange(this.value)"
+
                   >
                     <option value="">System default mic</option></select
                   ><button
-                    class="btn ghost"
-                    style="padding: 6px 10px; font-size: 12px"
+                    class="btn ghost u-btn-compact"
+
                     onclick="ftGrantMic()"
                   >
                     🔄 Detect</button
                   ><label class="switch" title="Remember default"
-                    ><input type="checkbox" id="ftMicDefault2" /><span
+	                    ><input
+	                      type="checkbox"
+	                      id="ftMicDefault2"
+	                      aria-label="Remember selected microphone as default"
+	                    /><span
                       class="slider"
                     ></span></label
-                  ><span
-                    style="
-                      font-size: 11px;
-                      color: var(--muted);
-                      font-weight: 600;
-                    "
+                  ><span class="u-muted-label"
+
                     >Default</span
                   >
                 </div>
@@ -269,8 +280,8 @@
                   Remembered across sessions.
                 </div>
               </div>
-              <div style="margin-top: 14px">
-                <label class="fld">Recognition Language</label
+              <div class="u-mt-14">
+	                <label class="fld" for="recLang">Recognition Language</label
                 ><select class="inp" id="recLang">
                   <option value="en-US">English (US)</option>
                   <option value="en-PH" selected>English (PH)/Taglish</option>
@@ -286,20 +297,20 @@
                   <option value="zh-HK">🇭🇰 Cantonese</option>
                 </select>
               </div>
-              <div style="margin-top: 14px" id="browserVoiceWrap">
-                <label class="fld">Browser Voice</label
+              <div class="u-mt-14" id="browserVoiceWrap">
+	                <label class="fld" for="ttsVoice">Browser Voice</label
                 ><select class="inp" id="ttsVoice"></select>
               </div>
-              <div style="margin-top: 14px">
-                <label class="fld">Speed</label
-                ><input
+              <div class="u-mt-14">
+	                <label class="fld" for="rate">Speed</label
+                ><input class="u-w-full"
                   type="range"
                   id="rate"
                   min="0.7"
                   max="1.3"
                   step="0.05"
                   value="1"
-                  style="width: 100%"
+
                 />
               </div>
             </div>
@@ -307,16 +318,16 @@
               <h3><span class="ic">🎨</span> Branding & Persona</h3>
               <div class="pick-row">
                 <div class="pick">
-                  <label class="fld">Platform Name</label
+	                  <label class="fld" for="brandName">Platform Name</label
                   ><input class="inp" id="brandName" value="FANTASTIC TOOL" />
                 </div>
                 <div class="pick">
-                  <label class="fld">Logo Initials</label
+	                  <label class="fld" for="brandInit">Logo Initials</label
                   ><input class="inp" id="brandInit" value="FT" maxlength="3" />
                 </div>
               </div>
-              <div style="margin-bottom: 14px">
-                <label class="fld">Tagline</label
+              <div class="u-mb-14">
+	                <label class="fld" for="brandTagIn">Tagline</label
                 ><input
                   class="inp"
                   id="brandTagIn"
@@ -325,30 +336,30 @@
               </div>
               <div class="pick-row">
                 <div class="pick">
-                  <label class="fld">Primary</label
+	                  <label class="fld" for="colPrimary">Primary</label
                   ><input type="color" id="colPrimary" value="#0e7c7b" />
                 </div>
                 <div class="pick">
-                  <label class="fld">Accent</label
+	                  <label class="fld" for="colAccent">Accent</label
                   ><input type="color" id="colAccent" value="#f4c542" />
                 </div>
               </div>
               <label class="fld">Quick themes</label>
               <div class="swatches" id="themeSwatches"></div>
-              <div style="margin: 16px 0 14px">
-                <label class="fld">AI Agent Name</label
+              <div class="u-m-16-0-14">
+	                <label class="fld" for="agInput">AI Agent Name</label
                 ><input class="inp" id="agInput" value="FANTASTIC Agent" />
               </div>
-              <div style="margin-bottom: 14px">
-                <label class="fld">Brand / Campaign</label
+              <div class="u-mb-14">
+	                <label class="fld" for="brandInput">Brand / Campaign</label
                 ><input
                   class="inp"
                   id="brandInput"
                   value="Inspiro — Infocom CX"
                 />
               </div>
-              <div style="margin-bottom: 14px">
-                <label class="fld">Persona</label
+              <div class="u-mb-14">
+	                <label class="fld" for="persona">Persona</label
                 ><select class="inp" id="persona">
                   <option value="professional">Professional</option>
                   <option value="warm" selected>Warm & empathetic</option>
@@ -361,7 +372,7 @@
               </button>
             </div>
           </div>
-          <div class="card" style="margin-top: 20px">
+          <div class="card u-mt-20">
             <div class="assist">
               <b>💡 SharePoint-ready</b> single self-contained file.
             </div>

@@ -204,11 +204,11 @@
       const box = $("acEvalResult");
       if (box)
         box.innerHTML =
-          '<div style="font-size:30px;font-weight:800;color:' +
+          '<div class="u-score-large" data-style-color="' +
           heat(q.pct) +
           '">' +
           q.pct +
-          '<span style="font-size:15px">/100</span></div>' +
+          '<span class="u-fs-15">/100</span></div>' +
           q.rows
             .map(
               (r) =>
@@ -219,9 +219,9 @@
                 "</div><div>" +
                 esc(r.label) +
                 (r.critical
-                  ? ' <span class="tag r" style="margin:0">critical</span>'
+                  ? ' <span class="tag r u-m-0">critical</span>'
                   : "") +
-                '</div><span style="margin-left:auto;font-weight:700">' +
+                '</div><span class="u-right-strong">' +
                 (r.ok ? r.weight : 0) +
                 "/" +
                 r.weight +
@@ -240,7 +240,7 @@
     card.id = "qaFormCard";
     card.style.marginTop = "20px";
     card.innerHTML =
-      '<h3><span class="ic">📋</span> Customizable QA Form <span class="note" style="margin:0">— scores Batch Upload &amp; Live Agent Convo</span></h3><div class="note" style="margin-bottom:8px">Each criterion: <b>label</b>, <b>keywords</b> (regex; <span class="mono">|</span> = OR; prefix <span class="mono">__NEG__</span> = "must NOT contain"), <b>weight</b>, <b>critical</b>. Total weight auto-normalizes to 100%.</div><div id="qaFormRows"></div><div class="row" style="margin-top:10px"><button class="btn ghost" onclick="qaAddRow()">➕ Add criterion</button><button class="btn" onclick="qaSaveForm()">💾 Save form</button><button class="btn ghost" onclick="qaResetForm()">↺ Reset default</button><button class="btn ghost" onclick="qaExportForm()">⬇️ Export</button><label class="btn ghost" style="cursor:pointer">⬆️ Import<input type="file" id="qaImp" accept=".json" style="display:none" onchange="qaImportForm(event)"></label><span class="note" id="qaFormMsg" style="margin:0"></span></div>';
+      '<h3><span class="ic">📋</span> Customizable QA Form <span class="note u-m-0">— scores Batch Upload &amp; Live Agent Convo</span></h3><div class="note u-mb-8">Each criterion: <b>label</b>, <b>keywords</b> (regex; <span class="mono">|</span> = OR; prefix <span class="mono">__NEG__</span> = "must NOT contain"), <b>weight</b>, <b>critical</b>. Total weight auto-normalizes to 100%.</div><div id="qaFormRows"></div><div class="row u-mt-10"><button class="btn ghost" onclick="qaAddRow()">➕ Add criterion</button><button class="btn" onclick="qaSaveForm()">💾 Save form</button><button class="btn ghost" onclick="qaResetForm()">↺ Reset default</button><button class="btn ghost" onclick="qaExportForm()">⬇️ Export</button><label class="btn ghost u-cursor-pointer">⬆️ Import<input class="hidden" type="file" id="qaImp" accept=".json" onchange="qaImportForm(event)"></label><span class="note u-m-0" id="qaFormMsg"></span></div>';
     set.insertBefore(card, set.children[1] || null);
     renderQAFormRows();
   }
@@ -249,27 +249,27 @@
     if (!wrap) return;
     const form = loadQAForm();
     wrap.innerHTML =
-      '<div class="qarow"><b style="font-size:11px;color:var(--muted)">LABEL</b><b style="font-size:11px;color:var(--muted)">KEYWORDS / REGEX</b><b style="font-size:11px;color:var(--muted)">WEIGHT</b><b style="font-size:11px;color:var(--muted)">CRIT</b><b></b></div>' +
+      '<div class="qarow"><b class="u-fs-11 u-color-muted">LABEL</b><b class="u-fs-11 u-color-muted">KEYWORDS / REGEX</b><b class="u-fs-11 u-color-muted">WEIGHT</b><b class="u-fs-11 u-color-muted">CRIT</b><b></b></div>' +
       form
         .map(
           (c, i) =>
-            '<div class="qarow"><input class="inp qf-l" data-i="' +
+	            '<div class="qarow"><input class="inp qf-l" aria-label="Criterion label" data-i="' +
             i +
             '" value="' +
             esc(c.label) +
-            '"><input class="inp qf-r" data-i="' +
+	            '"><input class="inp qf-r" aria-label="Criterion keywords or regex" data-i="' +
             i +
             '" value="' +
             esc(c.rx) +
-            '"><input class="inp qf-w" type="number" min="0" max="100" data-i="' +
+	            '"><input class="inp qf-w" aria-label="Criterion weight" type="number" min="0" max="100" data-i="' +
             i +
             '" value="' +
             (+c.weight || 0) +
-            '"><label class="switch" style="margin:auto"><input type="checkbox" class="qf-c" data-i="' +
+	            '"><label class="switch u-m-auto"><input type="checkbox" class="qf-c" aria-label="Critical criterion" data-i="' +
             i +
             '" ' +
             (c.critical ? "checked" : "") +
-            '><span class="slider"></span></label><button class="btn ghost" style="padding:6px 8px" onclick="qaDelRow(' +
+            '><span class="slider"></span></label><button class="btn ghost u-btn-icon-pad" onclick="qaDelRow(' +
             i +
             ')">🗑</button></div>',
         )
@@ -309,10 +309,20 @@
     renderQAFormRows();
   };
   window.qaDelRow = function (i) {
-    const f = collectForm();
-    f.splice(i, 1);
-    saveQAForm(f);
-    renderQAFormRows();
+    appConfirm(
+      {
+        title: "Delete QA criterion?",
+        message: "Delete this QA criterion? This cannot be undone.",
+        confirmText: "Delete",
+        danger: true,
+      },
+      () => {
+        const f = collectForm();
+        f.splice(i, 1);
+        saveQAForm(f);
+        renderQAFormRows();
+      },
+    );
   };
   window.qaSaveForm = function () {
     const f = collectForm();
@@ -334,10 +344,19 @@
     setTimeout(() => (m.textContent = ""), 3500);
   };
   window.qaResetForm = function () {
-    if (!confirm("Reset the QA form to defaults?")) return;
-    store("ft_qaform", QA_DEFAULT);
-    renderQAFormRows();
-    A()("QA form reset", "defaults", "config");
+    appConfirm(
+      {
+        title: "Reset QA form?",
+        message: "Reset the QA form to defaults? Current criteria will be replaced.",
+        confirmText: "Reset",
+        danger: true,
+      },
+      () => {
+        store("ft_qaform", QA_DEFAULT);
+        renderQAFormRows();
+        A()("QA form reset", "defaults", "config");
+      },
+    );
   };
   window.qaExportForm = function () {
     const a = document.createElement("a");
@@ -447,18 +466,27 @@
     }
     const it = arr[i];
     if (!it) return;
-    if (!confirm('Delete KB module: "' + it.q + '"?')) return;
-    arr.splice(i, 1);
-    try {
-      KB_CUSTOM = arr;
-      saveCustomKB(KB_CUSTOM);
-    } catch (e) {
-      store("ft_kb", arr);
-    }
-    kbHistAdd("deleted", it.q, "");
-    try {
-      renderKB(($("kbSearch") || {}).value || "");
-    } catch (e) {}
+    appConfirm(
+      {
+        title: "Delete KB module?",
+        message: 'Delete KB module "' + it.q + '"? This cannot be undone.',
+        confirmText: "Delete",
+        danger: true,
+      },
+      () => {
+        arr.splice(i, 1);
+        try {
+          KB_CUSTOM = arr;
+          saveCustomKB(KB_CUSTOM);
+        } catch (e) {
+          store("ft_kb", arr);
+        }
+        kbHistAdd("deleted", it.q, "");
+        try {
+          renderKB(($("kbSearch") || {}).value || "");
+        } catch (e) {}
+      },
+    );
   };
   if (typeof renderKB === "function") {
     const _rk = renderKB;
@@ -499,17 +527,17 @@
               (it, i) =>
                 '<div class="sum-line"><div><b>' +
                 esc(it.q) +
-                '</b> <span class="note" style="margin:0">' +
+                '</b> <span class="note u-m-0">' +
                 esc(it.cat || "") +
-                '</span></div><span><button class="btn ghost" style="padding:4px 10px;font-size:12px" onclick="kbEditModule(' +
+                '</span></div><span><button class="btn ghost u-btn-small" onclick="kbEditModule(' +
                 i +
-                ')">✏️ Edit</button> <button class="btn ghost" style="padding:4px 10px;font-size:12px;color:var(--red)" onclick="kbDeleteModule(' +
+                ')">✏️ Edit</button> <button class="btn ghost u-btn-small u-color-red" onclick="kbDeleteModule(' +
                 i +
                 ')">🗑 Delete</button></span></div>',
             )
             .join("")
         : '<div class="note">No trainer modules yet. Add one above.</div>') +
-      '<div style="margin-top:14px"><div class="folder-head" style="margin-bottom:8px"><h3 style="margin:0;font-size:14px"><span class="ic">🕘</span> KB History Log</h3><div class="row"><button class="btn ghost" style="padding:4px 10px;font-size:12px" onclick="kbExportHistory()">⬇️ Export</button><button class="btn ghost" style="padding:4px 10px;font-size:12px;color:var(--red)" onclick="kbClearHistory()">🗑 Clear</button></div></div><div id="kbHistList"></div></div>';
+      '<div class="u-mt-14"><div class="folder-head u-mb-8"><h3 class="u-m-0 u-fs-14"><span class="ic">🕘</span> KB History Log</h3><div class="row"><button class="btn ghost u-btn-small" onclick="kbExportHistory()">⬇️ Export</button><button class="btn ghost u-btn-small u-color-red" onclick="kbClearHistory()">🗑 Clear</button></div></div><div id="kbHistList"></div></div>';
     renderKBHistory();
   }
   function renderKBHistory() {
@@ -517,7 +545,7 @@
     if (!el) return;
     const h = kbHist();
     el.innerHTML = h.length
-      ? '<div style="overflow-x:auto"><table><tr><th>Time</th><th>User</th><th>Action</th><th>Module</th><th>Detail</th></tr>' +
+      ? '<div class="u-overflow-x-auto"><table><tr><th>Time</th><th>User</th><th>Action</th><th>Module</th><th>Detail</th></tr>' +
         h
           .slice(0, 200)
           .map(
@@ -526,13 +554,12 @@
               new Date(x.ts).toLocaleString() +
               "</td><td>" +
               esc(x.by) +
-              '</td><td><span class="tag ' +
-              (x.action === "deleted"
+              '</td><td><span class="tag u-m-0 ' + (x.action === "deleted"
                 ? "r"
                 : x.action === "edited"
                   ? "y"
                   : "") +
-              '" style="margin:0">' +
+              '">' +
               x.action +
               "</span></td><td>" +
               esc(x.title) +
@@ -564,9 +591,18 @@
     a.click();
   };
   window.kbClearHistory = function () {
-    if (!confirm("Clear the KB history log?")) return;
-    store("ft_kb_history", []);
-    renderKBHistory();
+    appConfirm(
+      {
+        title: "Clear KB history?",
+        message: "Clear the KB history log? This cannot be undone.",
+        confirmText: "Clear",
+        danger: true,
+      },
+      () => {
+        store("ft_kb_history", []);
+        renderKBHistory();
+      },
+    );
   };
   if (typeof addModule === "function") {
     const _am = addModule;
@@ -609,7 +645,7 @@
     card.id = "inQAGapCard";
     card.style.marginTop = "20px";
     card.innerHTML =
-      '<div class="folder-head"><h3 style="margin:0"><span class="ic">🧩</span> Gap Analysis (Custom QA Form)</h3><span class="note" id="inGapNote" style="margin:0"></span></div><div id="inQAGap"></div><div id="inGapRecs" style="margin-top:10px"></div>';
+      '<div class="folder-head"><h3 class="u-m-0"><span class="ic">🧩</span> Gap Analysis (Custom QA Form)</h3><span class="note u-m-0" id="inGapNote"></span></div><div id="inQAGap"></div><div class="u-mt-10" id="inGapRecs"></div>';
     const kpi = $("inKpis");
     if (kpi && kpi.parentNode)
       kpi.parentNode.insertBefore(card, kpi.nextSibling);
@@ -646,9 +682,9 @@
             '<div class="hbar-row"><span class="name">' +
             esc(r.label) +
             (r.critical ? " 🔴" : "") +
-            '</span><div class="track"><span style="width:' +
+            '</span><div class="track"><span data-style-width="' +
             Math.max(10, r.pct) +
-            "%;background:" +
+            '%" data-style-background="' +
             heat(r.pct) +
             '">' +
             r.pct +
@@ -657,7 +693,7 @@
         .join("") || '<div class="note">No data yet.</div>';
     const gaps = rows.filter((r) => r.pct < 75);
     $("inGapRecs").innerHTML = gaps.length
-      ? '<div class="note" style="margin-bottom:6px"><b>Priority fixes:</b></div>' +
+      ? '<div class="note u-mb-6"><b>Priority fixes:</b></div>' +
         gaps
           .slice(0, 4)
           .map((g) => {
@@ -673,7 +709,7 @@
               med: ["💡", "var(--amber)"],
             }[sev];
             return (
-              '<div class="recx"><div class="ic2" style="background:' +
+              '<div class="recx"><div class="ic2" data-style-background="' +
               ic[1] +
               '">' +
               ic[0] +
@@ -805,7 +841,7 @@
         if (el)
           el.querySelector(".txt").innerHTML =
             esc(ans).replace(/\n/g, "<br>") +
-            '<div class="note" style="margin-top:6px">🌐 fetched live &amp; saved to KB' +
+            '<div class="note u-mt-6">🌐 fetched live &amp; saved to KB' +
             (useClaude
               ? ' · <span class="ai-badge claude">Claude</span>'
               : "") +

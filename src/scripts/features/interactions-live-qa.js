@@ -65,7 +65,7 @@ function replayHTML(r) {
       )
       .join("") +
     (r.summary
-      ? '<div class="ai-guide-box" style="margin-top:10px"><b>AI Summary:</b><br>' +
+      ? '<div class="ai-guide-box u-mt-10"><b>AI Summary:</b><br>' +
         esc(r.summary).replace(/\n/g, "<br>") +
         "</div>"
       : "")
@@ -131,9 +131,8 @@ function renderLibrary(filter) {
         "</span>" +
         gap +
         rate +
-        '<span class="tag ' +
-        (r.resolved ? "" : "y") +
-        '" style="margin:0">' +
+        '<span class="tag u-m-0 ' + (r.resolved ? "" : "y") +
+        '">' +
         (r.resolved ? "Resolved" : "Follow-up") +
         '</span></div></div><div class="lib-actions"><button onclick="toggleReplay(\'' +
         r.id +
@@ -181,27 +180,75 @@ function exportInteraction(id) {
   dl(out, "FANTASTIC_" + r.id + ".txt", "text/plain");
 }
 function deleteInteraction(id) {
-  if (!confirm("Delete?")) return;
-  saveInteractionsArr(loadInteractions().filter((x) => x.id !== id));
-  renderLibrary(document.getElementById("libSearch").value);
+  const interaction = loadInteractions().find((x) => x.id === id);
+  appConfirm(
+    {
+      title: "Delete interaction?",
+      message: interaction
+        ? "Delete the saved interaction from " +
+          new Date(interaction.date).toLocaleString() +
+          "? This cannot be undone."
+        : "Delete this saved interaction? This cannot be undone.",
+      confirmText: "Delete",
+      danger: true,
+    },
+    () => {
+      saveInteractionsArr(loadInteractions().filter((x) => x.id !== id));
+      renderLibrary(document.getElementById("libSearch").value);
+    },
+  );
 }
 function downloadAllInteractions() {
-  const arr = loadInteractions();
-  if (!arr.length) {
+  const count = loadInteractions().length;
+  if (!count) {
     alert("Empty.");
     return;
   }
-  dl(
-    JSON.stringify(arr, null, 2),
-    "FANTASTIC_interactions.json",
-    "application/json",
+  appConfirm(
+    {
+      title: "Download all interactions?",
+      message:
+        "Download all " +
+        count +
+        " saved interaction" +
+        (count === 1 ? "" : "s") +
+        " as a JSON file?",
+      confirmText: "Download",
+    },
+    () => {
+      const arr = loadInteractions();
+      if (!arr.length) {
+        alert("Empty.");
+        return;
+      }
+      dl(
+        JSON.stringify(arr, null, 2),
+        "FANTASTIC_interactions.json",
+        "application/json",
+      );
+    },
   );
 }
 function clearAllInteractions() {
-  if (!confirm("Clear ALL?")) return;
-  localStorage.removeItem("ft_interactions");
-  renderLibrary();
-  logAudit("Cleared interactions", "", "data");
+  const count = loadInteractions().length;
+  appConfirm(
+    {
+      title: "Clear all interactions?",
+      message:
+        "Clear all " +
+        count +
+        " saved interaction" +
+        (count === 1 ? "" : "s") +
+        " from the library? This cannot be undone.",
+      confirmText: "Clear",
+      danger: true,
+    },
+    () => {
+      localStorage.removeItem("ft_interactions");
+      renderLibrary();
+      logAudit("Cleared interactions", "", "data");
+    },
+  );
 }
 const libS = document.getElementById("libSearch");
 if (libS) libS.oninput = (e) => renderLibrary(e.target.value);
@@ -296,7 +343,7 @@ function buildLiveQA() {
     }
   } catch (e) {}
   document.getElementById("liveQAScore").innerHTML =
-    'Auto QA: <b style="color:' +
+    'Auto QA: <b data-style-color="' +
     (pct >= 85 ? "var(--green)" : pct >= 70 ? "var(--amber)" : "var(--red)") +
     '">' +
     pct +

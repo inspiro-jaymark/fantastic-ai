@@ -151,7 +151,7 @@ function renderKB(f = "") {
   });
   if (!filtered.length)
     list.innerHTML =
-      '<div class="note" style="text-align:center;margin:20px">No matching articles.</div>';
+      '<div class="note u-empty-inline">No matching articles.</div>';
   renderKBAssets();
 }
 function addModule() {
@@ -189,10 +189,22 @@ function addModule() {
   setTimeout(() => (msg.textContent = ""), 3000);
 }
 function deleteModule(i) {
-  if (!confirm("Delete?")) return;
-  KB_CUSTOM.splice(i, 1);
-  saveCustomKB(KB_CUSTOM);
-  renderKB();
+  const item = KB_CUSTOM[i];
+  if (!item) return;
+  appConfirm(
+    {
+      title: "Delete KB module?",
+      message:
+        'Delete KB module "' + item.q + '"? This cannot be undone.',
+      confirmText: "Delete",
+      danger: true,
+    },
+    () => {
+      KB_CUSTOM.splice(i, 1);
+      saveCustomKB(KB_CUSTOM);
+      renderKB();
+    },
+  );
 }
 function exportKB() {
   dl(
@@ -201,16 +213,84 @@ function exportKB() {
     "application/json",
   );
 }
+const KB_UPLOAD_MAX_BYTES = 50 * 1024 * 1024;
+const KB_UPLOAD_TYPES_LABEL = "PDF, Word, Excel, image, txt, or csv";
+const KB_UPLOAD_ALLOWED_EXTS = new Set([
+  "pdf",
+  "doc",
+  "docx",
+  "docm",
+  "xls",
+  "xlsx",
+  "xlsm",
+  "xlsb",
+  "txt",
+  "csv",
+  "jpg",
+  "jpeg",
+  "png",
+  "gif",
+  "webp",
+  "bmp",
+  "tif",
+  "tiff",
+  "heic",
+  "heif",
+]);
+const KB_UPLOAD_ALLOWED_MIMES = new Set([
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.ms-word.document.macroenabled.12",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.ms-excel.sheet.macroenabled.12",
+]);
+function kbFileExt(file) {
+  const parts = (file.name || "").toLowerCase().split(".");
+  return parts.length > 1 ? parts.pop() : "";
+}
+function kbIsAllowedUploadFile(file) {
+  const ext = kbFileExt(file);
+  const type = (file.type || "").toLowerCase();
+  if (KB_UPLOAD_ALLOWED_EXTS.has(ext)) return true;
+  if (type.startsWith("image/")) return true;
+  if (KB_UPLOAD_ALLOWED_MIMES.has(type)) return true;
+  return !ext && (type === "text/plain" || type === "text/csv");
+}
+function kbUploadValidationError(file) {
+  if (!kbIsAllowedUploadFile(file)) return "unsupported type";
+  if (file.size > KB_UPLOAD_MAX_BYTES) return "over 50 MB";
+  return "";
+}
 function kbUpload(ev) {
-  const files = [...ev.target.files];
+  const selectedFiles = [...ev.target.files];
   const msg = document.getElementById("ftKBMsg");
   const arr = loadKBAssets();
+  const invalidFiles = [];
+  const files = selectedFiles.filter((file) => {
+    const reason = kbUploadValidationError(file);
+    if (reason) invalidFiles.push({ file, reason });
+    return !reason;
+  });
   let done = 0;
-  if (!files.length) return;
+  if (!selectedFiles.length) return;
+  if (!files.length) {
+    msg.className = "conn err";
+    msg.textContent =
+      "⚠️ Upload only " +
+      KB_UPLOAD_TYPES_LABEL +
+      " files up to 50 MB each. Rejected: " +
+      invalidFiles
+        .slice(0, 4)
+        .map((x) => x.file.name + " (" + x.reason + ")")
+        .join(", ") +
+      (invalidFiles.length > 4 ? "…" : "");
+    ev.target.value = "";
+    return;
+  }
   files.forEach((f) => {
-    const isText =
-      /\.(txt|csv|md|json|html?|log)$/i.test(f.name) ||
-      /text|json|csv/.test(f.type);
+    const isText = /\.(txt|csv)$/i.test(f.name) || /text|csv/.test(f.type);
     const fin = (content) => {
       arr.unshift({
         id: "DOC" + Date.now() + Math.floor(Math.random() * 999),
@@ -227,7 +307,20 @@ function kbUpload(ev) {
         saveKBAssets(arr);
         renderKBAssets();
         msg.className = "conn ok";
-        msg.textContent = "✅ Added " + files.length + " file(s).";
+        msg.textContent =
+          "✅ Added " +
+          files.length +
+          " file(s)." +
+          (invalidFiles.length
+            ? " ⚠️ Skipped " +
+              invalidFiles.length +
+              " invalid file(s): " +
+              invalidFiles
+                .slice(0, 3)
+                .map((x) => x.file.name + " (" + x.reason + ")")
+                .join(", ") +
+              (invalidFiles.length > 3 ? "…" : "")
+            : "");
         logAudit(
           "KB files added",
           files
@@ -307,7 +400,7 @@ function renderKBAssets() {
     return;
   }
   el.innerHTML =
-    '<div class="note" style="margin-bottom:6px"><b>' +
+    '<div class="note u-mb-6"><b>' +
     a.length +
     "</b> source(s) — searchable by the AI &amp; FeeBe bot:</div>" +
     a
@@ -326,7 +419,7 @@ function renderKBAssets() {
                     ? "🖼️"
                     : "📄";
         return (
-          '<div class="lib-card" style="margin-bottom:8px"><div class="lib-head"><div><b>' +
+          '<div class="lib-card u-mb-8"><div class="lib-head"><div><b>' +
           ic +
           " " +
           esc(x.name).slice(0, 70) +
@@ -356,9 +449,22 @@ window.kbAssetView = function (id) {
   if (el) el.style.display = el.style.display === "block" ? "none" : "block";
 };
 window.kbAssetDel = function (id) {
-  if (!confirm("Remove source?")) return;
-  saveKBAssets(loadKBAssets().filter((x) => x.id !== id));
-  renderKBAssets();
+  const asset = loadKBAssets().find((x) => x.id === id);
+  appConfirm(
+    {
+      title: "Remove KB source?",
+      message:
+        "Remove " +
+        (asset ? asset.name : "this source") +
+        " from the Knowledge Base? This cannot be undone.",
+      confirmText: "Remove",
+      danger: true,
+    },
+    () => {
+      saveKBAssets(loadKBAssets().filter((x) => x.id !== id));
+      renderKBAssets();
+    },
+  );
 };
 function kbMatch(text) {
   const t = (text || "").toLowerCase();

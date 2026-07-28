@@ -72,13 +72,15 @@
 }
 
 .role-hero {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
+  display:flex;
+  flex-wrap:wrap;
   gap:8px;
   margin-bottom:16px
 }
 
 .role-tile {
+  flex:1 1 calc((100% - 16px) / 3);
+  min-width:120px;
   border:1px solid var(--line);
   border-radius:12px;
   padding:10px;
@@ -156,6 +158,69 @@
   color:#4d7c0f
 }
 
+.acc-role.custom {
+  background:#f1f5f9;
+  color:var(--slate)
+}
+
+.role-builder {
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:14px;
+  background:#fbfdff
+}
+
+.role-form {
+  margin-top:12px
+}
+
+.role-perm-box {
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px;
+  margin-top:12px
+}
+
+.role-perm-box legend {
+  padding:0 6px
+}
+
+.role-perm-grid {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px
+}
+
+.role-perm-check {
+  flex:1 1 calc((100% - 16px) / 3);
+  min-width:190px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  min-height:34px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:7px 9px;
+  background:#fff;
+  font-size:11px;
+  font-weight:700;
+  color:var(--slate)
+}
+
+.role-perm-check input {
+  width:14px;
+  height:14px;
+  accent-color:var(--teal)
+}
+
+.rolecard-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px
+}
+
 .perm-grid {
   display:flex;
   flex-wrap:wrap;
@@ -187,18 +252,26 @@
 }
 
 .qa3 {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
+  display:flex;
+  flex-wrap:wrap;
   gap:12px
 }
 
 @media(max-width:760px) {
-  .qa3 {
-    grid-template-columns:1fr
+  .role-perm-check {
+    flex-basis:100%;
+    min-width:0
+  }
+
+  .qa-col {
+    flex-basis:100%;
+    min-width:0
   }
 }
 
 .qa-col {
+  flex:1 1 calc((100% - 24px) / 3);
+  min-width:220px;
   border:1px solid var(--line);
   border-radius:12px;
   padding:12px
