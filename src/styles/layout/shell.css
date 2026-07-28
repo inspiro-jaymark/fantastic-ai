@@ -10,7 +10,24 @@ header {
   box-shadow:var(--shadow);
   position:sticky;
   top:0;
-  z-index:50
+  z-index:100
+}
+
+#app {
+  min-height:100dvh;
+  display:grid;
+  grid-template-columns:var(--side-nav-collapsed-width) minmax(0,1fr);
+  grid-template-rows:auto 1fr;
+  transition:grid-template-columns .22s ease
+}
+
+body.nav-open #app {
+  grid-template-columns:var(--side-nav-width) minmax(0,1fr)
+}
+
+#app>header {
+  grid-column:1 / -1;
+  grid-row:1
 }
 
 .brand {
@@ -188,46 +205,77 @@ header {
 }
 
 nav {
-  position:fixed;
+  position:sticky;
   top:var(--header-height);
-  bottom:0;
-  left:0;
+  align-self:start;
+  grid-column:1;
+  grid-row:2;
   z-index:80;
-  width:var(--side-nav-width);
+  width:100%;
+  height:calc(100dvh - var(--header-height));
   background:var(--card);
-  border-right:1px solid transparent;
-  padding:14px;
+  border-right:1px solid var(--line);
+  padding:12px 10px;
   display:flex;
   flex-direction:column;
   flex-wrap:nowrap;
   gap:6px;
   overflow-y:auto;
-  box-shadow:14px 0 32px rgba(15,23,42,0);
-  transform:translateX(-100%);
-  visibility:hidden;
-  transition:transform .22s ease,visibility .22s ease,border-color .18s ease,box-shadow .18s ease
+  overflow-x:hidden;
+  box-shadow:8px 0 22px rgba(15,23,42,.04);
+  transition:padding .18s ease,box-shadow .18s ease
 }
 
 nav.is-open {
-  transform:translateX(0);
-  visibility:visible;
-  border-right-color:var(--line);
-  box-shadow:14px 0 32px rgba(15,23,42,.12)
+  padding:14px;
+  box-shadow:14px 0 32px rgba(15,23,42,.08)
 }
 
 .tab {
   width:100%;
   min-height:38px;
-  padding:10px 12px;
+  padding:10px;
   font-size:12.5px;
   font-weight:600;
   color:var(--muted);
   border:1px solid transparent;
   border-radius:8px;
   background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
   line-height:1.25;
   text-align:left;
-  white-space:normal
+  white-space:nowrap;
+  overflow:hidden
+}
+
+body.nav-open .tab {
+  justify-content:flex-start;
+  padding:10px 12px
+}
+
+.tab-icon {
+  flex:0 0 24px;
+  width:24px;
+  text-align:center;
+  font-size:16px
+}
+
+.tab-label {
+  flex:1 1 auto;
+  min-width:0;
+  max-width:0;
+  opacity:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  transition:max-width .2s ease,opacity .16s ease
+}
+
+body.nav-open .tab-label {
+  max-width:190px;
+  opacity:1
 }
 
 .tab:hover {
@@ -242,15 +290,9 @@ nav.is-open {
 
 @media(max-width:900px) {
   :root {
-    --header-height:58px
-  }
-
-  body.nav-open::before {
-    content:"";
-    position:fixed;
-    inset:var(--header-height) 0 0;
-    z-index:70;
-    background:rgba(15,27,45,.42)
+    --header-height:58px;
+    --side-nav-width:clamp(196px,62vw,240px);
+    --side-nav-collapsed-width:clamp(52px,14vw,56px)
   }
 
   header {
@@ -296,18 +338,17 @@ nav.is-open {
 
   nav {
     top:var(--header-height);
-    z-index:80;
-    width:min(320px,84vw);
-    padding:14px;
-    box-shadow:18px 0 42px rgba(15,23,42,0)
+    height:calc(100dvh - var(--header-height));
+    padding:10px 8px;
+    box-shadow:8px 0 20px rgba(15,23,42,.06)
   }
 
   nav.is-open {
-    box-shadow:18px 0 42px rgba(15,23,42,.28)
+    padding:12px 10px;
+    box-shadow:12px 0 28px rgba(15,23,42,.12)
   }
 
   .tab {
-    min-height:40px;
-    justify-content:flex-start
+    min-height:40px
   }
 }

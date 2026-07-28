@@ -148,6 +148,20 @@ function logout() {
   return false;
 }
 window.logout = logout;
+function confirmLogout() {
+  appConfirm(
+    {
+      title: "Log out?",
+      message:
+        "Log out of this session? Any active call or recording will be stopped.",
+      confirmText: "Logout",
+      danger: true,
+    },
+    () => logout(),
+  );
+  return false;
+}
+window.confirmLogout = confirmLogout;
 function quickSwap(user) {
   const m = loadUsers().find((x) => x.user === user);
   if (!m || m.status !== "active") return;
@@ -188,12 +202,14 @@ function setNavMenuOpen(open) {
   const nav = document.getElementById("navBar");
   const btn = document.getElementById("navMenuBtn");
   if (!nav) return;
+  const isActiveSession = !!currentUser;
 
   document.body.classList.toggle("nav-open", !!open);
   nav.classList.toggle("is-open", !!open);
-  nav.setAttribute("aria-hidden", open ? "false" : "true");
+  nav.classList.toggle("is-collapsed", !open);
+  nav.setAttribute("aria-hidden", isActiveSession ? "false" : "true");
   try {
-    nav.inert = !open;
+    nav.inert = !isActiveSession;
   } catch (e) {}
 
   if (btn) {
@@ -201,7 +217,7 @@ function setNavMenuOpen(open) {
     btn.setAttribute("aria-expanded", open ? "true" : "false");
     btn.setAttribute(
       "aria-label",
-      open ? "Close navigation menu" : "Open navigation menu",
+      open ? "Collapse navigation menu" : "Expand navigation menu",
     );
   }
 }
@@ -242,23 +258,35 @@ function applyRBAC() {
   NAV_ITEMS.forEach(([id, label]) => {
     if (r.perms.includes(id)) {
       const b = document.createElement("button");
+      const splitAt = label.indexOf(" ");
+      const icon = splitAt > 0 ? label.slice(0, splitAt) : label;
+      const text = splitAt > 0 ? label.slice(splitAt + 1) : label;
       b.type = "button";
       b.className = "tab";
       b.dataset.view = id;
+      b.setAttribute("aria-label", text);
+      b.title = text;
       b.innerHTML =
-        label +
+        '<span class="tab-icon" aria-hidden="true">' +
+        esc(icon) +
+        '</span><span class="tab-label">' +
+        esc(text) +
         (id === "supqueue"
           ? ' <span class="pill-count hidden u-bg-magenta" id="supInboxCount">0</span>'
           : "") +
         (id === "audit"
           ? ' <span class="pill-count hidden u-bg-teal" id="auditTabCount">0</span>'
-          : "");
-      b.onclick = () => showView(id);
+          : "") +
+        "</span>";
+      b.onclick = () => {
+        showView(id);
+        setNavMenuOpen(false);
+      };
       nav.appendChild(b);
     }
   });
   const lb = document.getElementById("logoutBtn");
-  if (lb) lb.onclick = logout;
+  if (lb) lb.onclick = confirmLogout;
   setNavMenuOpen(isDesktopNav());
   buildHome();
   showView(r.home);

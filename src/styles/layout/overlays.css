@@ -3,9 +3,9 @@
 .panel {
   position:fixed;
   top:60px;
-  right:20px;
-  width:340px;
-  max-height:72vh;
+  right:clamp(12px,2vw,20px);
+  width:min(340px,calc(100vw - 32px));
+  max-height:72dvh;
   background:#fff;
   border:1px solid var(--line);
   border-radius:14px;
@@ -37,17 +37,17 @@
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:20px;
+  padding:clamp(14px,3vw,20px);
   background:rgba(15,27,45,.52)
 }
 
 .confirm-card {
-  width:min(420px,100%);
+  width:min(420px,calc(100vw - 32px));
   background:#fff;
   border:1px solid var(--line);
   border-radius:14px;
   box-shadow:0 24px 70px rgba(0,0,0,.32);
-  padding:20px
+  padding:clamp(16px,3vw,20px)
 }
 
 .confirm-card h3 {
@@ -143,10 +143,10 @@
 
 .kbbot-fab {
   position:fixed;
-  bottom:22px;
-  right:22px;
-  width:60px;
-  height:60px;
+  bottom:clamp(14px,2.5vw,22px);
+  right:clamp(14px,2.5vw,22px);
+  width:clamp(52px,7vw,60px);
+  height:clamp(52px,7vw,60px);
   border-radius:50%;
   background:linear-gradient(135deg,var(--teal),var(--teal-dark));
   color:#fff;
@@ -157,10 +157,10 @@
 
 .kbbot-panel {
   position:fixed;
-  bottom:92px;
-  right:22px;
-  width:350px;
-  max-height:72vh;
+  bottom:clamp(82px,11vw,92px);
+  right:clamp(12px,2vw,22px);
+  width:min(350px,calc(100vw - 32px));
+  max-height:72dvh;
   background:#fff;
   border:1px solid var(--line);
   border-radius:16px;

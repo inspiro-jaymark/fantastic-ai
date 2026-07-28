@@ -473,7 +473,7 @@ function exportBatch() {
   );
   dl(out, "FANTASTIC_batch.csv", "text/csv");
 }
-/* ===== QA FORM RESULTS — CSV EXPORT (v3.2) ===== */
+/* ===== QA FORM RESULTS — CSV EXPORT (v3.3) ===== */
 function qaFormFor(r) {
   if (r.qaForm && (r.qaForm.well || r.qaForm.wrong || r.qaForm.improve))
     return {

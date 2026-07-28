@@ -52,7 +52,7 @@ function applyBranding() {
     document.getElementById("brandInit").value || "FT";
   const nm = document.getElementById("brandName").value || "FANTASTIC TOOL";
   document.getElementById("brandTitle").innerHTML =
-    nm + ' <span class="badge">v3.2</span>';
+    nm + ' <span class="badge">v3.3</span>';
   document.getElementById("brandTag").textContent =
     document.getElementById("brandTagIn").value;
 }

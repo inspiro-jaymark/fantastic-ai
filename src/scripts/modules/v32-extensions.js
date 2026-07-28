@@ -1,4 +1,4 @@
-/* FANTASTIC TOOL v3.2 feature module — QA form + KB edit/history + Insights gap + FeeBe URL fetch */
+/* FANTASTIC TOOL v3.3 feature module — QA form + KB edit/history + Insights gap + FeeBe URL fetch */
 (function () {
   "use strict";
   function $(id) {
@@ -887,6 +887,6 @@
     } catch (e) {}
   }, 600);
   console.log(
-    "✅ v3.2 module baked: custom QA form + KB edit/history + insights gap + FeeBe URL fetch.",
+    "✅ v3.3 module baked: custom QA form + KB edit/history + insights gap + FeeBe URL fetch.",
   );
 })();

@@ -12,28 +12,35 @@
               </h3>
               <div class="note">Trail of admin-relevant actions.</div>
             </div>
-            <div class="row audit-row-4">
-              <select class="sel" id="auditCat" aria-label="Audit category" onchange="renderAudit()">
+            <div class="row audit-toolbar">
+              <select
+                class="sel audit-filter"
+                id="auditCat"
+                aria-label="Audit category"
+                onchange="renderAudit()"
+              >
                 <option value="all">All categories</option>
                 <option value="auth">Authentication</option>
                 <option value="user">User mgmt</option>
                 <option value="agent">Agent DB</option>
                 <option value="config">Config/AI</option>
                 <option value="data">Data</option>
-                <option value="export">Exports</option></select
-              ><input
-                class="search u-mb-0"
+                <option value="export">Exports</option>
+              </select><input
+                class="search audit-search"
                 id="auditSearch"
                 aria-label="Search audit log"
                 placeholder="🔍 Search…"
-
                 oninput="renderAudit()"
-              /><button type="button" class="btn ghost" onclick="exportAudit()">
+              /><button
+                type="button"
+                class="btn ghost audit-action"
+                onclick="exportAudit()"
+              >
                 ⬇️ Export</button
               ><button
                 type="button"
-                class="btn u-bg-red"
-
+                class="btn u-bg-red audit-action"
                 onclick="clearAudit()"
               >
                 🗑️ Clear

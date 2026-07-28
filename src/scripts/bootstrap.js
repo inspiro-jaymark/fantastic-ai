@@ -182,11 +182,7 @@ const kbs = document.getElementById("kbSearch");
 if (kbs) kbs.oninput = (e) => renderKB(e.target.value);
 (function () {
   var lb = document.getElementById("logoutBtn");
-  if (lb)
-    lb.addEventListener("click", function (ev) {
-      ev.preventDefault();
-      logout();
-    });
+  if (lb) lb.onclick = confirmLogout;
 })();
 setInterval(refreshDMBadge, 4000);
 setInterval(refreshBell, 5000);

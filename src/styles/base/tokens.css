@@ -21,5 +21,6 @@
   --copilot:#0078d4;
   --shadow:0 10px 30px rgba(14,124,123,.10);
   --header-height:68px;
-  --side-nav-width:276px
+  --side-nav-width:clamp(220px,18vw,300px);
+  --side-nav-collapsed-width:clamp(56px,5vw,76px)
 }
